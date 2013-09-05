@@ -1,0 +1,180 @@
+/** Press Coders Theme Admin Styles **/
+
+.clearrt {
+clear: right;
+}
+
+.line {
+clear: both;
+display: block;
+padding-top: 15px;
+border-bottom: 1px solid #dfdfdf;
+margin-bottom: 15px;
+}
+
+.optionslogo {
+margin: 8px 0;
+}
+
+.pc_settings {
+padding-top: 10px;
+width: 800px;
+}
+
+.pc_settings #icon-themes {
+display: none;
+}
+
+.pc_settings span.submit {
+float: left;
+}
+
+#pc-theme-options-reset {
+float: right;
+margin-top: 22px;
+}
+
+.optionsicon {
+float: left;
+display: block;
+margin-right: 8px;
+position: relative;
+top: 8px;
+padding-bottom: 10px;
+}
+
+.ui-helper-reset {
+line-height: 1.7;
+}
+
+.postbox .hndle span {
+height: 8px;
+}
+
+td.line {
+border-bottom: 1px solid #ccc;
+height: 1px;
+}
+
+input.gray, textarea.gray {
+background: #eee;
+width: 320px;
+}
+
+.pc_settings textarea {
+font-family: Consolas, Monaco, monospace;
+}
+
+.gray-wide-textarea {
+background: #eee;
+width: 725px;
+}
+
+.gray-medium-textarea {
+background: #eee;
+width: 450px;
+}
+
+input#upload_image {
+font-size:0.85em;
+}
+
+input#update_logo {
+display: none;
+color: red;
+font-weight: bold;
+}
+
+/* align right */
+.ar {
+text-align: right;
+}
+
+/* Theme Options */
+
+#pc-options-wrap {
+border: 1px solid #DFDFDF;
+background: #fff;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding: 20px;
+max-width: 800px;
+overflow: hidden;
+}
+
+.pc_settings .ltinfo {
+float: left;
+display: block;
+width: 220px;
+padding: 0 10px 0 0;
+margin: 0;
+}
+
+.pc_settings .ltinfo p {
+color: #333;
+font-style: italic;
+margin-top: 25px;
+}
+
+.pc_settings .rtoptions {
+float: left;
+display: block;
+max-width: 545px;
+padding: 0 0 0 15px;
+border-left: 1px solid #DFDFDF;
+min-height: 100px;
+}
+
+.pc_settings .box {
+display: block;
+clear: right;
+padding: 0;
+margin: 15px 0;
+}
+
+.box input[type="checkbox"] {
+vertical-align: middle;
+margin-right: 5px;
+}
+
+.box input[type="checkbox"] {
+vertical-align: middle;
+margin-right: 5px;
+float: none;
+}
+
+/* Tooltips */
+
+.tooltip {
+display:none;
+background-color:#ffa;
+border:1px solid #cc9;
+padding:5px;
+font-size:13px;
+max-width: 400px;
+-moz-box-shadow: 2px 2px 11px #666;
+-webkit-box-shadow: 2px 2px 11px #666;
+}
+
+.tooltipimg {
+display: inline;
+}
+
+/* PC Buttons */
+
+#pc-buttons {
+width: 290px;
+margin-top: 30px;
+float: right;
+}
+
+#pc-buttons .pc-lower {
+position: relative;
+top: 10px;
+}
+
+.pc-icon {
+display: block;
+float: right;
+}

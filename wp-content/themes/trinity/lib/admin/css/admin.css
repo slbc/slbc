@@ -1,0 +1,367 @@
+/* Widget Admin */
+
+input.error {
+	background-color:#fff5f3 !important;
+	border:1px solid #ffd9d5 !important;
+}
+p.checkbox_stack {
+	margin-bottom:5px !important;
+}
+
+
+/* Custom Admin CSS */
+
+h2.meta_section {
+	clear:left !important;
+	margin:0 0 0 15px !important;
+	padding-top:20px !important;
+}
+.meta_item {
+	clear:both;
+	padding-top:20px;
+}
+.first {
+	padding-top:0;
+}
+.meta_item label {
+	float:left;
+	padding:8px 2px 0;
+	text-align:right;
+	width:125px;
+}
+.meta_item input {
+	float:left;
+	margin-left:10px;
+	padding:5px;
+}
+.meta_item input.ct_meta_checkbox {
+	margin-top:8px;
+}
+.meta_item a.button {
+	clear:left;
+	float:left;
+	margin:10px 0 0 140px;
+}
+.verse_start {
+	float:left;
+	margin-bottom:20px;
+}
+.verse_start input {
+	float:none !important;
+	margin:0 10px !important;
+}
+.verse_end {
+	clear:none;
+	float:left;
+	margin-bottom:20px;
+}
+.verse_end input {
+	float:none !important;
+	margin:0 10px !important;
+}
+.phone_label {
+	float:left;
+	margin-bottom:20px;
+}
+.phone_label input {
+	float:none !important;
+	margin:0 10px !important;
+}
+.phone_number {
+	clear:none;
+	float:left;
+}
+.phone_number input {
+	float:none !important;
+	margin:0 10px !important;
+}
+.meta_item textarea {
+	float:left;
+	margin-left:10px;
+	padding:5px;
+}
+.meta_item select {
+	margin-left:10px;
+	width:175px;
+}
+.meta_item p {
+	float:left;
+	padding:0 0 0 18px;
+}
+p.meta_info {
+	float:left;
+	line-height:18px;
+	padding:0 25px 0 135px;
+}
+.meta_item span {
+	clear:left;
+	color:#999;
+	float:left;
+	font-size:10px;
+	font-style:italic;
+	line-height:16px;
+	padding:10px 25px 0 140px;
+}
+.meta_item span.label_note {
+	clear:none;
+	color:#999;
+	float:none;
+	font-size:10px;
+	padding:0;
+}
+.meta_clear {
+	clear:both;
+	height:30px;
+}
+hr.meta_divider {
+	border:none;
+	border-top:1px solid #eee;
+	clear:both;
+	float:left;
+	margin:40px 0 30px 20px;
+	width:95%;
+}
+.placeholder {
+	color:#bbb !important;
+}
+
+
+/* Custom Dashboard Widgets */
+
+#churchthemes_top_sermons th {
+	padding-bottom:2px;
+}
+#churchthemes_top_sermons td, .top_sermons th {
+	border-bottom:1px solid #ececec;
+	font-size:12px;
+	line-height:22px;
+	padding:4px;
+}
+#churchthemes_top_sermons tr.alt {
+	background:#fcfcfc;
+}
+#churchthemes_top_sermons tr:hover {
+	background:#f0f0f0;
+}
+#churchthemes_top_sermons thead tr:hover {
+	background:none;
+}
+#churchthemes_top_sermons td span.count {
+	float:left;
+	padding-right:5px;
+	text-align:right;
+	width:20px;
+}
+#churchthemes_top_sermons td span.title {
+	clear:none;
+	float:left;
+	width:80%;
+}
+#churchthemes_top_sermons th.title {
+	padding-left:28px;
+}
+#churchthemes_top_sermons .center {
+	text-align:center;
+}
+.ct_divider {
+	border-bottom:1px solid #dfdfdf;
+	height:20px;
+	margin-bottom:8px;
+	width:100%;
+}
+
+
+/* Theme Options Panel */
+
+.icon32-posts-ct_slide {
+	background:url(../images/menu_icon-slide-32.png) no-repeat !important;
+}
+.icon32-posts-ct_sermon {
+	background:url(../images/menu_icon-sermon-32.png) no-repeat !important;
+}
+.icon32-posts-ct_location {
+	background:url(../images/menu_icon-location-32.png) no-repeat !important;
+}
+.icon32-posts-ct_person {
+	background:url(../images/menu_icon-person-32.png) no-repeat !important;
+}
+.icon32-posts-ct_testimony {
+	background:url(../images/menu_icon-testimony-32.png) no-repeat !important;
+}
+
+.form-table.churchthemes th,
+.form-table.churchthemes td {
+	border-bottom:1px solid #eee;
+	padding:15px 0;
+	text-align:left;
+	vertical-align:middle !important;
+}
+
+.form-table.churchthemes tr.top th,
+.form-table.churchthemes tr.top td {
+	vertical-align:top !important;
+}
+
+.form-table.churchthemes tr.top td.info p:nth-child(1) {
+	margin-top: 3px;
+}
+
+.form-table.churchthemes td.option {
+	width:30em;
+}
+
+.form-table td p {
+	margin-top: 1em;
+}
+
+.form-table.churchthemes .button {
+	margin-top:10px;
+}
+
+.form-table.churchthemes .preview {
+	background:#fff;
+	border:1px solid #eee;
+	clear:both;
+	float:left;
+	margin-top:10px;
+	padding:5px;
+}
+
+
+/* Sidebars */
+
+br.clear {
+	clear: both;
+	display: block;
+	height: 1px;
+	margin: -1px 0 0 0;
+}
+#slider_form {
+	margin-bottom: 40px;
+}
+#sliders-wrap .postbox {
+	position: relative;
+	margin: 0;
+}
+#sliders-wrap .inside {
+	overflow: hidden;
+}
+#sliders-wrap .handlediv {
+	cursor: pointer;
+}
+#sliders-wrap .postbox input.slide_title,
+#sliders-wrap .postbox input.slide_bgsrc,
+#sliders-wrap .postbox input.slide_src,
+#sliders-wrap .postbox input.slide_link {
+	width: 60%;
+}
+#sliders-wrap .postbox input {
+	height: 23px;
+}
+#sliders-wrap .postbox textarea {
+	width: 60%;
+	height: 140px;
+	float: left;
+}
+#sliders-wrap .postbox .nivo_caption textarea {
+	height: 65px;
+}
+#sliders-wrap .postbox h3 input {
+	margin: 0;
+	padding: 0;
+	width: auto;
+	height: 14px;
+	color: #464646;
+	font-size: 12px;
+	font-weight: bold;
+	text-shadow: 1px 1px 1px #fff;
+	border: none;
+	background: none;
+}
+#sliders-wrap .postbox h3 input:focus {
+	padding: 3px;
+	height: 20px;
+	font-size: 12px;
+	font-weight: normal;
+	text-shadow: none;
+	border: 1px solid #bbb;
+	background: #fff;
+}
+#sliders-wrap .slide {
+	overflow: hidden;
+	margin-bottom: 20px;
+	padding-bottom: 1px;
+	cursor: move;
+}
+#sliders-wrap .slide-highlight {
+	display: block;
+	margin-bottom: 20px;
+	height: 265px;
+	border: 1px dashed #bbb;
+	background: #f5f5f5;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+#sliders-wrap .slider-settings-column {
+	width: 48%;
+}
+#sliders-wrap .slider-settings-column p {
+	font-style: normal;
+	position: relative;
+}
+#sliders-wrap .postbox p.slide_desc_p {
+	height: 142px;
+	overflow: hidden;
+}
+#sliders-wrap .postbox p.nivo_caption {
+	height: 67px;
+	overflow: hidden;
+}
+#sliders-wrap .postbox p.slide_desc_p span {
+	margin: 5px 0 0 5px;
+	float: left;
+}
+#sliders-wrap .delete-slide-wrap {
+	position: absolute;
+	top: 2px;
+	right: 20px;
+	margin-top: 4px;
+	padding-top: 2px;
+	width: 110px;
+	height: 20px;
+}
+#sliders-wrap .delete-slide {
+	padding: 3px 3px 2px 3px;
+	color: red;
+	font-size: 11px;
+	border-bottom: 1px solid red;
+}
+#sliders-wrap .delete-slide:hover {
+	color: #fff !important;
+	background: red !important;
+	cursor: pointer;
+}
+
+#manager-sidebars #sidebar-list tbody tr strong{
+	font-size: 12px;
+}
+#sliders-wrap .slider-settings-column p a.help-anchor {
+	width: 14px;
+	height: 14px;
+	text-decoration: none;
+}
+.help-tip {
+	display: none;
+	position: absolute;
+	top: 13px;
+	right: 7px;
+	width: 250px;
+	padding: 7px;
+	background: #f5f5f5;
+	border: 1px solid #bbb;
+	z-index: 1;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}

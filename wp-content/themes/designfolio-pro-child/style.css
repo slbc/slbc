@@ -1,0 +1,13 @@
+/*
+Theme Name:     Designfolio Pro Child Theme
+Theme URI:      http://www.presscoders.com/designfolio
+Description:    A child theme of Designfolio Pro.
+Author:         PressCoders.com
+Author URI:     http://www.presscoders.com
+Template:       designfolio-pro
+*/
+
+@import url("../designfolio-pro/style.css");
+
+/* Add your custom css below this line */
+.ninja-forms-all-fields-wrap ul li {background: none;}

@@ -1,0 +1,309 @@
+/*
+
+Designfolio light gray color scheme.
+All tags that have a color attribute are located here.
+
+*/
+
+body {
+background: #fafafa;
+color: #373737;
+}
+
+th, a:link, a:visited, h1, h2, h3, .site-title, .page-title, .entry-title, .nivo-caption a, .pc_info_widget .phone, .comment-author {
+color: #5483a4;
+}
+
+a:hover {
+color: #36607e;
+text-decoration: underline;
+}
+
+#header-container nav li a:hover, #header-container nav ul ul li a:hover, #site-title a:hover, #header-container nav.secondary-menu ul ul li a:hover {
+color: #36607e;
+}
+
+#header-container {
+background: #dddcd6;
+}
+
+.footer-widget-container {
+background: #32353b;
+}
+
+#header-container:after {
+content: "";
+display: block;
+height: 0;
+background: none;
+border-bottom: 1px dotted #dddcd6;
+position: relative;
+bottom: -4px;
+}
+
+#header-container nav.primary-menu ul li.current_page_item > a:after {
+content: "";
+border-top-color: #dddcd6;
+}
+
+footer {
+padding-top: 4px;
+border-top: 1px dotted #dddcd6;
+}
+
+#header-container nav.primary-menu {
+border-top: 1px solid #ccc;
+}
+
+#header-container nav li a {
+color: #777;
+font-weight: normal;
+}
+
+nav ul ul {
+background: #dddcd6;
+}
+
+#header-container nav.secondary-menu li a {
+color: #ccc;
+}
+
+#header-container nav.secondary-menu li a:hover {
+color: #999;
+}
+
+#header-container nav.secondary-menu ul ul li a {
+color: #333;
+}
+
+nav.secondary-menu ul ul {
+background: #fafafa;
+}
+
+#header-container nav.secondary-menu {
+background: #000;
+background: rgba(0,0,0,.7);
+}
+
+#site-title a {
+color: #5483a4;
+}
+
+#site-description {
+color: #555;
+}
+
+#before-content .flex-container {
+border-top: 1px solid #dddcd6;
+border-bottom: 1px solid #dddcd6;
+}
+
+.flex-direction-nav {
+border-top: 1px dotted #dddcd6;
+}
+
+#before-content .flex-direction-nav {
+border-top: none;
+}
+
+.flex-direction-nav a.flex-prev {
+background: url(../../../images/arrow-lt.png) no-repeat center center #5483a4;
+}
+
+.flex-direction-nav a.flex-next {
+background: url(../../../images/arrow-rt.png) no-repeat center center #5483a4;
+}
+
+.flex-direction-nav a.flex-prev:active, .flex-direction-nav a.flex-next:active {
+background-color: #36607e;
+}
+
+ol.flex-control-nav li a {
+background: #fafafa;
+border: 2px solid #5483a4;
+}
+
+ol.flex-control-nav li a.flex-active {
+background: #5483a4;
+border: none;
+}
+
+.widget-title {
+color: #5483a4;
+}
+
+footer .widget-title {
+border-bottom: 1px dotted #ccc;
+color: #fff;
+}
+
+.content ul li, .widget ul li {
+border-bottom: 1px dotted #bead7f;
+}
+
+.pc_content_slider_widget ul li {
+border-bottom: none;
+}
+
+#footer-widget-area ul li {
+border-bottom: 1px dotted #ccc;
+}
+
+.note, .warning, .alert, .error, .download {
+color: #444;
+}
+
+.note {
+background: #eee;
+border: 1px solid #ccc;
+}
+
+.warning, .alert {
+background: #fffbbc;
+border: 1px solid #E6DB55;
+}
+
+.error {
+background: #ffebe8;
+border: 1px solid #C00;
+}
+
+.download {
+background: #e4ebf8;
+border: 1px solid #2e68d4;
+}
+
+.line { 
+border-top: 1px dotted #dddcd6;
+}
+
+a.button, #searchsubmit, #submit, .submit, a.post-edit-link, a.more-link {
+color: #ffffff;
+}
+
+.post, .sidebar-container .widget {
+border-bottom: 1px dotted #dddcd6;
+}
+
+.post-date {
+background: #dddcd6;
+color: #999;
+font-weight: normal;
+font-size: 16px;
+}
+
+.post-meta p {
+color: #777;
+}
+
+p.author:after {
+content: "";
+background: #dddcd6;
+}
+
+.post-meta span.comments, .post-meta span.tags {
+border-left: 1px solid #dddcd6;
+}
+
+.comment-body, li.pingback {
+background: #fff;
+}
+
+.comment-meta a {
+color: #888888;	
+}
+
+.avatar {
+border: 2px solid #fff;
+}
+
+div.reply a {
+color: #888888;
+}
+
+.quote {
+color: #777;
+}
+
+.quote:before {
+border-right:15px solid #fff;
+}
+
+#author, #email, #url, #comment {
+color: #555555;
+}
+
+.form-allowed-tags {
+color: #999;
+}
+
+textarea, input, .comment-body, li.pingback, .quote {
+background: #dddcd6;
+border: none;
+}
+
+.defaultbox {
+background: #dddcd6;
+}
+
+header .search input[type="text"], header .widget_search input[type="text"] {
+background-color: #fafafa;
+}
+
+.comment-body:before {
+content: "";
+border-left-color: #dddcd6;
+}
+
+.quote:before {
+content: "";
+border-right-color: #dddcd6;
+}
+
+#body-container .twtr-widget .twtr-tweet a {
+color: #5483a4 !important;
+}
+
+#body-container .twtr-widget .twtr-doc, #body-container .twtr-widget .twtr-hd a, #body-container .twtr-widget h3, #body-container .twtr-widget h4  {
+background-color: #dddcd6 !important;
+}
+
+/** Footer **/
+
+
+footer .pc_info_widget .phone, footer .pc_twitter_feed_widget {
+color: #fff;
+}
+
+.footer-widget-container {
+color: #eeeeee;
+}
+
+.footer-widget-container a, .footer-widget-container a:visited {
+color: #eeeeee;
+}
+
+.footer-widget-container a:hover {
+color: #bd6208;
+}
+
+.footer-widget-container .quote {
+color: #444;
+}
+
+/* Orange (default) */
+.defaultbtn, .btn, #searchsubmit, #submit, .submit, .post-edit-link, .more-link, input[type="submit"], ul#filters li a {
+   background: #bd6208;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: #ffffff;
+   text-decoration: none;
+   vertical-align: middle;
+}
+.defaultbtn:hover, .btn:hover, #searchsubmit:hover, #submit:hover, .submit:hover, .post-edit-link:hover, .more-link:hover, input[type="submit"]:hover, ul#filters li a:hover {
+   background: #d27315;
+   color: #fafafa;
+}
+.defaultbtn:active, .btn:active, .defaultbtn:active, #searchsubmit:active, #submit:active, .submit:active, .post-edit-link:active, .more-link:active, input[type="submit"]:active, ul#filters li a:active {
+   background: #9d5106;
+   color: #edd1b6;
+}
