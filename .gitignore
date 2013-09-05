@@ -1,0 +1,14 @@
+# system files
+.htpasswd
+error_log
+Thumbs.db
+.DS_Store
+sitemap.exml*
+*.sass-cache
+
+#WP
+/wp
+wp-config.php
+
+#wp content
+/wp-content/cache/
