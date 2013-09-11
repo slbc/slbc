@@ -1,0 +1,245 @@
+/*-----------------------------------------------------------------------------------
+ *	Church Pack Styles 
+ *  http://www.wpforchurch.com
+ *
+-----------------------------------------------------------------------------------*/
+
+/* Google Map shortcode */
+#cp-map {padding: 0px 0px 4%;}
+
+/*-----------------------------------------------------------------------------------
+	Styles for Prayers 
+-----------------------------------------------------------------------------------*/
+
+.prayer-count .icon {
+	background-position: 0 -19px;
+	width: 13px;
+	height: 11px;
+	float: left;
+	margin: 4px 5px 0 0;
+}
+
+.prayer-count a:hover .icon,
+.prayer-count a.active .icon { background-position: -15px -19px; }
+
+.prayer-count {
+	float: right;
+	margin: 0 0 0 10px;
+}
+
+/*-----------------------------------------------------------------------------------
+	Styles for Groups
+-----------------------------------------------------------------------------------*/
+.wpfc_group .entry-meta, .wpfc_group .meta {display:none;}
+
+.wpfc_group .cp-googlemaps {
+	clear: both;
+}
+
+.wpfc_group .group-desc {
+	float: left;
+}
+
+.group-title{
+}
+
+h3.group-leader{
+	text-transform: uppercase;
+	font-size: 12px;
+	clear: right;
+}
+
+.group-desc, .cp-group-details {
+	clear: both;
+}
+
+/*-----------------------------------------------------------------------------------
+	Styles for People
+-----------------------------------------------------------------------------------*/
+.wpfc_person .entry-meta, .wpfc_person .meta {display:none;}
+
+h3.person-title{
+	text-transform: uppercase;
+	font-size: 12px;	
+}
+
+.churchpack-title{
+	padding-top: 20px;	
+}
+
+.churchpack-album {
+	clear: both;
+	margin-bottom: 20px!important;
+	overflow: auto;
+	width: 100%	
+}
+
+/* Social Links */
+div.cp-social ul {
+	list-style: none!important;
+	margin: 0 0 0.933333333em 0!important;
+	overflow: hidden;	
+	height: 27px
+}
+div.cp-social li {
+	float: left;
+	list-style: none!important;
+	margin: 0 0.933333% 0.933333333em 0!important;
+}
+div.cp-social li:last-child {
+	margin-right: 0;
+}
+div.cp-social span {
+	display: none;
+	line-height: 0;
+}
+div.cp-social li a {
+	display: block;
+	height: 26px;
+	width: 26px;
+}
+div.cp-social li a:hover {
+	opacity: 0.8;
+}
+
+div.cp-social li a.cp-facebook {
+	background: url(img/icon-facebook.png) no-repeat 0 0;
+		list-tyle-type:none!important;
+}
+div.cp-social li a.cp-twitter {
+	background: url(img/icon-twitter.png) no-repeat 0 0;
+		list-tyle-type:none!important;
+}
+div.cp-social li a.cp-blog {
+	background: url(img/icon-blog.png) no-repeat 0 0;
+		list-tyle-type:none!important;
+}
+div.cp-social li a.cp-email {
+	background: url(img/icon-email.png) no-repeat 0 0;
+		list-tyle-type:none!important;
+}
+
+
+
+/*-----------------------------------------------------------------------------------
+	Styles for Events
+-----------------------------------------------------------------------------------*/
+.wpfc_event .entry-meta, .wpfc_event .meta {display:none;}
+
+#church-pack .calHead {
+	background: #ededed;
+	margin: 0 2% 20px 0;
+	position: relative;	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	height:50px;
+	padding-bottom:-20px;
+    border: 1px solid #d9d9d9;
+}
+
+#church-pack h2.event-month {
+	float: left;
+	padding: 10px;
+	font-size: 1.3em;
+	line-height: 1.5em;
+	width: 50%;
+}
+
+#church-pack .monthNav {
+	font-size: .85em;
+	float:right;	
+	width: 40%; 
+	text-align: right;
+	padding-top: 12px;
+	padding-right: 10px;
+}
+#church-pack .monthselect a {
+	text-decoration: none; 
+	padding: 0px 5px;
+}
+#church-pack .daydisplay	{ 
+	width: 12%; 
+	text-align: center; 
+	float: left; 
+	display: inline; 
+	clear: left; 
+	margin-right: 3%;
+	background: #ededed;
+    border: 1px solid #d9d9d9;
+	color: #444444;
+}
+#church-pack .daydisplay h1 {
+	font-size: 1.6em;
+	line-height: 1.3em;
+	margin: 0pt 0pt 5px;
+	color: #444444;
+}
+
+#church-pack .shortcalentry {
+	width: 75%; 
+	float: left; 
+	display: inline;
+	line-height: 1.2em;
+	font-size: 1.4em;
+	font-weight: bold;
+	padding: 3px 0px 0px;
+}
+#church-pack .shortcalentry span{
+	font-size: .75em;
+	font-weight: normal;
+}
+#church-pack .shortcalentry a	{
+	padding: 0px 0 0px; 
+	display: block;
+	color: #444 !important;
+	text-decoration: none;
+}
+#church-pack .calsingleentry {
+	clear: both; 
+	min-height: 50px; 
+	padding: 10px 0pt;
+}
+
+/* Events Widget */
+#churchpack-event-widget .daydisplayw	{ 
+	width: 18%; 
+	text-align: center; 
+	float: left; 
+	display: inline; 
+	clear: left; 
+	background: #ededed;
+	color: #444444;
+    margin: 0px 5px 8px 0px;
+	max-width: 40px;
+}
+#churchpack-event-widget .daydisplayw h1 {
+	font-size: 1em;
+	line-height: 1em;
+	margin: 0pt 0pt 5px;
+	color: #444444;
+}
+#churchpack-event-widget .shortcalentryw {
+	width: 75%; 
+	float: left; 
+	display: inline;
+	line-height: 1em;
+	font-size: 1em;
+	padding-top: 8px;
+}
+#churchpack-event-widget .shortcalentryw a	{
+	padding: 0px; 
+	display: block;
+}
+
+/* Event Details Box */
+.calexplain {
+	background-color: #ededed;
+	border-bottom: 1px solid #d9d9d9;
+	border-top: 1px solid #d9d9d9;
+	padding: 10px;
+}
+
+p.calsingle {
+	margin: 0px!important;
+}

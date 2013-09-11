@@ -1,0 +1,1 @@
+This social icons were created by Oliver Dale and are available for free at: http://wplift.com/freebie-70-32px-custom-social-media-website-icons

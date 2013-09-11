@@ -1,0 +1,861 @@
+/*
+ * Shortcodes 
+ */
+
+/* Clear Floats */
+.churchpack-clear-floats {
+	clear: both;
+}
+
+.churchpack-clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+/* Spacing */
+.churchpack-spacing {
+	display: block;
+	height: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+	outline: none !important;
+}
+
+/* Social */
+.churchpack-social-icon{
+	display: inline-block;
+	margin-right: 5px;
+}
+.churchpack-social-icon img{
+	display: inline;
+	border: none !important;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	box-shadow: none !important;
+}
+.churchpack-social-icon img:hover{
+	opacity: 0.8;
+}
+
+/* Columns */
+.churchpack-one-half {
+	width: 48%;
+}
+
+.churchpack-one-third {
+	width: 30.66%;
+}
+
+.churchpack-two-third {
+	width: 65.33%;
+}
+
+.churchpack-one-fourth {
+	width: 22%;
+}
+
+.churchpack-three-fourth {
+	width: 74%;
+}
+
+.churchpack-one-fifth {
+	width: 16.8%;
+}
+
+.churchpack-two-fifth {
+	width: 37.6%;
+}
+
+.churchpack-three-fifth {
+	width: 58.4%;
+}
+
+.churchpack-four-fifth {
+	width: 67.2%;
+}
+
+.churchpack-one-sixth {
+	width: 13.33%;
+}
+
+.churchpack-five-sixth {
+	width: 82.67%;
+}
+
+.churchpack-one-half, .churchpack-one-third, .churchpack-two-third, .churchpack-three-fourth, .churchpack-one-fourth, .churchpack-one-fifth, .churchpack-two-fifth,.churchpack-three-fifth, .churchpack-four-fifth, .churchpack-one-sixth, .churchpack-five-sixth {
+	position: relative;
+	margin-right: 4%;
+	margin-bottom: 2em;
+	float: left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.churchpack-column-last {
+	margin-right: 0!important;
+	clear: right;
+}
+
+/* Buttons */
+.churchpack-button {
+	display: inline-block;
+	padding: .382em 1.618em;
+	margin: 5px 5px 5px 0;
+	border: 0;
+	background: #7b6a8f;
+	color: #fff!important;
+	text-align: center;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+	text-decoration: none;
+	font-size: .85em;
+	font-family: 'Helvetica Neue', Helvetica, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	cursor: pointer;
+	overflow: visible;
+	/* IE fix */
+	width: auto;
+	/* IE fix */
+	line-height: 1.618em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-box-shadow: 2px 2px 3px 0 #ececec;
+	box-shadow: 2px 2px 3px 0 #ececec;
+	-webkit-border-radius: 0.236em;
+	border-radius: 0.236em;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+}
+
+.churchpack-button:active {
+	text-decoration: none;
+	background: #7e7e7e;
+	background: -moz-linear-gradient(top,  #7e7e7e 0%, #aaaaaa 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7e7e7e), color-stop(100%,#aaaaaa));
+	background: -webkit-linear-gradient(top,  #7e7e7e 0%,#aaaaaa 100%);
+	background: -o-linear-gradient(top,  #7e7e7e 0%,#aaaaaa 100%);
+	background: -ms-linear-gradient(top,  #7e7e7e 0%,#aaaaaa 100%);
+	background: linear-gradient(to bottom,  #7e7e7e 0%,#aaaaaa 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7e7e7e', endColorstr='#aaaaaa',GradientType=0 );
+}
+
+.churchpack-button:hover {
+	text-decoration: none;
+	opacity: 0.9;
+	-moz-opacity: 0.9;
+	-webkit-opacity: 0.9;
+}
+
+.churchpack-button.giant {
+  font-size: 1.587em;
+}
+
+.churchpack-button.large {
+  font-size: 1.387em;
+}
+
+.churchpack-button.left {
+	float: left;
+}
+
+.churchpack-button.right {
+	float: right;
+	margin-right: 0;
+	margin-left: 5px;
+}
+.churchpack-button.black {
+	background: #505050;
+	background: -moz-linear-gradient(top,  #505050 0%, #101010 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#505050), color-stop(100%,#101010));
+	background: -webkit-linear-gradient(top,  #505050 0%,#101010 100%);
+	background: -o-linear-gradient(top,  #505050 0%,#101010 100%);
+	background: -ms-linear-gradient(top,  #505050 0%,#101010 100%);
+	background: linear-gradient(to bottom,  #505050 0%,#101010 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#505050', endColorstr='#101010',GradientType=0 );
+	border: 1px solid #101010;
+}
+
+.churchpack-button.black:active {
+	background: #101010;
+	background: -moz-linear-gradient(top,  #101010 0%, #505050 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#101010), color-stop(100%,#505050));
+	background: -webkit-linear-gradient(top,  #101010 0%,#505050 100%);
+	background: -o-linear-gradient(top,  #101010 0%,#505050 100%);
+	background: -ms-linear-gradient(top,  #101010 0%,#505050 100%);
+	background: linear-gradient(to bottom,  #101010 0%,#505050 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#101010', endColorstr='#505050',GradientType=0 );
+}
+
+.churchpack-button.red {
+	background: #d01d10;
+	background: -moz-linear-gradient(top,  #f36d64 0%, #d01d10 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f36d64), color-stop(100%,#d01d10));
+	background: -webkit-linear-gradient(top,  #f36d64 0%,#d01d10 100%);
+	background: -o-linear-gradient(top,  #f36d64 0%,#d01d10 100%);
+	background: -ms-linear-gradient(top,  #f36d64 0%,#d01d10 100%);
+	background: linear-gradient(to bottom,  #f36d64 0%,#d01d10 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f36d64', endColorstr='#d01d10',GradientType=0 );
+	border: 1px solid #d01d10;
+}
+
+.churchpack-button.red:active {
+	background: #d01d10;
+	background: -moz-linear-gradient(top,  #d01d10 0%, #f36d64 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d01d10), color-stop(100%,#f36d64));
+	background: -webkit-linear-gradient(top,  #d01d10 0%,#f36d64 100%);
+	background: -o-linear-gradient(top,  #d01d10 0%,#f36d64 100%);
+	background: -ms-linear-gradient(top,  #d01d10 0%,#f36d64 100%);
+	background: linear-gradient(to bottom,  #d01d10 0%,#f36d64 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d01d10', endColorstr='#f36d64',GradientType=0 );
+}
+
+.churchpack-button.orange {
+	background: #fa9e19;
+	background: -moz-linear-gradient(top,  #fa9e19 0%, #fb6909 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fa9e19), color-stop(100%,#fb6909));
+	background: -webkit-linear-gradient(top,  #fa9e19 0%,#fb6909 100%);
+	background: -o-linear-gradient(top,  #fa9e19 0%,#fb6909 100%);
+	background: -ms-linear-gradient(top,  #fa9e19 0%,#fb6909 100%);
+	background: linear-gradient(to bottom,  #fa9e19 0%,#fb6909 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fa9e19', endColorstr='#fb6909',GradientType=0 );
+	border: 1px solid #FB6909;
+}
+
+.churchpack-button.orange:active {
+	background: #fb6909;
+	background: -moz-linear-gradient(top,  #fb6909 0%, #fa9e19 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fb6909), color-stop(100%,#fa9e19));
+	background: -webkit-linear-gradient(top,  #fb6909 0%,#fa9e19 100%);
+	background: -o-linear-gradient(top,  #fb6909 0%,#fa9e19 100%);
+	background: -ms-linear-gradient(top,  #fb6909 0%,#fa9e19 100%);
+	background: linear-gradient(to bottom,  #fb6909 0%,#fa9e19 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb6909', endColorstr='#fa9e19',GradientType=0 );
+}
+
+.churchpack-button.blue {
+	background: #1571f0;
+	background: -moz-linear-gradient(top,  #41a7fc 0%, #1571f0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#41a7fc), color-stop(100%,#1571f0));
+	background: -webkit-linear-gradient(top,  #41a7fc 0%,#1571f0 100%);
+	background: -o-linear-gradient(top,  #41a7fc 0%,#1571f0 100%);
+	background: -ms-linear-gradient(top,  #41a7fc 0%,#1571f0 100%);
+	background: linear-gradient(to bottom,  #41a7fc 0%,#1571f0 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#41a7fc', endColorstr='#1571f0',GradientType=0 );
+	border: 1px solid #1a6dd7;
+}
+
+.churchpack-button.blue:active {
+	background: #1571f0;
+	background: -moz-linear-gradient(top,  #1571f0 0%, #41a7fc 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1571f0), color-stop(100%,#41a7fc));
+	background: -webkit-linear-gradient(top,  #1571f0 0%,#41a7fc 100%);
+	background: -o-linear-gradient(top,  #1571f0 0%,#41a7fc 100%);
+	background: -ms-linear-gradient(top,  #1571f0 0%,#41a7fc 100%);
+	background: linear-gradient(to bottom,  #1571f0 0%,#41a7fc 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1571f0', endColorstr='#41a7fc',GradientType=0 );
+}
+
+.churchpack-button.pink {
+	background: #e3618d;
+	background: -moz-linear-gradient(top,  #e3618d 0%, #cb245c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e3618d), color-stop(100%,#cb245c));
+	background: -webkit-linear-gradient(top,  #e3618d 0%,#cb245c 100%);
+	background: -o-linear-gradient(top,  #e3618d 0%,#cb245c 100%);
+	background: -ms-linear-gradient(top,  #e3618d 0%,#cb245c 100%);
+	background: linear-gradient(to bottom,  #e3618d 0%,#cb245c 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3618d', endColorstr='#cb245c',GradientType=0 );
+	border: 1px solid #cb245c;
+}
+
+.churchpack-button.pink:active {
+	background: #cb245c;
+	background: -moz-linear-gradient(top,  #cb245c 0%, #e3618d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cb245c), color-stop(100%,#e3618d));
+	background: -webkit-linear-gradient(top,  #cb245c 0%,#e3618d 100%);
+	background: -o-linear-gradient(top,  #cb245c 0%,#e3618d 100%);
+	background: -ms-linear-gradient(top,  #cb245c 0%,#e3618d 100%);
+	background: linear-gradient(to bottom,  #cb245c 0%,#e3618d 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb245c', endColorstr='#e3618d',GradientType=0 );
+}
+
+.churchpack-button.green {
+	color: #fff;
+	background: #88dd48;
+	background: -moz-linear-gradient(top,  #88dd48 0%, #5fb139 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#88dd48), color-stop(100%,#5fb139));
+	background: -webkit-linear-gradient(top,  #88dd48 0%,#5fb139 100%);
+	background: -o-linear-gradient(top,  #88dd48 0%,#5fb139 100%);
+	background: -ms-linear-gradient(top,  #88dd48 0%,#5fb139 100%);
+	background: linear-gradient(to bottom,  #88dd48 0%,#5fb139 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#88dd48', endColorstr='#5fb139',GradientType=0 );
+	border: 1px solid #60AE40;
+}
+
+.churchpack-button.green:active {
+	background: #5fb139;
+	background: -moz-linear-gradient(top,  #5fb139 0%, #88dd48 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5fb139), color-stop(100%,#88dd48));
+	background: -webkit-linear-gradient(top,  #5fb139 0%,#88dd48 100%);
+	background: -o-linear-gradient(top,  #5fb139 0%,#88dd48 100%);
+	background: -ms-linear-gradient(top,  #5fb139 0%,#88dd48 100%);
+	background: linear-gradient(to bottom,  #5fb139 0%,#88dd48 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5fb139', endColorstr='#88dd48',GradientType=0 );
+}
+
+.churchpack-button.brown {
+	background: #876565;
+	background: -moz-linear-gradient(top,  #876565 0%, #604848 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#876565), color-stop(100%,#604848));
+	background: -webkit-linear-gradient(top,  #876565 0%,#604848 100%);
+	background: -o-linear-gradient(top,  #876565 0%,#604848 100%);
+	background: -ms-linear-gradient(top,  #876565 0%,#604848 100%);
+	background: linear-gradient(to bottom,  #876565 0%,#604848 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#876565', endColorstr='#604848',GradientType=0 );
+	border: 1px solid #604848;
+}
+
+.churchpack-button.brown:active {
+	background: #604848;
+	background: -moz-linear-gradient(top,  #604848 0%, #876565 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#604848), color-stop(100%,#876565));
+	background: -webkit-linear-gradient(top,  #604848 0%,#876565 100%);
+	background: -o-linear-gradient(top,  #604848 0%,#876565 100%);
+	background: -ms-linear-gradient(top,  #604848 0%,#876565 100%);
+	background: linear-gradient(to bottom,  #604848 0%,#876565 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#604848', endColorstr='#876565',GradientType=0 );
+}
+
+.churchpack-button.purple {
+	background: #524656;
+	background: -moz-linear-gradient(top,  #635569 0%, #372f3a 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#635569), color-stop(100%,#372f3a));
+	background: -webkit-linear-gradient(top,  #635569 0%,#372f3a 100%);
+	background: -o-linear-gradient(top,  #635569 0%,#372f3a 100%);
+	background: -ms-linear-gradient(top,  #635569 0%,#372f3a 100%);
+	background: linear-gradient(to bottom,  #635569 0%,#372f3a 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#635569', endColorstr='#372f3a',GradientType=0 );
+	border: 1px solid #372f3a;
+}
+
+.churchpack-button.purple:active {
+	background: #372f3a;
+	background: -moz-linear-gradient(top,  #372f3a 0%, #635569 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#372f3a), color-stop(100%,#635569));
+	background: -webkit-linear-gradient(top,  #372f3a 0%,#635569 100%);
+	background: -o-linear-gradient(top,  #372f3a 0%,#635569 100%);
+	background: -ms-linear-gradient(top,  #372f3a 0%,#635569 100%);
+	background: linear-gradient(to bottom,  #372f3a 0%,#635569 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#372f3a', endColorstr='#635569',GradientType=0 );
+}
+
+.churchpack-button.gold {
+	background: #ffc750;
+	background: -moz-linear-gradient(top,  #ffc750 0%, #faaa00 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffc750), color-stop(100%,#faaa00));
+	background: -webkit-linear-gradient(top,  #ffc750 0%,#faaa00 100%);
+	background: -o-linear-gradient(top,  #ffc750 0%,#faaa00 100%);
+	background: -ms-linear-gradient(top,  #ffc750 0%,#faaa00 100%);
+	background: linear-gradient(to bottom,  #ffc750 0%,#faaa00 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc750', endColorstr='#faaa00',GradientType=0 );
+	border: 1px solid #faaa00;
+}
+
+.churchpack-button.gold:active {
+	background: #faaa00;
+	background: -moz-linear-gradient(top,  #faaa00 0%, #ffc750 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#faaa00), color-stop(100%,#ffc750));
+	background: -webkit-linear-gradient(top,  #faaa00 0%,#ffc750 100%);
+	background: -o-linear-gradient(top,  #faaa00 0%,#ffc750 100%);
+	background: -ms-linear-gradient(top,  #faaa00 0%,#ffc750 100%);
+	background: linear-gradient(to bottom,  #faaa00 0%,#ffc750 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faaa00', endColorstr='#ffc750',GradientType=0 );
+}
+
+.churchpack-button.teal {
+	background: #3c9091;
+	background: -moz-linear-gradient(top,  #3c9091 0%, #286061 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3c9091), color-stop(100%,#286061));
+	background: -webkit-linear-gradient(top,  #3c9091 0%,#286061 100%);
+	background: -o-linear-gradient(top,  #3c9091 0%,#286061 100%);
+	background: -ms-linear-gradient(top,  #3c9091 0%,#286061 100%);
+	background: linear-gradient(to bottom,  #3c9091 0%,#286061 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c9091', endColorstr='#286061',GradientType=0 );
+	border: 1px solid #286061;
+}
+
+.churchpack-button.teal:active {
+	background: #286061;
+	background: -moz-linear-gradient(top,  #286061 0%, #3c9091 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#286061), color-stop(100%,#3c9091));
+	background: -webkit-linear-gradient(top,  #286061 0%,#3c9091 100%);
+	background: -o-linear-gradient(top,  #286061 0%,#3c9091 100%);
+	background: -ms-linear-gradient(top,  #286061 0%,#3c9091 100%);
+	background: linear-gradient(to bottom,  #286061 0%,#3c9091 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#286061', endColorstr='#3c9091',GradientType=0 );
+}
+
+.churchpack-button.navy {
+	background: #2c76cf;
+	background: -moz-linear-gradient(top,  #2c76cf 0%, #1d4e89 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2c76cf), color-stop(100%,#1d4e89));
+	background: -webkit-linear-gradient(top,  #2c76cf 0%,#1d4e89 100%);
+	background: -o-linear-gradient(top,  #2c76cf 0%,#1d4e89 100%);
+	background: -ms-linear-gradient(top,  #2c76cf 0%,#1d4e89 100%);
+	background: linear-gradient(to bottom,  #2c76cf 0%,#1d4e89 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c76cf', endColorstr='#1d4e89',GradientType=0 );
+	border: 1px solid #1d4e89;
+}
+.churchpack-button.navy:active {
+	background: #1d4e89;
+	background: -moz-linear-gradient(top,  #1d4e89 0%, #2c76cf 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1d4e89), color-stop(100%,#2c76cf));
+	background: -webkit-linear-gradient(top,  #1d4e89 0%,#2c76cf 100%);
+	background: -o-linear-gradient(top,  #1d4e89 0%,#2c76cf 100%);
+	background: -ms-linear-gradient(top,  #1d4e89 0%,#2c76cf 100%);
+	background: linear-gradient(to bottom,  #1d4e89 0%,#2c76cf 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1d4e89', endColorstr='#2c76cf',GradientType=0 );
+}
+
+/* Highlights */
+.churchpack-highlight-yellow,
+.churchpack-highlight-yellow a {
+	background-color: #FFF7A8;
+	color: #695D43;
+}
+
+.churchpack-highlight-blue,
+.churchpack-highlight-blue a {
+	color: #5091b2;
+	background: #e9f7fe;
+}
+
+.churchpack-highlight-green,
+.churchpack-highlight-green a {
+	color: #5f9025;
+	background: #ebf6e0;
+}
+
+.churchpack-highlight-red,
+.churchpack-highlight-red a {
+	color: #de5959;
+	background: #ffe9e9;
+}
+
+.churchpack-highlight-gray,
+.churchpack-highlight-gray a {
+	color: #666;
+	background: #f9f9f9;
+}
+
+/* Boxes */
+
+/*main*/
+.churchpack-box {
+	display: block;
+	float: left;
+	padding: 15px;
+	margin: 10px 0;
+	font-size: 1em;
+	border: 1px solid #c6c6c6;
+	border-radius: 2px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.3) 0 -1px 0;
+}
+.churchpack-box p:last-child {
+	margin: 0;
+}
+
+.churchpack-box:before, .churchpack-box:after {
+	content: '\0020';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.churchpack-box:after {
+	clear: both;
+}
+/*aligns*/
+.churchpack-box.left {
+	float: left;
+}
+
+.churchpack-box.right {
+	float: right;
+}
+
+/*colors*/
+.churchpack-box.gray {
+	color: #f9f9f9;
+	background: #666;
+}
+
+.churchpack-box.black {
+	color: #f9f9f9;
+    background: #3d3d3d;
+}
+
+.churchpack-box.white {
+	color: #444;
+    background: #fff;
+}
+
+.churchpack-box.orange {
+	background: #d54e21;
+}
+
+.churchpack-box.red {
+	background: #de5959;
+}
+
+.churchpack-box.green {
+	background: #5f9025;
+}
+
+.churchpack-box.blue {
+	background: #5091b2;
+}
+
+.churchpack-box.yellow {
+	color: #666;
+	background: #ff6;
+}
+
+/* Superquote */
+.churchpack-superquote{
+	clear: both; 
+	margin: 1.5em 0; 
+	font-size: 1.5em;
+    line-height: 1.4em;
+	text-decoration: none;
+	font-style: italic;
+    font-family: "Georgia", serif;
+	padding-left: 1em; 
+}
+.churchpack-box .churchpack-superquote {
+	margin: 0;
+	padding-left: 0; 
+}
+
+/* Toggle */
+.churchpack-toggle {
+	margin-bottom: 0.4em;
+}
+.churchpack-toggle .churchpack-toggle-trigger {
+	display: block;
+	color: #555;
+	display: block;
+	padding: 15px 15px 15px 37px;
+	border: 1px solid #ddd;
+	background: #f9f9f9 url("images/plus.png") no-repeat 15px center;
+	outline: 0;
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: normal;
+	font-size: 1em;
+	line-height: 1.5em;
+	margin: 0;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+.churchpack-toggle .churchpack-toggle-trigger:hover {
+	background-color: #eee;
+	text-decoration: none;
+}
+.churchpack-toggle .churchpack-toggle-trigger.active,
+.churchpack-toggle .churchpack-toggle-trigger.active:hover {
+	color: #000;
+	background-color: #eee;
+	background-image: url("images/minus.png");
+	text-decoration: none;
+}
+
+.churchpack-toggle .churchpack-toggle-container {
+	display: none;
+	overflow: hidden;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-top: 0px;
+}
+
+/* Accordion */
+.churchpack-accordion {
+	margin-bottom: 0.4em;
+}
+.churchpack-accordion h3.churchpack-accordion-trigger {
+	display: block;
+	color: #555;
+	display: block;
+	padding: 15px 15px 15px 37px;
+	border: 1px solid #ddd;
+	background: #f9f9f9 url("images/plus.png") no-repeat 15px center;
+	outline: 0;
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: normal;
+	font-size: 1em;
+	line-height: 1.5em;
+	margin:10px 0 0 !important;
+	cursor: pointer;
+}
+
+.churchpack-accordion h3.churchpack-accordion-trigger a {
+	color: #555;
+	text-decoration: none !important;
+}
+
+.churchpack-accordion .ui-state-focus {
+	outline: none;
+}
+
+.churchpack-accordion .churchpack-accordion-trigger:hover {
+	background-color: #eee;
+	text-decoration: none;
+}
+
+.churchpack-accordion .churchpack-accordion-trigger.ui-state-active {
+	background-color: #eee;
+	background-image: url("images/minus.png");
+	text-decoration: none;
+}
+
+.churchpack-accordion .churchpack-accordion-trigger.ui-state-active a {
+	color: #000;
+}
+
+.churchpack-accordion .ui-accordion-content {
+	background-color: #fff;
+	padding: 15px;
+	border: 1px solid #ddd;
+	border-top: 0px;
+}
+
+.churchpack-accordion .ui-accordion-content p:last-child {
+	margin: 0px;
+}
+
+.churchpack-accordion .ui-icon {
+	margin-right: 7px;
+}
+
+/* Tabs */
+.churchpack-tabs ul.ui-tabs-nav {
+	display: block;
+	margin: 0!important;
+	padding: 0 0 0 1px;
+	border-bottom: solid 1px #ddd;
+	margin-left: 1px;
+}
+
+.churchpack-tabs ul.ui-tabs-nav li {
+	display: block;
+	width: auto;
+	height: 40px;
+	padding: 0 !important;
+	float: left !important;
+	margin: 0 !important;
+	outline: none;
+}
+
+.churchpack-tabs ul.ui-tabs-nav li a {
+	display: block;
+	text-decoration: none;
+	width: auto;
+	height: 39px;
+	padding: 0px 20px;
+	line-height: 40px;
+	border: solid 1px #ddd;
+	border-width: 1px 1px 0 0;
+	margin: 0;
+	background-color: #f5f5f5;
+	font-size: 1em;
+	color: #444;
+	outline: none;
+}
+
+.churchpack-tabs ul.ui-tabs-nav li a:hover {
+	color: #333;
+	background: #eee;
+}
+
+.churchpack-tabs ul.ui-tabs-nav .ui-state-active a {
+	background: #fff;
+	height: 40px;
+	position: relative;
+	top: -4px;
+	padding-top: 4px;
+	border-left-width: 1px;
+	margin: 0 0 0 -1px;
+	color: #111 !important;
+	-moz-border-radius-topleft: 2px;
+	-webkit-border-top-left-radius: 2px;
+	border-top-left-radius: 2px;
+	-moz-border-radius-topright: 2px;
+	-webkit-border-top-right-radius: 2px;
+	border-top-right-radius: 2px;
+}
+
+.churchpack-tabs ul.ui-tabs-nav .ui-state-active a:hover {
+	background: #fff;
+}
+
+.churchpack-tabs ul.ui-tabs-nav li:first-child .ui-state-active a {
+	margin-left: 0;
+}
+
+.churchpack-tabs ul.ui-tabs-nav li:first-child a {
+	border-width: 1px 1px 0 1px;
+}
+
+.churchpack-tabs .tab-content {
+	background: #fff;
+	padding: 20px;
+	border-left: solid 1px #ddd;
+	border-right: solid 1px #ddd;
+	border-bottom: solid 1px #ddd;
+}
+
+.churchpack-tabs ul.tabs:before, .churchpack-tabs ul.tabs:after {
+	content: '\0020';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.churchpack-tabs ul.tabs:after {
+	clear: both;
+}
+
+.churchpack-tabs ul.tabs {
+	zoom: 1;
+}
+
+.churchpack-tabs .ui-tabs-hide {
+	display: none;
+}
+
+.churchpack-tabs:before, ul.churchpack-tabs:after {
+	content: '\0020';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.churchpack-tabs:after {
+	clear: both;
+}
+
+.churchpack-tabs {
+	zoom: 1;
+	margin: 0.4em 0;
+}
+
+.churchpack-tabs .ui-tabs-hide {
+	display: none;
+}
+
+/* Googlemap */
+.churchpack-googlemap {
+	position: relative;
+	max-width: inherit;
+}
+.churchpack-googlemap .map_canvas {
+	width: 100%;
+	height: 100%;
+}
+.churchpack-googlemap .map_canvas h3 {
+	margin: 0 0 10px;
+	font-size: 14px;
+}
+.map_canvas img {
+	max-width: none !important;
+}
+
+/* Divider 
+================================================== */
+.churchpack-divider {
+	display: block;
+	width: 100%;
+	height: 0;
+	margin: 0;
+	background: none;
+}
+.churchpack-divider.solid{
+	border-top: 1px solid #ddd;
+}
+.churchpack-divider.dashed{
+	border-top: 2px dashed #ddd;
+}
+.churchpack-divider.dotted{
+	border-top: 3px dotted #ddd;
+}
+.churchpack-divider.double{
+	height: 5px;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.churchpack-divider.fadeout{
+	width: 100%;
+	height: 1px;
+	border: none;
+	margin-bottom: 42px;
+	margin-top: 12px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: -webkit-gradient(radial, 50% 50%,0,50% 50%,200, from(#eeeeee), to(#ffffff));
+	background-image: -webkit-radial-gradient(50% 50%, #eeeeee, #ffffff);
+	background-image: -moz-radial-gradient(50% 50%, #eeeeee, #ffffff);
+	background-image: -o-radial-gradient(50% 50%, #eeeeee, #ffffff);
+	background-image: -ms-radial-gradient(50% 50%, #eeeeee, #ffffff);
+	background-image: radial-gradient(50% 50%, #eeeeee, #ffffff);
+}
+.churchpack-divider.fadein{
+  	width: 100%;
+	height: 1px;
+	border: none;
+	margin-bottom: 42px;
+	margin-top: 12px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: -webkit-gradient(radial, 50% 50%,0,50% 50%,200, from(#ffffff), to(#eeeeee));
+	background-image: -webkit-radial-gradient(50% 50%, #ffffff, #eeeeee);
+	background-image: -moz-radial-gradient(50% 50%, #ffffff, #eeeeee);
+	background-image: -o-radial-gradient(50% 50%, #ffffff, #eeeeee);
+	background-image: -ms-radial-gradient(50% 50%, #ffffff, #eeeeee);
+	background-image: radial-gradient(50% 50%, #ffffff, #eeeeee);
+}
+
+/* Responsive */
+@media only screen and (max-width: 520px) {
+    .churchpack-one-half, .churchpack-one-third, .churchpack-two-third, .churchpack-three-fourth, .churchpack-one-fourth, .churchpack-one-fifth, .churchpack-two-fifth,.churchpack-three-fifth, .churchpack-four-fifth, .churchpack-one-sixth, .churchpack-five-sixth {
+        width: 100%;
+        float: none;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .churchpack-box,
+    .churchpack-box.left,
+    .churchpack-box.right{
+         float: none;
+         width: 100% !important;
+    }
+}
