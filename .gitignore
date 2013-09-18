@@ -12,3 +12,7 @@ wp-config.php
 
 #wp content
 /wp-content/cache/
+
+#connections plugin
+wp-content/connection_images
+wp-content/connections_templates
