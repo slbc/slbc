@@ -1,0 +1,617 @@
+/* Custom admin icon
+------------------------------------------------------------ */
+
+#icon-edit.icon32-posts-soliloquy,
+#icon-soliloquy {
+	background: url(images/title-icon.png) no-repeat scroll 0 50%;
+	height: 36px;
+	width: 36px;
+}
+
+
+/* Admin customizations for better contextual use
+------------------------------------------------------------ */
+
+#minor-publishing-actions,
+#edit-slug-box {
+	display: none !important;
+}
+
+.form-table th {
+	vertical-align: middle;
+}
+
+.center {
+	text-align: center;
+}
+
+.no-margin {
+	margin: 0 !important;
+}
+
+.no-margin-top {
+	margin-top: 0;
+}
+
+.no-margin-bottom {
+	margin-bottom: 0;
+}
+
+
+/* Slider type message and input styling
+------------------------------------------------------------ */
+
+#soliloquy-slider-type {
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background-color: lightYellow;
+	border: 1px solid #E6DB55;
+	display: none;
+	margin: 11px 0 15px;
+	padding: 0 .6em;
+}
+
+.soliloquy-chose-slider-type {
+	font-weight: bold;
+	margin: .5em 0;
+	padding: 2px;
+}
+
+.soliloquy-chose-slider-type span {
+	display: inline-block;
+	*display: inline;
+	vertical-align: middle;
+}
+
+.soliloquy-type-select label {
+	margin-left: 10px;
+}
+
+
+/* Image list styling
+------------------------------------------------------------ */
+
+#soliloquy-images {
+	overflow: hidden;
+	padding: 8px;
+}
+
+#soliloquy-images > li {
+	-moz-border-radius: 3px;
+	-moz-box-shadow: 0 0 1px rgba(0, 0, 0, .1);
+	-webkit-border-radius: 3px;
+	-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .1);
+	background: #f5f5f5;
+	border: 1px solid #d1d1d1;
+	border-radius: 3px;
+	box-shadow: 0 0 1px rgba(0, 0, 0, .1);
+	cursor: move;
+	float: left;
+	margin: 0 15px 15px 0;
+	padding: 4px;
+	position: relative;
+}
+
+#soliloquy-images img {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background: #fff;
+	border-radius: 3px;
+	display: block;
+	padding: 4px;
+}
+
+#soliloquy-images .soliloquy-video-wrap {
+	position: relative;
+	width: 115px;
+	height: 115px;
+	box-shadow: inset 0 0 15px rgba( 0, 0, 0, 0.1 ), inset 0 0 0 1px rgba( 0, 0, 0, 0.05 );
+	background: #f5f5f5;
+	border: 4px solid #fff;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	cursor: move;
+}
+
+#soliloquy-images .soliloquy-video-inside {
+	width: 115px;
+	height: 115px;
+	display: table;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0 auto;
+	overflow: hidden;
+	max-width: 100%;
+	max-height: 100%;
+	cursor: move;
+}
+
+#soliloquy-images .soliloquy-video-table {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	cursor: move;
+}
+
+#soliloquy-images > li > div {
+	cursor: default;
+}
+
+.soliloquy-image .remove-image {
+	background: url(images/delete.png) no-repeat scroll 0 0;
+	display: block;
+	height: 16px;
+	left: -8px;
+	outline: none;
+	position: absolute;
+	top: -8px;
+	width: 16px;
+	z-index: 20;
+}
+
+.soliloquy-image .modify-image {
+	background: url(images/modify.png) no-repeat scroll 0 0;
+	display: block;
+	height: 16px;
+	left: 12px;
+	outline: none;
+	position: absolute;
+	top: -9px;
+	width: 16px;
+	z-index: 20;
+}
+
+#soliloquy-images .soliloquy-mini {
+	color: #ccc;
+	font-weight: bold;
+	position: absolute;
+	bottom: 0;
+	right: 1px;
+	font-size: 18px;
+	line-height: 14px;
+}
+
+
+/* Image meta styling
+------------------------------------------------------------ */
+
+.soliloquy-meta {
+	overflow: auto;
+	padding: 0 16px;
+}
+
+.media-frame.soliloquy-media-frame input:focus,
+.media-frame.soliloquy-media-frame textarea:focus,
+.media-frame.soliloquy-media-frame select:focus {
+	border-color: #aaa;
+}
+
+.soliloquy-meta-wrap .soliloquy-meta.attachments {
+	top: 0;
+}
+
+.soliloquy-ui-content {
+	top: 16px !important;
+}
+
+.soliloquy-meta-wrap .form-table p {
+	margin: 0 0 1em;
+}
+
+.soliloquy-meta-wrap p.soliloquy-meta-intro {
+	font-weight: bold;
+}
+
+.soliloquy-meta-wrap .form-table {
+	margin: 16px 0;
+}
+
+.soliloquy-meta-wrap th {
+	vertical-align: middle;
+}
+
+.soliloquy-meta-wrap tr {
+	border-bottom: 1px solid #eaeaea;
+	border-top: 1px solid #eaeaea;
+}
+
+.soliloquy-meta-wrap tr:nth-child(odd) {
+	background: #f5f5f5;
+}
+
+.soliloquy-meta-wrap input[type="text"],
+.soliloquy-meta-wrap textarea {
+	width: 450px;
+}
+
+.soliloquy-meta-wrap .soliloquy-link-cell input[type="text"] {
+	width: 424px;
+}
+
+.soliloquy-meta-wrap .soliloquy-link-cell .soliloquy-search {
+	width: 405px !important;
+}
+
+.soliloquy-meta-wrap .wp-editor-area {
+	display: block;
+	border: 0 none;
+	font-family: Consolas,Monaco,monospace;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+}
+
+.soliloquy-meta-wrap .soliloquy-meta-sidebar {
+	overflow: auto;
+	position: relative;
+}
+
+.soliloquy-meta-wrap .soliloquy-meta-sidebar h3,
+.soliloquy-media-frame .media-sidebar h3 {
+	margin: 1.1em 0 1em;
+}
+
+.soliloquy-meta-wrap .soliloquy-meta-sidebar p,
+.soliloquy-media-frame .media-sidebar p {
+	margin: 0 0 1.5em;
+}
+
+.soliloquy-media-frame .soliloquy-accepted-urls {
+	clear: both;
+	overflow: hidden;
+}
+
+.soliloquy-media-frame .soliloquy-accepted-urls span {
+	display: block;
+}
+
+.soliloquy-media-frame .soliloquy-left {
+	float: left;
+	width: 49%;
+	text-align: center;
+}
+
+.soliloquy-media-frame .soliloquy-right {
+	float: right;
+	width: 49%;
+	text-align: center;
+}
+
+.soliloquy-media-frame .soliloquy-video-info {
+	background-color: #ffffe0;
+	border: 1px solid #e6db55;
+	padding: .6em;
+	margin-bottom: 16px;
+}
+
+
+/* Media modal styles
+------------------------------------------------------------ */
+
+#media-items .media-item .edit-attachment,
+.soliloquy-media-frame .upload-flash-bypass {
+	display: none !important;
+}
+
+#media-items {
+	margin: 0 0 16px;
+	overflow: hidden;
+	width: 100%;
+}
+
+#media-items .media-item {
+	width: auto;
+	float: left;
+	margin: 0 8px 8px 0;
+}
+
+#media-items .media-item img {
+	max-width: none;
+	max-height: none;
+	width: 150px;
+	height: 150px;
+	float: none;
+	margin: 4px;
+	display: block;
+}
+
+.soliloquy-gallery {
+	padding-left: 7px;
+}
+
+.soliloquy-gallery .attachment {
+	margin: 8px;
+}
+
+.soliloquy-gallery .attachment-preview,
+.soliloquy-gallery .attachment-preview .thumbnail {
+	width: 150px;
+	height: 150px;
+}
+
+.soliloquy-media-frame .max-upload-size {
+	display: block;
+	margin: 1em 0;
+}
+
+.soliloquy-media-frame .soliloquy-library-toolbar {
+	top: 5px;
+}
+
+.soliloquy-media-frame .attachment.soliloquy-in-slider {
+	box-shadow: 0 0 0 1px #fff, 0 0 0 5px #519e0c;
+}
+
+.soliloquy-media-frame .attachment.soliloquy-in-slider .attachment-preview,
+.soliloquy-media-frame .attachment.soliloquy-in-slider .attachment-preview .check {
+	cursor: default;
+}
+
+.soliloquy-media-frame .attachment.soliloquy-in-slider .check {
+	box-shadow: 0 0 0 1px #519e0c;
+	background: #519e0c;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#519e0c), to(#519e0c));
+	background-image: -webkit-linear-gradient(top, #519e0c, #407f08);
+	background-image: -moz-linear-gradient(top, #519e0c, #407f08);
+	background-image: -o-linear-gradient(top, #519e0c, #407f08);
+	background-image: linear-gradient(to bottom, #519e0c, #407f08);
+}
+
+.soliloquy-media-frame .attachment.soliloquy-in-slider .check div,
+.soliloquy-media-frame .attachment.soliloquy-in-slider .check:hover div {
+	background-position: -21px 0;
+}
+
+#soliloquy-html-slides input {
+	margin: 0;
+}
+
+.soliloquy-html-slide-holder,
+.soliloquy-video-slide-holder {
+	border: 5px dashed #eee;
+	padding: 10px;
+	margin-bottom: 1em;
+}
+
+#soliloquy-html-slides .soliloquy-delete-html-slide,
+#soliloquy-video-slides .soliloquy-delete-video-slide {
+	float: right;
+}
+
+
+/* Internal links styling
+------------------------------------------------------------ */
+
+.soliloquy-search {
+	margin-left: 1px;
+	margin-top: 7px;
+}
+
+#soliloquy-link-existing {
+	clear: both;
+}
+
+.soliloquy-link-url {
+	margin-right: 1px;
+}
+
+.soliloquy-link-title-label {
+	margin-right: 3px;
+}
+
+.soliloquy-link-tab-label {
+	margin-right: 6px;
+}
+
+.soliloquy-link-check {
+	margin-left: 5px;
+}
+
+.soliloquy-link-check-desc {
+	vertical-align: middle;
+}
+
+.soliloquy-search-label {
+	margin-left: 1px;
+	margin-right: 5px;
+}
+
+.soliloquy-results-list .soliloquy-no-results {
+	cursor: default;
+	font-style: italic;
+}
+
+.soliloquy-results-list .soliloquy-no-results:hover {
+	background: #fff;
+}
+
+.soliloquy-search-results {
+	-webkit-border-radius: 3px;
+	background: #fff;
+	border: 1px #dfdfdf solid;
+	border-radius: 3px;
+	height: 75px;
+	margin: 10px 1px 0;
+	overflow: auto;
+	position: relative;
+	width: 448px;
+}
+
+.soliloquy-results-list {
+	margin: 0;
+}
+
+.soliloquy-results-list li {
+	border-bottom: 1px solid #f1f1f1;
+	clear: both;
+	color: #333;
+	cursor: pointer;
+	margin-bottom: 0;
+	padding: 4px 6px;
+	position: relative;
+}
+
+.soliloquy-results-list li.even {
+	background: #fcfcfc;
+}
+
+.soliloquy-results-list li.selected,
+.soliloquy-results-list li.selected:hover {
+	background: #ddd;
+	color: #333;
+}
+
+.soliloquy-results-list li:hover {
+	background: #eaf2fa;
+	color: #151515;
+}
+
+.soliloquy-results-list .soliloquy-item-title {
+	display: inline-block;
+	width: 80%;
+}
+
+.soliloquy-results-list li.selected .soliloquy-item-title {
+	font-weight: bold;
+}
+
+.soliloquy-results-list .soliloquy-item-info {
+	bottom: 0;
+	color: #666;
+	font-size: 11px;
+	position: absolute;
+	right: 5px;
+	text-transform: uppercase;
+	top: 4px;
+}
+
+
+/* Settings page styling
+------------------------------------------------------------ */
+
+.soliloquy-settings .soliloquy-settings-title {
+	margin-bottom: 15px;
+}
+
+.soliloquy-settings .form-table tr {
+	background: #f5f5f5;
+	border-bottom: 1px solid #eee;
+	border-top: 1px solid #eee;
+}
+
+.soliloquy-settings .form-table th,
+.soliloquy-settings .form-table td {
+	padding: 10px;
+}
+
+#tgmsp-verified {
+	margin: 10px 0 15px;
+}
+
+.soliloquy-settings .submit {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.soliloquy-settings .deactivate-license-submit {
+	margin: 0;
+	padding: 0;
+}
+
+.soliloquy-no-updates {
+	margin-top: 15px !important;
+}
+
+.soliloquy-just-upgraded {
+	background: #cbeca0;
+	border: 1px solid #97b48a;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding: 6px;
+	text-align: left;
+}
+
+.soliloquy-just-upgraded h2 {
+	font-size: 36px;
+	color: #333;
+}
+
+.soliloquy-just-upgraded p {
+	font-size: 14px;
+	line-height: 20px;
+}
+
+
+/* Media frame styling
+------------------------------------------------------------ */
+
+.soliloquy-frame {
+	padding: 0 16px;
+}
+
+.soliloquy-menu-text {
+	padding: 0 20px;
+}
+
+.soliloquy-content-slide {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+.soliloquy-content-slide .soliloquy-content-area {
+	margin-right: 300px;
+	margin-top: 16px;
+	overflow: auto;
+}
+
+
+/* HTML slide styles
+------------------------------------------------------------ */
+
+.soliloquy-html-area {
+	height: 150px;
+}
+
+
+/* Retina display and responsive
+------------------------------------------------------------ */
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+
+	#icon-edit.icon32-posts-soliloquy,
+	#icon-soliloquy {
+		background-image: url(images/title-icon@2x.png);
+		background-size: 36px 36px;
+	}
+
+}
+
+@media only screen and (max-width: 800px) {
+
+	.soliloquy-meta-wrap input[type="text"],
+	.soliloquy-meta-wrap textarea {
+		width: 230px;
+	}
+
+	.soliloquy-meta-wrap .soliloquy-link-cell input[type="text"] {
+		width: 204px;
+	}
+
+	.soliloquy-meta-wrap .soliloquy-link-cell .soliloquy-search {
+		width: 185px !important;
+	}
+
+	.soliloquy-search-results {
+		width: 228px;
+	}
+
+}

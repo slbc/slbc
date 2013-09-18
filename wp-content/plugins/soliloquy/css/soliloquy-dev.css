@@ -1,0 +1,522 @@
+/**
+ * jQuery FlexSlider v2.1
+ * http://www.woothemes.com/flexslider/
+ *
+ * Copyright 2012 WooThemes
+ * Free to use under the GPLv2 license.
+ * http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Contributing author: Tyler Smith (@mbmufffin)
+ */
+
+
+/* Resets
+------------------------------------------------------------ */
+
+.soliloquy-container a:active,
+.soliloquy-container .soliloquy a:active {
+	outline: none !important;
+}
+
+.soliloquy-container .soliloquy .soliloquy-slides,
+.soliloquy-container .soliloquy .soliloquy-slides li,
+.soliloquy-container .soliloquy-control-nav,
+.soliloquy-container .soliloquy-control-nav li,
+.soliloquy-container .soliloquy-direction-nav,
+.soliloquy-container .soliloquy-direction-nav li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+
+/* Soliloquy necessary styles
+------------------------------------------------------------ */
+
+.soliloquy-container,
+.soliloquy-container .soliloquy,
+.soliloquy-container .soliloquy .soliloquy-slides {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 100%;
+	zoom: 1;
+}
+
+.soliloquy-container .soliloquy-viewport {
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	max-height: 2000px;
+	transition: all 1s ease;
+}
+
+.soliloquy-container .soliloquy .soliloquy-slides > li {
+	display: none;
+}
+
+.soliloquy-container .soliloquy .soliloquy-slides img {
+	display: block;
+	max-width: 100%;
+}
+
+.soliloquy-container .soliloquy-pauseplay span {
+	text-transform: capitalize;
+}
+
+.soliloquy-container .soliloquy-html-slide {
+	height: 100%;
+	max-height: 100%;
+	max-width: 100%;
+	width: 100%;
+}
+
+.soliloquy-container .soliloquy-html-slide-wrapper {
+	padding: 0;
+	position: relative;
+	width: 100%;
+}
+
+.soliloquy-container .soliloquy-html-slide-container {
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+
+/* Clearfix for slides
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy-slides:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+}
+
+html[xmlns] .soliloquy-container .soliloquy-slides {
+	display: block;
+}
+
+* html .soliloquy-container .soliloquy-slides {
+	height: 1%;
+}
+
+
+/* No JS fallback
+------------------------------------------------------------ */
+
+.no-js .soliloquy-slides > li:first-child {
+	display: block;
+}
+
+
+/* Soliloquy image styling
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy .soliloquy-slides {
+	zoom: 1;
+}
+
+.soliloquy-container .soliloquy .soliloquy-slides > li {
+	position: relative;
+}
+
+.soliloquy-container .soliloquy .soliloquy-slides > li a {
+	display: block;
+}
+
+.soliloquy-container .soliloquy-caption {
+	bottom: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	width: 100%;
+	zoom: 1;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-caption-inside {
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000);
+	background: rgba(0, 0, 0, .5);
+	color: #fff;
+	display: block;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000);
+	font-size: 14px;
+	line-height: 18px;
+	margin: 0;
+	padding: 10px;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
+	zoom: 1;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-caption-inside a {
+	position: relative;
+	z-index: 20;
+}
+
+
+/* Soliloquy caption styling
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption.soliloquy-fc-bullets {
+	padding-bottom: 34px;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption.soliloquy-fc-pauseplay {
+	padding-right: 34px;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-title,
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-title a {
+	color: #fff;
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption {
+	color: #fff;
+	text-align: left;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-content {
+	color: #fff;
+	display: block;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-content.soliloquy-fc-title-above {
+	margin-top: 10px;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-read-more {
+	display: inline-block;
+	*display: inline;
+	font-weight: bold;
+	text-align: left;
+}
+
+.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-read-more.soliloquy-fc-content-above {
+	margin-top: 10px;
+}
+
+.soliloquy-container .soliloquy-video-caption {
+	bottom: auto;
+	top: 0;
+}
+
+
+/* Soliloquy directional navigation
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy-direction-nav,
+.soliloquy-container.soliloquy-thumbnails-container .soliloquy-thumbnails .soliloquy-direction-nav {
+	background: url('images/slider-arrows-horizontal.png') no-repeat scroll -9999px -9999px;
+	display: none;
+	height: 0;
+	list-style: none;
+}
+
+.soliloquy-container.soliloquy-slide-vertical .soliloquy-direction-nav {
+	background: url('images/slider-arrows-vertical.png') no-repeat scroll -9999px -9999px;
+}
+
+.soliloquy-container:hover .soliloquy-direction-nav,
+.soliloquy-container.soliloquy-hover .soliloquy-direction-nav,
+.soliloquy-container.soliloquy-thumbnails-container:hover .soliloquy-thumbnails .soliloquy-direction-nav,
+.soliloquy-container.soliloquy-thumbnails-container.soliloquy-hover .soliloquy-thumbnails .soliloquy-direction-nav {
+	display: block;
+}
+
+.soliloquy-container .soliloquy-direction-nav li a {
+	border: 0 none;
+	display: block;
+	outline: none;
+	z-index: 30;
+}
+
+.soliloquy-container.soliloquy-slide-horizontal .soliloquy-direction-nav li .soliloquy-next,
+.soliloquy-container.soliloquy-thumbnails-container .soliloquy-thumbnails .soliloquy-direction-nav li .soliloquy-next,
+.soliloquy-container .soliloquy-direction-nav li .soliloquy-next {
+	background: url('images/slider-arrows-horizontal.png') no-repeat scroll 0 -18px;
+	height: 18px;
+	margin-top: -8px;
+	right: 10px;
+	position: absolute;
+	text-indent: -9999px;
+	top: 50%;
+	width: 13px;
+	z-index: 30;
+}
+
+.soliloquy-container.soliloquy-slide-horizontal .soliloquy-direction-nav li .soliloquy-prev,
+.soliloquy-container.soliloquy-thumbnails-container .soliloquy-thumbnails .soliloquy-direction-nav li .soliloquy-prev,
+.soliloquy-container .soliloquy-direction-nav li .soliloquy-prev {
+	background: url('images/slider-arrows-horizontal.png') no-repeat scroll 0 0;
+	height: 18px;
+	left: 10px;
+	margin-top: -8px;
+	position: absolute;
+	text-indent: -9999px;
+	top: 50%;
+	width: 13px;
+	z-index: 30;
+}
+
+.soliloquy-container.soliloquy-slide-vertical .soliloquy-direction-nav li .soliloquy-next {
+	background: url('images/slider-arrows-vertical.png') no-repeat scroll -18px 0;
+	height: 13px;
+	margin-top: -6px;
+	right: 10px;
+	position: absolute;
+	text-indent: -9999px;
+	top: 50%;
+	width: 18px;
+	z-index: 30;
+}
+
+.soliloquy-container.soliloquy-slide-vertical .soliloquy-direction-nav li .soliloquy-prev {
+	background: url('images/slider-arrows-vertical.png') no-repeat scroll 0 0;
+	height: 13px;
+	left: 10px;
+	margin-top: -6px;
+	position: absolute;
+	text-indent: -9999px;
+	top: 50%;
+	width: 18px;
+	z-index: 30;
+}
+
+.soliloquy-container .soliloquy-direction-nav li .disabled,
+.soliloquy-container .soliloquy-direction-nav li .soliloquy-disabled {
+	cursor: default;
+	filter: alpha(opacity=30);
+	opacity: .3;
+}
+
+
+/* Soliloquy control navigation
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy-control-nav {
+	background: url('images/slider-dots.png') no-repeat scroll -9999px -9999px;
+	bottom: 10px;
+	line-height: 0;
+	list-style: none;
+	margin-left: 5px;
+	position: absolute;
+	z-index: 30;
+}
+
+.soliloquy-container .soliloquy-control-nav li {
+	display: inline-block;
+	*display: inline;
+	margin: 0 0 0 5px;
+	zoom: 1;
+}
+
+.soliloquy-container .soliloquy-control-nav li a {
+	background: url('images/slider-dots.png') no-repeat scroll 0 0;
+	cursor: pointer;
+	display: block;
+	float: left;
+	height: 14px;
+	position: relative;
+	text-indent: -9999px;
+	width: 14px;
+	z-index: 50;
+}
+
+.soliloquy-container .soliloquy-control-nav li a:hover,
+.soliloquy-container .soliloquy-control-nav li a.active,
+.soliloquy-container .soliloquy-control-nav li a.soliloquy-active {
+	background-position: 0 -14px;
+}
+
+
+/* Soliloquy pauseplay
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy-pauseplay {
+	bottom: 10px;
+	line-height: 0;
+	position: absolute;
+	right: 0;
+	z-index: 15;
+}
+
+.soliloquy-container .soliloquy-pauseplay .soliloquy-pause {
+	background: url(images/pause.png) no-repeat scroll 0 0;
+	cursor: pointer;
+	float: right;
+	height: 14px;
+	margin-right: 10px;
+	text-indent: -9999px;
+	width: 13px;
+}
+
+.soliloquy-container .soliloquy-pauseplay .soliloquy-play {
+	background: url(images/play.png) no-repeat scroll 0 0;
+	cursor: pointer;
+	float: right;
+	margin-right: 10px;
+	height: 14px;
+	text-indent: -9999px;
+	width: 11px;
+}
+
+
+/* Thumbnail base styles
+------------------------------------------------------------ */
+
+.soliloquy-thumbnails-container .soliloquy-thumbnails-item-image {
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+	cursor: pointer;
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+
+.soliloquy-thumbnails-container .soliloquy-active-slide .soliloquy-thumbnails-item-image,
+.soliloquy-thumbnails-container .soliloquy-thumbnails-item-image:hover {
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+
+/* Touchswipe helper for mobile embedded videos
+------------------------------------------------------------ */
+
+.soliloquy-container .soliloquy-touch-left,
+.soliloquy-container .soliloquy-touch-right {
+	background: transparent;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	width: 0;
+	z-index: 25;
+}
+
+.soliloquy-container .soliloquy-touch-left {
+	left: 0;
+}
+
+.soliloquy-container .soliloquy-touch-right {
+	right: 0;
+}
+
+
+/* Responsive Design
+------------------------------------------------------------ */
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+
+	.soliloquy-container.soliloquy-slide-horizontal .soliloquy-direction-nav li .soliloquy-next,
+	.soliloquy-container .soliloquy-direction-nav li .soliloquy-next {
+		background: url('images/slider-arrows-horizontal@2x.png') no-repeat scroll 0 -20px;
+		background-size: 100%;
+	}
+
+	.soliloquy-container.soliloquy-slide-horizontal .soliloquy-direction-nav li .soliloquy-prev,
+	.soliloquy-container .soliloquy-direction-nav li .soliloquy-prev {
+		background: url('images/slider-arrows-horizontal@2x.png') no-repeat scroll 0 0;
+		background-size: 100%;
+	}
+
+	.soliloquy-container.soliloquy-slide-vertical .soliloquy-direction-nav li .soliloquy-next {
+		background: url('images/slider-arrows-vertical@2x.png') no-repeat scroll -17px 0;
+		-webkit-background-size: 33px 12px;
+		   -moz-background-size: 33px 12px;
+            -ie-background-size: 33px 12px;
+             -o-background-size: 33px 12px;
+                background-size: 33px 12px;
+		height: 12px;
+		margin-top: -5px;
+		right: 8px;
+		width: 17px;
+	}
+
+	.soliloquy-container.soliloquy-slide-vertical .soliloquy-direction-nav li .soliloquy-prev {
+		background: url('images/slider-arrows-vertical@2x.png') no-repeat scroll 0 0;
+		-webkit-background-size: 33px 12px;
+		   -moz-background-size: 33px 12px;
+            -ie-background-size: 33px 12px;
+             -o-background-size: 33px 12px;
+                background-size: 33px 12px;
+		height: 12px;
+		left: 8px;
+		margin-top: -5px;
+		width: 16px;
+	}
+
+	.soliloquy-container .soliloquy-control-nav li a {
+		background: url('images/slider-dots@2x.png') no-repeat scroll 0 0;
+		background-size: 100%;
+		height: 15px;
+	}
+
+	.soliloquy-container .soliloquy-control-nav li a:hover,
+	.soliloquy-container .soliloquy-control-nav li a.active,
+	.soliloquy-container .soliloquy-control-nav li a.soliloquy-active {
+		background-position: 0 -15px;
+	}
+
+	.soliloquy-container .soliloquy-pauseplay .soliloquy-pause {
+		background: url(images/pause@2x.png) no-repeat scroll 0 0;
+		background-size: 100%;
+	}
+
+	.soliloquy-container .soliloquy-pauseplay .soliloquy-play {
+		background: url(images/play@2x.png) no-repeat scroll 0 0;
+		background-size: 100%;
+	}
+
+}
+
+@media only screen and (max-width: 800px) {
+
+	.soliloquy-container .soliloquy-caption-inside {
+		font-size: 12px;
+	}
+
+	.soliloquy-container .soliloquy-caption .soliloquy-fc-caption .soliloquy-fc-content {
+		display: none;
+	}
+
+	.soliloquy-container .soliloquy-touch-left,
+	.soliloquy-container .soliloquy-touch-right {
+		width: 90px;
+	}
+
+}
+
+@media only screen and (max-width: 600px) {
+
+	.soliloquy-container .soliloquy-direction-nav {
+		display: block;
+	}
+
+	.soliloquy-container .soliloquy-caption-inside {
+		bottom: auto;
+		top: 0;
+	}
+
+	.soliloquy-container .soliloquy-touch-left,
+	.soliloquy-container .soliloquy-touch-right {
+		width: 30px;
+	}
+
+}
