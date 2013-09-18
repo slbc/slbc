@@ -1,0 +1,437 @@
+# Copyright (C) 2013 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: HUPSO\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/hupso-share-buttons-for-"
+"twitter-facebook-google\n"
+"POT-Creation-Date: 2013-08-09 12:21:45+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-08-26 17:29+0800\n"
+"Last-Translator: Kay Wong <kayw@eggstudio.com>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: share-buttons-hupso-meta.php:20
+msgid "Hupso"
+msgstr "Hupso"
+
+#: share-buttons-hupso-meta.php:33
+msgid "default"
+msgstr "默認"
+
+#: share-buttons-hupso-meta.php:83
+msgid "Default"
+msgstr "默認"
+
+#: share-buttons-hupso-meta.php:83 share-buttons-hupso-widget.php:76
+#: share-buttons-hupso.php:1574
+msgid "Settings"
+msgstr "設置"
+
+#: share-buttons-hupso-meta.php:84
+msgid "Enabled"
+msgstr "啟用"
+
+#: share-buttons-hupso-meta.php:85
+msgid "Disabled"
+msgstr "不啟用"
+
+#: share-buttons-hupso-widget.php:15
+msgid ""
+"Help visitors share your posts on the most popular social networks: Twitter, "
+"Facebook, Google Plus, Linkedin, StumbleUpon, Digg, Reddit and others"
+msgstr ""
+"讓網民把你的文章分享至熱門的社交網絡，例如 Twitter, Facebook、Google Plus、"
+"Linkedin、StumbleUpon、Digg、Reddit 等等。"
+
+#: share-buttons-hupso-widget.php:68 share-buttons-hupso.php:261
+msgid "Share"
+msgstr "分享"
+
+#: share-buttons-hupso-widget.php:72
+msgid "Title"
+msgstr "標題"
+
+#: share-buttons-hupso.php:259
+msgid "en_US"
+msgstr "en_US"
+
+#: share-buttons-hupso.php:260
+msgid "English"
+msgstr "英文"
+
+#: share-buttons-hupso.php:262 share-buttons-hupso.php:710
+msgid "Excerpts"
+msgstr "摘要"
+
+#: share-buttons-hupso.php:263
+msgid "Feeds"
+msgstr "訂閱"
+
+#: share-buttons-hupso.php:266
+msgid "You do not have sufficient permissions to access this page."
+msgstr "你沒有足夠權限訪問此頁。"
+
+#: share-buttons-hupso.php:276
+msgid "Hupso Share Buttons for Twitter, Facebook & Google+ (Settings)"
+msgstr "Hupso Share Buttons for Twitter、Facebook 及 Google+ (設置)"
+
+#: share-buttons-hupso.php:280
+msgid "Preview"
+msgstr "預覽"
+
+#: share-buttons-hupso.php:280
+msgid "Update"
+msgstr "更新"
+
+#: share-buttons-hupso.php:283 share-buttons-hupso.php:923
+msgid "Save Settings"
+msgstr "儲存設置"
+
+#: share-buttons-hupso.php:287
+msgid "Shortcodes"
+msgstr "短碼"
+
+#: share-buttons-hupso.php:349
+msgid "Button type"
+msgstr "按鈕風格"
+
+#: share-buttons-hupso.php:377
+msgid "Button size"
+msgstr "按鈕大小"
+
+#: share-buttons-hupso.php:385 share-buttons-hupso.php:475
+#: share-buttons-hupso.php:833
+msgid "Custom image from URL"
+msgstr "外連圖片（從 URL 取得）"
+
+#: share-buttons-hupso.php:396
+msgid "Toolbar size"
+msgstr "工具列大小"
+
+#: share-buttons-hupso.php:411
+msgid "Big"
+msgstr "大"
+
+#: share-buttons-hupso.php:412
+msgid "Medium"
+msgstr "中"
+
+#: share-buttons-hupso.php:413
+msgid "Small"
+msgstr "小"
+
+#: share-buttons-hupso.php:424
+msgid "Share image"
+msgstr "分享圖示"
+
+#: share-buttons-hupso.php:447
+msgid "Show in language"
+msgstr "顯示語言"
+
+#: share-buttons-hupso.php:474
+msgid "Hide"
+msgstr "隱藏"
+
+#: share-buttons-hupso.php:475
+msgid "Optimal image height: 32px - big, 24px - medium, 16px - small/counters"
+msgstr "最佳圖像高度：32px - 大, 24px - 中, 16px - 小/計數器"
+
+#: share-buttons-hupso.php:489
+msgid "Background color"
+msgstr "背景顏色"
+
+#: share-buttons-hupso.php:490
+msgid "Border color"
+msgstr "邊框顏色"
+
+#: share-buttons-hupso.php:499 share-buttons-hupso.php:542
+msgid "Social networks"
+msgstr "社交網絡"
+
+#: share-buttons-hupso.php:588
+msgid "Show counters in language"
+msgstr "計數器的顯示語言"
+
+#: share-buttons-hupso.php:592
+msgid "Language changes will not show in preview"
+msgstr "預覽內不會顯示語言的改變"
+
+#: share-buttons-hupso.php:593
+msgid ""
+"Select which language to use for Counters (Tweet, Facebook Like, Facebook "
+"Share...)"
+msgstr "選擇計數器的顯示語言（Tweet、Facebook 讚好、Facebook 分享……）"
+
+#: share-buttons-hupso.php:593
+msgid ""
+"Some social networks support more languages than others, so some buttons "
+"might get translated, while some might stay in English"
+msgstr "某些社交網絡支持多種語言，部分按鈕已被翻譯，餘下仍是英語。"
+
+#: share-buttons-hupso.php:605
+msgid "Type of menu"
+msgstr "選單種類"
+
+#: share-buttons-hupso.php:618
+msgid "Show icons and service names"
+msgstr "顯示圖示和社交網絡名稱"
+
+#: share-buttons-hupso.php:619
+msgid "Show icons only"
+msgstr "僅顯示圖示"
+
+#: share-buttons-hupso.php:626
+msgid "Button position"
+msgstr "按鈕位置"
+
+#: share-buttons-hupso.php:641
+msgid "Above the post"
+msgstr "文章上方"
+
+#: share-buttons-hupso.php:642
+msgid "Below the post"
+msgstr "文章下方"
+
+#: share-buttons-hupso.php:643
+msgid "Above and below the post"
+msgstr "文章的上方和下方"
+
+#: share-buttons-hupso.php:646
+msgid "Show buttons on"
+msgstr "顯示於"
+
+#: share-buttons-hupso.php:706
+msgid "Posts"
+msgstr "文章"
+
+#: share-buttons-hupso.php:707
+msgid "Pages"
+msgstr "分頁"
+
+#: share-buttons-hupso.php:708
+msgid "Front page"
+msgstr "首頁"
+
+#: share-buttons-hupso.php:709
+msgid "Archive pages (categories, tags, dates, authors)"
+msgstr "檔案文章（分類、標籤、日期、作者）"
+
+#: share-buttons-hupso.php:711
+msgid "Search pages"
+msgstr "搜尋頁"
+
+#: share-buttons-hupso.php:712
+msgid "Password protected posts"
+msgstr "密碼保護文章"
+
+#: share-buttons-hupso.php:713
+msgid "If you want to show share buttons just on some posts/pages do this:"
+msgstr "若只想於某些文章和分頁顯示分享按鈕："
+
+#: share-buttons-hupso.php:713
+msgid "1. Clear options for posts/pages above"
+msgstr "1. 不要點選文章及分頁的選項；"
+
+#: share-buttons-hupso.php:713
+msgid "2. Enable Add share buttons option to \"Edit Post\" screen - below"
+msgstr "2. 啟用 \"Edit Post\" 內的「加入分享按鈕」；"
+
+#: share-buttons-hupso.php:713
+msgid ""
+"3. Edit any post or page and configure display of share buttons at the "
+"bottom of right sidebar (on \"Edit Post\" screen)"
+msgstr ""
+"3. 編輯文章或分頁後，於邊欄底部選擇分享按鈕的選項（於 \"Edit Post\" 畫面"
+"上）。"
+
+#: share-buttons-hupso.php:722
+msgid "Add share buttons option to \"Edit Post\" screen"
+msgstr "於 \"Edit Post\" 畫面上加入分享按鈕"
+
+#: share-buttons-hupso.php:726
+msgid "Hide buttons for specific categories"
+msgstr "於特定分類隱藏分享按鈕"
+
+#: share-buttons-hupso.php:747
+msgid "Always show"
+msgstr "永遠顯示"
+
+#: share-buttons-hupso.php:749
+msgid "Select categories where you want to hide share buttons."
+msgstr "選擇想隱藏分享按鈕的分類"
+
+#: share-buttons-hupso.php:750
+msgid ""
+"To select multiple categories, you need to hold down the Control Key for "
+"each selected category after the first one."
+msgstr "按住 Control 鍵以選擇多個分類"
+
+#: share-buttons-hupso.php:751
+msgid ""
+"Leave all options unselected or select just the last option to show buttons "
+"inside every category."
+msgstr "不選取所有選項，或只選取最後的選項，以於所有分類中顯示分享按鈕。"
+
+#: share-buttons-hupso.php:756
+msgid "Get share text from"
+msgstr "分享標題"
+
+#: share-buttons-hupso.php:770
+msgid "Title of post in Wordpress"
+msgstr "Wordpress 的文章標題"
+
+#: share-buttons-hupso.php:771
+msgid "Title of current web page"
+msgstr "當前網頁的標題"
+
+#: share-buttons-hupso.php:776
+msgid "Twitter via"
+msgstr "Twitter"
+
+#: share-buttons-hupso.php:784
+msgid "Add \"via @yourprofile\" to tweets"
+msgstr "以 \"via @yourprofile\" 分享至 tweets"
+
+#: share-buttons-hupso.php:789
+msgid "Image for Facebook thumbnail"
+msgstr "Facebook 顯示的縮圖"
+
+#: share-buttons-hupso.php:829
+msgid ""
+"All images for Facebook should be at least 200px in both dimensions "
+"(Facebook limitation)"
+msgstr ""
+"Facebook 顯示的圖片的高度或闊度必須最少為 200px。（此為 Facebook 的限制） "
+
+#: share-buttons-hupso.php:829
+msgid ""
+"After you change settings here, please wait 24 hours (or more) for Facebook "
+"to fetch new thumbnails"
+msgstr "更新此選項後，Facebook 需最少 24 小時掫取縮圖"
+
+#: share-buttons-hupso.php:829
+msgid ""
+"\"og:image\" meta tag with image url will be added to head of HTML. Select "
+"\"None\" to disable this feature"
+msgstr ""
+"\"og:image\" meta tag 及圖片的 url 將加入至 HTML head 內。選擇 \"None\" 以不"
+"啟用此功能。"
+
+#: share-buttons-hupso.php:831
+msgid "Header image"
+msgstr "標頭圖片"
+
+#: share-buttons-hupso.php:831
+msgid "Click here to see full header image"
+msgstr "按此預覽標頭圖像"
+
+#: share-buttons-hupso.php:831
+msgid "preview"
+msgstr "預覽"
+
+#: share-buttons-hupso.php:832
+msgid "Featured image of post"
+msgstr "精選圖片（Featured image）"
+
+#: share-buttons-hupso.php:834
+msgid "None"
+msgstr "沒有"
+
+#: share-buttons-hupso.php:835
+msgid ""
+"FCH  - use Featured image of post (if available), then use Custom image (if "
+"available), then use Header image (if available)"
+msgstr ""
+"FCH -- 以精選圖片（Featured Image）為主，否則使用自定圖片（若有），或標頭圖片"
+"（若有）。"
+
+#: share-buttons-hupso.php:840
+msgid "CSS style"
+msgstr "CSS 樣式"
+
+#: share-buttons-hupso.php:848
+msgid ""
+"Use CSS to style share buttons. For example: you can increase padding to "
+"have more free space above or below the buttons"
+msgstr "於分享按鈕使用 CSS 樣式，例如，增加 padding 數值以增加按鈕上下的距離。"
+
+#: share-buttons-hupso.php:853
+msgid "Widget Text"
+msgstr "文字小工具"
+
+#: share-buttons-hupso.php:866
+msgid "Use shortcodes in text widgets"
+msgstr "於文字小工具內使用短碼"
+
+#: share-buttons-hupso.php:866
+msgid ""
+"If this is checked, you can use [hupso] shortcode inside text widgets and it "
+"will be replaced by share buttons"
+msgstr "若點選此項，文字小工具內的 [hupso] 短碼將取代分享按鈕"
+
+#: share-buttons-hupso.php:871
+msgid "Custom title"
+msgstr "自定標題"
+
+#: share-buttons-hupso.php:879
+msgid "Enter custom text that will always be used for sharing."
+msgstr "分享時使用自定文字。"
+
+#: share-buttons-hupso.php:879
+msgid ""
+"Leave this blank to use title of current page as text for sharing. [Default]"
+msgstr "把此選項留空，分享時將使用頁面的標題。（默認選項）"
+
+#: share-buttons-hupso.php:884
+msgid "Custom url"
+msgstr "自定 URL"
+
+#: share-buttons-hupso.php:891
+msgid ""
+"Enter custom url that will always be used for sharing. You can enter your "
+"root website here (e.g.: http://www.example.com or http://example.blogspot."
+"com, so counters will show statistics for your whole website, not for each "
+"page individually."
+msgstr ""
+"分享時，默認以自定 URL 作網址。你可以輸入網站的根目錄（例如 http://www."
+"example.com 或 http://example.blogspot.com），當選用計數器（counter）時，計數"
+"器將顯示網站的整體統計，而非某單一頁面。"
+
+#: share-buttons-hupso.php:891
+msgid "Leave this blank to use url of current page for sharing. [Default]"
+msgstr "留空以分享目前頁面的 URL（默認選項）"
+
+#: share-buttons-hupso.php:896
+msgid "Use custom social share icons"
+msgstr "自定分享圖示"
+
+#: share-buttons-hupso.php:913
+msgid "No. [Default. Do not change this unless you know what you are doing.]"
+msgstr "否。（默認為「是」。若你不明白這是甚麼，不要選「否」。）"
+
+#: share-buttons-hupso.php:914
+msgid "Yes, serve images from local Wordpress folder. "
+msgstr "是，使用 Wordpress 本機的資料夾。"
+
+#: share-buttons-hupso.php:916
+msgid "Yes, serve images from remote URL: "
+msgstr "是，使用遠端的 URL。"
+
+#: share-buttons-hupso.php:917
+msgid ""
+"Enter URL to folder with custom social images.  Include \"/\" at the end of "
+"the URL. If you would like to use custom icons, make sure you <a href="
+"\"http://www.hupso.com/share/custom-social-icons.php\" target=\"_blank"
+"\">read instructions</a>."
+msgstr ""
+"輸入自定分享按鈕圖示的 URL，結尾包括 \"/\"。若你想使用自定的圖示，請細閱<a "
+"href=\"http://www.hupso.com/share/custom-social-icons.php\" target=\"_blank"
+"\">這裏</a>。"
+
+#: share-buttons-hupso.php:917
+msgid "This setting has no effect when using Counters."
+msgstr "這選項不適用於計數器上。"

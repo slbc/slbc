@@ -1,0 +1,464 @@
+# Copyright (C) 2013
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: hupso-share-buttons-for-twitter-facebook-google\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-12 23:42+0100\n"
+"PO-Revision-Date: 2013-08-13 08:08+0100\n"
+"Last-Translator: crysman <crysman@seznam.cz>\n"
+"Language-Team: crysman <crysman@seznam.cz>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_x;_n\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: share-buttons-hupso-meta.php:20
+msgid "Hupso"
+msgstr "Hupso"
+
+#: share-buttons-hupso-meta.php:33
+msgid "default"
+msgstr "výchozí"
+
+#: share-buttons-hupso-meta.php:83
+msgid "Default"
+msgstr "Výchozí"
+
+#: share-buttons-hupso-meta.php:83 share-buttons-hupso-widget.php:76
+#: share-buttons-hupso.php:1575
+msgid "Settings"
+msgstr "Nastavení"
+
+#: share-buttons-hupso-meta.php:84
+msgid "Enabled"
+msgstr "Zapnuto"
+
+#: share-buttons-hupso-meta.php:85
+msgid "Disabled"
+msgstr "Vypnuto"
+
+#: share-buttons-hupso-widget.php:15
+msgid ""
+"Help visitors share your posts on the most popular social networks: Twitter, "
+"Facebook, Google Plus, Linkedin, StumbleUpon, Digg, Reddit and others"
+msgstr ""
+"Pomozte návštěvníkům sdílet vaše příspěvky na nejpopulárnějších sociálních "
+"sítích: Twitter, Facebook, Google Plus, Linkedin, StumbleUpon, Digg, Reddit "
+"a dalších"
+
+#: share-buttons-hupso-widget.php:68 share-buttons-hupso.php:261
+msgid "Share"
+msgstr "Sdílet"
+
+#: share-buttons-hupso-widget.php:72
+msgid "Title"
+msgstr "Název"
+
+#: share-buttons-hupso.php:259
+msgid "en_US"
+msgstr "en_US"
+
+#: share-buttons-hupso.php:260
+msgid "English"
+msgstr "Anglicky"
+
+#: share-buttons-hupso.php:262 share-buttons-hupso.php:710
+msgid "Excerpts"
+msgstr "Úryvky"
+
+#: share-buttons-hupso.php:263
+msgid "Feeds"
+msgstr "Feeds (zdroje)"
+
+#: share-buttons-hupso.php:266
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Nemáte dostatečná oprávnění pro přístup k této stránce."
+
+#: share-buttons-hupso.php:276
+msgid "Hupso Share Buttons for Twitter, Facebook & Google+ (Settings)"
+msgstr "Hupso Share Buttons for Twitter, Facebook & Google+ (Nastavení)"
+
+#: share-buttons-hupso.php:280
+msgid "Preview"
+msgstr "Náhled"
+
+#: share-buttons-hupso.php:280
+msgid "Update"
+msgstr "Aktualizace"
+
+#: share-buttons-hupso.php:283 share-buttons-hupso.php:923
+msgid "Save Settings"
+msgstr "Uložit nastavení"
+
+#: share-buttons-hupso.php:287
+msgid "Shortcodes"
+msgstr "Shortkódy"
+
+#: share-buttons-hupso.php:349
+msgid "Button type"
+msgstr "Typ tlačítka"
+
+#: share-buttons-hupso.php:377
+msgid "Button size"
+msgstr "Velikost tlačítka"
+
+#: share-buttons-hupso.php:385 share-buttons-hupso.php:475
+#: share-buttons-hupso.php:833
+msgid "Custom image from URL"
+msgstr "Vlastní obrázek z URL"
+
+#: share-buttons-hupso.php:396
+msgid "Toolbar size"
+msgstr "Velikost toolbaru"
+
+#: share-buttons-hupso.php:411
+msgid "Big"
+msgstr "Velký"
+
+#: share-buttons-hupso.php:412
+msgid "Medium"
+msgstr "Střední"
+
+#: share-buttons-hupso.php:413
+msgid "Small"
+msgstr "Malý"
+
+#: share-buttons-hupso.php:424
+msgid "Share image"
+msgstr "Obrázek sdílení"
+
+#: share-buttons-hupso.php:447
+msgid "Show in language"
+msgstr "Zobrazit v jazyce"
+
+#: share-buttons-hupso.php:474
+msgid "Hide"
+msgstr "Skrýt"
+
+#: share-buttons-hupso.php:475
+msgid "Optimal image height: 32px - big, 24px - medium, 16px - small/counters"
+msgstr ""
+"Optimální výška obrázku: 32px - velký, 24px - střední, 16px - malý/počitadla"
+
+#: share-buttons-hupso.php:489
+msgid "Background color"
+msgstr "Barva pozadí"
+
+#: share-buttons-hupso.php:490
+msgid "Border color"
+msgstr "Barva okraje"
+
+#: share-buttons-hupso.php:499 share-buttons-hupso.php:542
+msgid "Social networks"
+msgstr "Sociální sítě"
+
+#: share-buttons-hupso.php:588
+msgid "Show counters in language"
+msgstr "Zobrazit počitadla v jazyce"
+
+#: share-buttons-hupso.php:592
+msgid "Language changes will not show in preview"
+msgstr "Změny jazyka se nezobrazí v náhledu"
+
+#: share-buttons-hupso.php:593
+msgid ""
+"Select which language to use for Counters (Tweet, Facebook Like, Facebook "
+"Share...)"
+msgstr "Vyberte jazyk pro počitadla (Tweet, Facebook Like, Facebook Share...)"
+
+#: share-buttons-hupso.php:593
+msgid ""
+"Some social networks support more languages than others, so some buttons "
+"might get translated, while some might stay in English"
+msgstr ""
+"Některé sociální sítě podporují více jazyků než jiné, takže některá tlačítka "
+"mohou být přeložena, zatímco jiná mohou zůstat anglicky"
+
+#: share-buttons-hupso.php:605
+msgid "Type of menu"
+msgstr "Typ menu"
+
+#: share-buttons-hupso.php:618
+msgid "Show icons and service names"
+msgstr "Zobraz ikony a jména služeb"
+
+#: share-buttons-hupso.php:619
+msgid "Show icons only"
+msgstr "Zobrazit jen ikony"
+
+#: share-buttons-hupso.php:626
+msgid "Button position"
+msgstr "Pozice tlačítka"
+
+#: share-buttons-hupso.php:641
+msgid "Above the post"
+msgstr "Nad příspěvkem"
+
+#: share-buttons-hupso.php:642
+msgid "Below the post"
+msgstr "Pod příspěvkem"
+
+#: share-buttons-hupso.php:643
+msgid "Above and below the post"
+msgstr "Nad a pod příspěvkem"
+
+#: share-buttons-hupso.php:646
+msgid "Show buttons on"
+msgstr "Zobrazit tlačítka na"
+
+#: share-buttons-hupso.php:706
+msgid "Posts"
+msgstr "Příspěvky"
+
+#: share-buttons-hupso.php:707
+msgid "Pages"
+msgstr "Stránky"
+
+#: share-buttons-hupso.php:708
+msgid "Front page"
+msgstr "Úvodní stránka"
+
+#: share-buttons-hupso.php:709
+msgid "Archive pages (categories, tags, dates, authors)"
+msgstr "Archívních stránkách (kategorie, štítky, data, autoři)"
+
+#: share-buttons-hupso.php:711
+msgid "Search pages"
+msgstr "Vyhledávací stránky"
+
+#: share-buttons-hupso.php:712
+msgid "Password protected posts"
+msgstr "Heslem chráněné příspěvky"
+
+#: share-buttons-hupso.php:713
+msgid "If you want to show share buttons just on some posts/pages do this:"
+msgstr ""
+"Pokud chcete zobrazit tlačítka sdílení jen u některých příspěvků/stránek, "
+"udělejte toto:"
+
+#: share-buttons-hupso.php:713
+msgid "1. Clear options for posts/pages above"
+msgstr "1. Nechejte prázdné volby pro příspěvky/stránky výše"
+
+#: share-buttons-hupso.php:713
+msgid "2. Enable Add share buttons option to \"Edit Post\" screen - below"
+msgstr ""
+"2. Zapněte volbu Přidat tlačítka sdílení ke stránce \"Editace příspěvku\" - "
+"níže"
+
+#: share-buttons-hupso.php:713
+msgid ""
+"3. Edit any post or page and configure display of share buttons at the "
+"bottom of right sidebar (on \"Edit Post\" screen)"
+msgstr ""
+"3. Zeditujte libovolný příspěvek nebo stránku a nastavte zobrazování "
+"tlačítek sdílení v pravém spodním rohu bočního panelu (na obrazovce "
+"\"Upravit příspěvek\")"
+
+#: share-buttons-hupso.php:722
+msgid "Add share buttons option to \"Edit Post\" screen"
+msgstr "Přidat možnosti tlačítka sdílení do obrazovky \"Upravit příspěvek\""
+
+#: share-buttons-hupso.php:726
+msgid "Hide buttons for specific categories"
+msgstr "Schovat tlačítka pro specifické kategorie/rubriky"
+
+#: share-buttons-hupso.php:747
+msgid "Always show"
+msgstr "Vždy zobrazit"
+
+#: share-buttons-hupso.php:749
+msgid "Select categories where you want to hide share buttons."
+msgstr "Vyberte kategorie/rubriky kde chcete schovat tlačítka sdílení."
+
+#: share-buttons-hupso.php:750
+msgid ""
+"To select multiple categories, you need to hold down the Control Key for "
+"each selected category after the first one."
+msgstr ""
+"Pro výběr více kategorií/rubrik stiskněte klávesu CTRL pro každou další "
+"vybíranou kategorii po první vybrané."
+
+#: share-buttons-hupso.php:751
+msgid ""
+"Leave all options unselected or select just the last option to show buttons "
+"inside every category."
+msgstr ""
+"Nechte všechny možnosti nevybrané nebo vyberte jen poslední možnost pro "
+"zobrazení tlačítek u každé kategorie."
+
+#: share-buttons-hupso.php:756
+msgid "Get share text from"
+msgstr "Získat text sdílení z"
+
+#: share-buttons-hupso.php:770
+msgid "Title of post in Wordpress"
+msgstr "Název příspěvku ve Wordpressu"
+
+#: share-buttons-hupso.php:771
+msgid "Title of current web page"
+msgstr "Název současné/této stránky"
+
+#: share-buttons-hupso.php:776
+msgid "Twitter via"
+msgstr "Twitter skrze"
+
+#: share-buttons-hupso.php:784
+msgid "Add \"via @yourprofile\" to tweets"
+msgstr "Přidat \"skrze @vasprofil\" do tweetů"
+
+#: share-buttons-hupso.php:789
+msgid "Image for Facebook thumbnail"
+msgstr "Obrázek pro thumbnail fcebooku"
+
+#: share-buttons-hupso.php:829
+msgid ""
+"All images for Facebook should be at least 200px in both dimensions "
+"(Facebook limitation)"
+msgstr ""
+"Všechny obrázky pro facebook by měly mít alespoň 200px v obou rozměrech "
+"(limitace facebooku)"
+
+#: share-buttons-hupso.php:829
+msgid ""
+"After you change settings here, please wait 24 hours (or more) for Facebook "
+"to fetch new thumbnails"
+msgstr ""
+"Po změnách zde prosím počkejte 24 hodin (nebo více) než facebook načte nové "
+"thumbnails"
+
+#: share-buttons-hupso.php:829
+msgid ""
+"\"og:image\" meta tag with image url will be added to head of HTML. Select "
+"\"None\" to disable this feature"
+msgstr ""
+"\"og:image\" meta tag  s URL obrázku bude přidán do HTML hlavičky. Vyberte "
+"\"Žádný\" pro vypnutí této funkcionality"
+
+#: share-buttons-hupso.php:831
+msgid "Header image"
+msgstr "Hlavičkový obrázek"
+
+#: share-buttons-hupso.php:831
+msgid "Click here to see full header image"
+msgstr "Klikněte zde pro zobrazení celého hlavičkového obrázku"
+
+#: share-buttons-hupso.php:831
+msgid "preview"
+msgstr "náhled"
+
+#: share-buttons-hupso.php:832
+msgid "Featured image of post"
+msgstr "\"Featured\" obrázek příspěvku"
+
+#: share-buttons-hupso.php:834
+msgid "None"
+msgstr "žádný"
+
+#: share-buttons-hupso.php:835
+msgid ""
+"FCH  - use Featured image of post (if available), then use Custom image (if "
+"available), then use Header image (if available)"
+msgstr ""
+"FCH - použít \"Featured \" obrázek příspěvku (pokud k dispozici), potom "
+"vlastní obrázek (pokud k dispozici), potom hlavičkový obrázek (pokud k "
+"dispozici)"
+
+#: share-buttons-hupso.php:840
+msgid "CSS style"
+msgstr "CSS styl"
+
+#: share-buttons-hupso.php:848
+msgid ""
+"Use CSS to style share buttons. For example: you can increase padding to "
+"have more free space above or below the buttons"
+msgstr ""
+"Použít CSS k nastylování tlačítek sdílení. Např. můžete zvětšit odsazení "
+"abyste získali více místa nad či pod tlačítky"
+
+#: share-buttons-hupso.php:853
+msgid "Widget Text"
+msgstr "Text widgetu"
+
+#: share-buttons-hupso.php:866
+msgid "Use shortcodes in text widgets"
+msgstr "Použít shorkódy v textových widgetech"
+
+#: share-buttons-hupso.php:866
+msgid ""
+"If this is checked, you can use [hupso] shortcode inside text widgets and it "
+"will be replaced by share buttons"
+msgstr ""
+"Pokud je toto zatrženo, můžete použít [hupso] shortkód uvnitř textových "
+"widgetů, což bude nahrazeno tlačítky sdílení"
+
+#: share-buttons-hupso.php:871
+msgid "Custom title"
+msgstr "Vlastní název"
+
+#: share-buttons-hupso.php:879
+msgid "Enter custom text that will always be used for sharing."
+msgstr "Vložte vlastní text který bude u sdílení vždy použit."
+
+#: share-buttons-hupso.php:879
+msgid ""
+"Leave this blank to use title of current page as text for sharing. [Default]"
+msgstr ""
+"Nechejte toto prázdné pro použití názvu aktuální/této stránky jako textu pro "
+"sdílení. [výchozí]"
+
+#: share-buttons-hupso.php:884
+msgid "Custom url"
+msgstr "Vlastní URL"
+
+#: share-buttons-hupso.php:891
+msgid ""
+"Enter custom url that will always be used for sharing. You can enter your "
+"root website here (e.g.: http://www.example.com or http://example.blogspot."
+"com, so counters will show statistics for your whole website, not for each "
+"page individually."
+msgstr ""
+"Vložte vlastní URL které bude vždy použito pro sdílení. Můžete zde vložit "
+"vaši kmenovou adresu (např. http://www.priklad.cz nebo http://example."
+"blogspot.com), takže počitadla budou ukazovat statistiky pro celý web, ne "
+"pro každou stránku individuálně."
+
+#: share-buttons-hupso.php:891
+msgid "Leave this blank to use url of current page for sharing. [Default]"
+msgstr "Zanechte toto prázdné pro použití URL současné/této stránky. [výchozí]"
+
+#: share-buttons-hupso.php:896
+msgid "Use custom social share icons"
+msgstr "Použít vlastní ikony social sdílení"
+
+#: share-buttons-hupso.php:913
+msgid "No. [Default. Do not change this unless you know what you are doing.]"
+msgstr "Ne. [výchozí. Toto neměňte pokud nevíte co děláte.]"
+
+#: share-buttons-hupso.php:914
+msgid "Yes, serve images from local Wordpress folder. "
+msgstr "Ano, vzít obrázky z lokálního adresáře Wordpressu."
+
+#: share-buttons-hupso.php:916
+msgid "Yes, serve images from remote URL: "
+msgstr "Ano, vzít obrázky ze vzdáleného URL:"
+
+#: share-buttons-hupso.php:917
+msgid ""
+"Enter URL to folder with custom social images.  Include \"/\" at the end of "
+"the URL. If you would like to use custom icons, make sure you <a href="
+"\"http://www.hupso.com/share/custom-social-icons.php\" target=\"_blank"
+"\">read instructions</a>."
+msgstr ""
+"Vložte URL adresáře s vlastními social obrázky. Uveďte \"/\" na konci URL. "
+"Pokud byste chtěli použít vlastní ikony, <a href=\"http://www.hupso.com/"
+"share/custom-social-icons.php\" target=\"_blank\">přečtěte si instrukce</a>."
+
+#: share-buttons-hupso.php:917
+msgid "This setting has no effect when using Counters."
+msgstr "Toto nastavení nemá žádný efekt při použití počitadel."
