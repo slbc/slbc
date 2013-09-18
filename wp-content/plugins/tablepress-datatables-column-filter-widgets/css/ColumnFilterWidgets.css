@@ -1,0 +1,18 @@
+.column-filter-widget { float:left; }
+.column-filter-widget select { display: block; width: auto; margin: 5px; }
+.column-filter-widgets a.filter-term { display: block; text-decoration: none; padding-left: 10px; font-size: 90%; }
+.column-filter-widgets a.filter-term:hover { text-decoration: line-through !important; }
+.column-filter-widget-selected-terms { clear:left; }
+
+/* Self clearing */
+.column-filter-widgets:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+	margin-bottom: 5px;
+}
+html[xmlns] .column-filter-widgets { display: block; }
+* html .column-filter-widgets { height: 1%; }
