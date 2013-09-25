@@ -14,6 +14,16 @@ module.exports = function(grunt) {
             dest: "wp-content/themes/designfolio-pro/"
           }
         ]
+      },
+      plugins: {
+        files: [
+          {
+            expand: true,
+            cwd: "wp-content/plugins",
+            src: "**/*.{png,jpg}",
+            dest: "wp-content/plugins"
+          }
+        ]
       }
     }
   });
