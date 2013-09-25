@@ -5,6 +5,8 @@ Thumbs.db
 .DS_Store
 sitemap.exml*
 *.sass-cache
+node_modules
+
 
 #WP
 /wp
