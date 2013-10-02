@@ -113,7 +113,7 @@ class Ninja_Forms_Processing {
 	 *
 	 */
 	function setup_submitted_vars() {
-		global $ninja_forms_fields;
+		global $ninja_forms_fields, $wp;
 		$form_ID = $this->data['form_ID'];
 
 		//Get our plugin settings
@@ -124,6 +124,7 @@ class Ninja_Forms_Processing {
 			return '';
 		
 		$this->data['action'] = 'submit';
+		$this->data['form']['form_url'] = $this->get_current_url();
 		$cache = get_transient( $_SESSION['ninja_forms_transient_id'] );
 
 		// If we have fields in our $_POST object, then loop through the $_POST'd field values and add them to our global variable.
@@ -183,7 +184,6 @@ class Ninja_Forms_Processing {
 				}
 				$this->data['form']['admin_attachments'] = array();
 				$this->data['form']['user_attachments'] = array();
-				$this->data['form']['form_url'] = wp_guess_url();
 			}
 
 		} else if ( $cache !== false ) { // Check to see if we have $_SESSION values from a submission.
@@ -1120,6 +1120,28 @@ class Ninja_Forms_Processing {
 			$credit_card['expires'] = $this->data['extra']['_credit_card_expires'];
 			return $credit_card;
 		}
+	}
+
+	/**
+	* Function that gets the current URL of the page, including querystring.
+	*
+	* @since 2.2.47
+	* @return $url string
+	*/
+	function get_current_url() {
+		$protocol = "http";
+		if($_SERVER["SERVER_PORT"]==443 || (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on")) {
+			$protocol .= "s";
+			$protocol_port = $_SERVER["SERVER_PORT"];
+		} else {
+			$protocol_port = 80;
+		}
+		$host = $_SERVER["HTTP_HOST"];
+		$port = $_SERVER["SERVER_PORT"];
+		$request_path = $_SERVER["PHP_SELF"];
+		$querystr = $_SERVER["QUERY_STRING"];
+		$url = $protocol."://".$host.(($port!=$protocol_port && strpos($host,":")==-1)?":".$port:"").$request_path.(empty($querystr)?"":"?".$querystr);
+		return $url;
 	}
 
 }

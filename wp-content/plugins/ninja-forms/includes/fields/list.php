@@ -295,7 +295,15 @@ function ninja_forms_field_list_display( $field_id, $data ){
 						$display_style = '';
 					}
 
-					$label = stripslashes($label);
+					if ( isset( $option['disabled'] ) AND $option['disabled'] ){
+						$disabled = 'disabled';
+					}else{
+						$disabled = '';
+					}
+
+					$label = htmlentities( $label );
+
+					$label = stripslashes( $label );
 
 					$field_label = $data['label'];
 
@@ -312,7 +320,7 @@ function ninja_forms_field_list_display( $field_id, $data ){
 					}
 
 					?>
-					<option value="<?php echo $value;?>" <?php echo $selected;?> style="<?php echo $display_style;?>"><?php echo $label;?></option>
+					<option value="<?php echo $value;?>" <?php echo $selected;?> style="<?php echo $display_style;?>" <?php echo $disabled;?>><?php echo $label;?></option>
 				<?php
 				}
 				?>
@@ -521,8 +529,8 @@ function ninja_forms_field_list_option_output($field_id, $x, $option = '', $hidd
 		$hidden = 'display:none';
 	}
 	if(is_array($option)){
-		$label = $option['label'];
-		$value = $option['value'];
+		$label = htmlentities( $option['label'] );
+		$value = htmlentities( $option['value'] );
 		if ( isset ( $option['calc'] ) ) {
 			$calc = $option['calc'];
 		} else {
@@ -544,6 +552,7 @@ function ninja_forms_field_list_option_output($field_id, $x, $option = '', $hidd
 	if($selected == 1){
 		$selected = "checked='checked'";
 	}
+
 	?>
 	<div id="ninja_forms_field_<?php echo $field_id;?>_list_option_<?php echo $x;?>" class="ninja-forms-field-<?php echo $field_id;?>-list-option ninja-forms-field-list-option" <?php echo $hide;?>>
 		<table class="list-options">
@@ -624,4 +633,4 @@ function ninja_forms_field_filter_list_data( $data, $field_id ){
 	return $data;
 }
 
-add_filter( 'ninja_forms_field', 'ninja_forms_field_filter_list_data', 9, 2 );
+add_filter( 'ninja_forms_field', 'ninja_forms_field_filter_list_data', 5, 2 );

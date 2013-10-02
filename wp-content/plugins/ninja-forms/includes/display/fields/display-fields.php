@@ -202,7 +202,7 @@ function ninja_forms_get_field_wrap_class($field_id){
 function ninja_forms_get_field_class($field_id){
 	$field_row = ninja_forms_get_field_by_id($field_id);
 	$field_data = $field_row['data'];
-
+	$field_data = apply_filters( 'ninja_forms_field', $field_data, $field_id );
 	$field_class = 'ninja-forms-field';
 
 	$x = 0;

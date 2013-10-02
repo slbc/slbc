@@ -134,6 +134,30 @@ function ninja_forms_tab_addons(){
             'link' => 'http://ninjaforms.com/downloads/freshbooks/',
             'plugin' => 'ninja-forms-freshbooks/ninja-forms-freshbooks.php',
             'docs' => '',
+        ),        
+        array (
+            'title' => __( 'AWeber', 'ninja-forms' ),
+            'image' => 'http://ninjaforms.com/wp-content/uploads/edd/2013/08/aweber-300x121.png',
+            'content' => __( 'Use Ninja Forms to quickly create flexible newsletter signup forms for your AWeber email marketing account.', 'ninja-forms' ),
+            'link' => 'http://ninjaforms.com/downloads/aweber/',
+            'plugin' => 'ninja-forms-aweber/ninja-forms-aweber.php',
+            'docs' => '',
+        ),        
+        array (
+            'title' => __( 'Picatcha', 'ninja-forms' ),
+            'image' => 'http://ninjaforms.com/wp-content/uploads/edd/2013/08/picatcha-header-300x121.png',
+            'content' => __( 'The Picatcha extension allows you to add image-based CAPTHA to your forms.', 'ninja-forms' ),
+            'link' => 'http://ninjaforms.com/downloads/picatcha/',
+            'plugin' => 'ninja-forms-picatcha/ninja-forms-picatcha.php',
+            'docs' => '',
+        ),       
+        array (
+            'title' => __( 'WYSIJA', 'ninja-forms' ),
+            'image' => 'http://ninjaforms.com/wp-content/uploads/edd/2013/08/wysija-header-300x121.jpg',
+            'content' => __( 'The Wisija extension allows you to quickly create newsletter signup forms for your Wisija mailing lists using the power and flexibility that Ninja Forms provides.', 'ninja-forms' ),
+            'link' => 'http://ninjaforms.com/downloads/wysija/',
+            'plugin' => 'ninja-forms-wysija/nf-wysija.php',
+            'docs' => '',
         ),
     );
 

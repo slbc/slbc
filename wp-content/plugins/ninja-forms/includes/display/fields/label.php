@@ -92,4 +92,4 @@ function ninja_forms_display_label_inside( $data, $field_id ){
 	return $data;
 }
 
-add_filter( 'ninja_forms_field', 'ninja_forms_display_label_inside', 10, 2 );
+add_filter( 'ninja_forms_field', 'ninja_forms_display_label_inside', 5, 2 );

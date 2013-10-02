@@ -425,11 +425,13 @@ jQuery(document).ready(function(jQuery) {
 								}
 
 								// Check for a percentage sign in our f_value. If we find one, then convert it to a decimal.
-								if ( f_value.indexOf("%") >= 0 ) {
-									f_value = f_value.replace( "%", "" );
-									if ( !isNaN( f_value ) ) {
-										f_value = parseFloat( f_value ) / 100;
-									}
+								if ( typeof f_value !== 'undefined' ) {
+									if ( f_value.indexOf("%") >= 0 ) {
+										f_value = f_value.replace( "%", "" );
+										if ( !isNaN( f_value ) ) {
+											f_value = parseFloat( f_value ) / 100;
+										}
+									}									
 								}
 
 								if ( isNaN( f_value ) || f_value == '' || !f_value || typeof f_value === 'undefined' ) {

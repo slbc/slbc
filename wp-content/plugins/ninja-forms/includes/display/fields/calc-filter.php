@@ -381,7 +381,10 @@ function ninja_forms_field_calc_value( $field_id, $field_value = '', $calc_metho
 		$field = ninja_forms_get_field_by_id( $field_id );	
 	}
 
-	$field_data = $field['data'];
+	//$field_data = $field['data'];
+	remove_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 2 );
+	$field_data = apply_filters( 'ninja_forms_field', $field['data'], $field_id );
+	add_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 11, 2 );
 	
 	if ( isset ( $field_data['default_value'] ) ) {
 		$default_value = $field_data['default_value'];
