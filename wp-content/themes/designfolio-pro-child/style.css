@@ -11,3 +11,4 @@ Template:       designfolio-pro
 
 /* Add your custom css below this line */
 .ninja-forms-all-fields-wrap ul li {background: none;}
+.widget .post-aside {display: none;}
