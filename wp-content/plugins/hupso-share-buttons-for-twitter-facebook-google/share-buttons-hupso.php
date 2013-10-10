@@ -3,7 +3,7 @@
 Plugin Name: Hupso Share Buttons for Twitter, Facebook & Google+
 Plugin URI: http://www.hupso.com/share/
 Description: Add simple social sharing buttons to your articles. Your visitors will be able to easily share your content on the most popular social networks: Twitter, Facebook, Google Plus, Linkedin, Tumblr, Pinterest, StumbleUpon, Digg, Reddit, Bebo, VKontakte and Delicous. These services are used by millions of people every day, so sharing your content there will increase traffic to your website.
-Version: 3.9.19
+Version: 3.9.20
 Author: kasal
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Domain Path: /languages
 */
 
 global $HUPSO_VERSION;
-$HUPSO_VERSION = '3.9.19';
+$HUPSO_VERSION = '3.9.20';
 
 $hupso_dev = '';
 $hupso_state = 'normal';
@@ -61,7 +61,7 @@ if ( is_admin() ) {
 add_action( 'wp_head', 'hupso_set_facebook_thumbnail', 1 );
 
 $hupso_all_services = array(
-	'Twitter', 'Facebook', 'Google Plus', 'Pinterest', 'Linkedin', 'Tumblr', 'StumbleUpon', 'Digg', 'Reddit', 'Bebo', 'Delicious', 'VKontakte', 'Email', 'Print'
+	'Twitter', 'Facebook', 'Google Plus', 'Pinterest', 'Linkedin', 'Tumblr', 'StumbleUpon', 'Digg', 'Reddit', 'Bebo', 'Delicious', 'VKontakte', 'Odnoklassniki', 'Email', 'Print'
 );
 $hupso_default_services = array(
 	'Twitter', 'Facebook', 'Google Plus', 'Pinterest', 'Linkedin', 'StumbleUpon', 'Digg', 'Reddit', 'Bebo', 'Delicious'
@@ -149,6 +149,7 @@ function hupso_plugin_uninstall() {
 	delete_option( 'hupso_bebo' );
 	delete_option( 'hupso_delicious' );
 	delete_option( 'hupso_vkontakte' );		
+	delete_option( 'hupso_odnoklassniki' );			
 	delete_option( 'hupso_email' );	
 	delete_option( 'hupso_print' );	
 	delete_option( 'hupso_email_button' );	
@@ -984,6 +985,7 @@ function hupso_admin_settings_save() {
 	update_option( 'hupso_custom', '1' );
 
 	if ( @$_POST[ 'button_type' ] != '' )
+
 		$post = true;
 	else
 		$post = false;	

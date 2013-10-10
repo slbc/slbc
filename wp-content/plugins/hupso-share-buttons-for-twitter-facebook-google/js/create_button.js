@@ -262,7 +262,9 @@ function hupso_create_code() {
 			if ( $( "input:checkbox[name=delicious]:checked" ).val() == 1 )
 				hupso_services += '"Delicious",';		
 			if ( $( "input:checkbox[name=vkontakte]:checked" ).val() == 1 )
-				hupso_services += '"VKontakte",';					
+				hupso_services += '"VKontakte",';			
+			if ( $( "input:checkbox[name=odnoklassniki]:checked" ).val() == 1 )
+				hupso_services += '"Odnoklassniki",';					
 			if ( $( "input:checkbox[name=email]:checked" ).val() == 1 )
 				hupso_services += '"Email",';		
 			if ( $( "input:checkbox[name=print]:checked" ).val() == 1 )
