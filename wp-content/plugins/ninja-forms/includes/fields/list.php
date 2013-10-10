@@ -301,7 +301,7 @@ function ninja_forms_field_list_display( $field_id, $data ){
 						$disabled = '';
 					}
 
-					$label = htmlentities( $label );
+					$label = htmlspecialchars( $label );
 
 					$label = stripslashes( $label );
 
@@ -529,8 +529,8 @@ function ninja_forms_field_list_option_output($field_id, $x, $option = '', $hidd
 		$hidden = 'display:none';
 	}
 	if(is_array($option)){
-		$label = htmlentities( $option['label'] );
-		$value = htmlentities( $option['value'] );
+		$label = htmlspecialchars( $option['label'] );
+		$value = htmlspecialchars( $option['value'] );
 		if ( isset ( $option['calc'] ) ) {
 			$calc = $option['calc'];
 		} else {

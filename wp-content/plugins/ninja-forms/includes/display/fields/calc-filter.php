@@ -12,22 +12,10 @@ function ninja_forms_field_calc_filter( $calc_data, $field_id ){
 	global $ninja_forms_processing;
 
 	if ( !is_object ( $ninja_forms_processing ) ) {
-
 		$field_row = ninja_forms_get_field_by_id( $field_id );
 		$form_id = $field_row['form_id'];
 		if ( $field_row['type'] == '_calc' ) {
-			if ( !isset ( $ninja_forms_processing ) ) {
-				$form_row = ninja_forms_get_form_by_field_id( $field_id );
-				$form_id = $form_row['id'];
-				$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
-				$calc_array = array();
-				foreach ( $all_fields as $field ) {
-					if ( $field['type'] == '_calc' ) {
-						$calc_array[] = $field['id'];
-					}
-				}
-			}
-
+			//echo "Calc Filter";	
 			// Figure out which method we are using to calculate this field.
 			if ( isset ( $calc_data['calc_method'] ) ) {
 				$calc_method = $calc_data['calc_method'];
@@ -53,8 +41,7 @@ function ninja_forms_field_calc_filter( $calc_data, $field_id ){
 				
 				$all_fields = ninja_forms_get_fields_by_form_id( $form_id );
 
-				remove_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 11, 2 );
-
+				remove_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 11 );
 				// Figure out if there is a sub_total and a tax field. If there are, and this is a total field set to calc_method auto, we're using an equation, not auto.
 				$tax = false;
 				$sub_total = false;
@@ -79,6 +66,7 @@ function ninja_forms_field_calc_filter( $calc_data, $field_id ){
 				// Figure out how many calculation fields we have and run
 
 				$result = $calc_data['default_value'];
+				
 				foreach ( $all_fields as $field ) {
 					if ( $field['id'] != $field_id ) {
 						$field_data = apply_filters( 'ninja_forms_field', $field['data'], $field['id'] );
@@ -122,16 +110,16 @@ function ninja_forms_field_calc_filter( $calc_data, $field_id ){
 										$calc_value = ninja_forms_calc_field_loop( $field['id'], $calc_eq );
 									} else {
 										$calc_value = ninja_forms_field_calc_value( $field['id'], $field_value, $calc_method );
-									}	
+									}
 									if ( $calc_value !== false ) {
 										$calc_eq = preg_replace('/\bfield_'.$field['id'].'\b/', $calc_value, $calc_eq );
 									}
 								}
 								break;
-						}					
+						}				
 					}
-
 				}
+
 				if ( $calc_method == 'eq' ) {
 					$eq = new eqEOS();
 					$result = $eq->solveIF($calc_eq);
@@ -196,6 +184,7 @@ function ninja_forms_calc_field_loop( $field_id, $calc_eq = '', $result = '' ){
 	// Figure out if there is a sub_total and a tax field. If there are, and this is a total field set to calc_method auto, we're using an equation, not auto.
 	$tax = false;
 	$sub_total = false;
+	
 	foreach ( $all_fields as $field ) {
 
 		$data = apply_filters( 'ninja_forms_field', $field['data'], $field['id'] );
@@ -207,7 +196,7 @@ function ninja_forms_calc_field_loop( $field_id, $calc_eq = '', $result = '' ){
 			$sub_total = $field['id'];
 		}
 	}
-
+	
 	// If the tax and sub_total have been found, and this is a total field set to auto, change the calc_method and calc_eq.
 	if ( $tax AND $sub_total AND isset ( $calc_data['payment_total'] ) AND $calc_data['payment_total'] == 1 AND $calc_method == 'auto' ) {
 		$calc_method = 'eq';
@@ -380,11 +369,11 @@ function ninja_forms_field_calc_value( $field_id, $field_value = '', $calc_metho
 	} else {
 		$field = ninja_forms_get_field_by_id( $field_id );	
 	}
-
+	
 	//$field_data = $field['data'];
-	remove_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 2 );
+	//remove_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 11, 2 );
 	$field_data = apply_filters( 'ninja_forms_field', $field['data'], $field_id );
-	add_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 11, 2 );
+	//add_filter( 'ninja_forms_field', 'ninja_forms_field_calc_filter', 11, 2 );
 	
 	if ( isset ( $field_data['default_value'] ) ) {
 		$default_value = $field_data['default_value'];
@@ -395,7 +384,7 @@ function ninja_forms_field_calc_value( $field_id, $field_value = '', $calc_metho
 	if ( $field_value == '' ) {
 		$field_value = $default_value;
 	}
-
+	
 	$calc_value = 0;
 	if ( $field['type'] == '_list' ) {
 		if ( isset ( $field_data['list']['options'] ) ) {
@@ -424,9 +413,9 @@ function ninja_forms_field_calc_value( $field_id, $field_value = '', $calc_metho
 		if ( !$field_value OR $field_value == '' ) {
 			$field_value = 0;
 		}
-		$calc_value = $field_value;
+		$calc_value = (float) preg_replace('/[^0-9.]*/','',$field_value);
 	}
-
+	
 	if ( is_string( $calc_value ) AND strpos( $calc_value, "%" ) !== false ) {
 		$calc_value = str_replace( "%", "", $calc_value );
 		$calc_value = $calc_value / 100;

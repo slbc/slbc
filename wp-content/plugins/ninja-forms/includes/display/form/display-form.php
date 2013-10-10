@@ -120,6 +120,7 @@ function ninja_forms_display_form( $form_id = '' ){
 	}
 	if($form_id != ''){ //Make sure that we have an active form_id.
 		$form_row = ninja_forms_get_form_by_id($form_id);
+		$form_row = apply_filters( 'ninja_forms_display_form_form_data', $form_row );
 		if( isset( $form_row['data']['ajax'] ) ){
 			$ajax = $form_row['data']['ajax'];
 		}else{

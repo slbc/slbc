@@ -240,6 +240,15 @@ function ninja_forms_calc_after_import_form( $form ){
 						}
 					}
 				}
+
+				if ( isset ( $field_rows[$y]['data']['calc_eq'] ) AND $field_rows[$y]['data']['calc_eq'] != '' ) {
+					$calc_eq = $field_rows[$y]['data']['calc_eq'];
+					foreach( $form['field'] as $inserted_field ){
+						$calc_eq = str_replace( 'field_'.$inserted_field['old_id'], 'field_'.$inserted_field['id'], $calc_eq );
+					}
+					$field_rows[$y]['data']['calc_eq'] = $calc_eq;
+				}				
+
 				$field_rows[$y]['data'] = serialize( $field_rows[$y]['data'] );
 				$args = array(
 					'update_array' => array(
@@ -251,6 +260,64 @@ function ninja_forms_calc_after_import_form( $form ){
 				);
 				ninja_forms_update_field($args);
 			}
+
+			if ( isset ( $form['data']['success_msg'] ) AND $form['data']['success_msg'] != '' ) {
+				$success_msg = $form['data']['success_msg'];
+				foreach( $form['field'] as $inserted_field ){
+					$success_msg = str_replace( '[ninja_forms_field id='.$inserted_field['old_id'].']', '[ninja_forms_field id='.$inserted_field['id'].']', $success_msg );
+				}
+				$form['data']['success_msg'] = $success_msg;
+			}
+
+			if ( isset ( $form['data']['user_email_msg'] ) AND $form['data']['user_email_msg'] != '' ) {
+				$user_email_msg = $form['data']['user_email_msg'];
+				foreach( $form['field'] as $inserted_field ){
+					$user_email_msg = str_replace( '[ninja_forms_field id='.$inserted_field['old_id'].']', '[ninja_forms_field id='.$inserted_field['id'].']', $user_email_msg );
+				}
+				$form['data']['user_email_msg'] = $user_email_msg;
+			}
+
+			if ( isset ( $form['data']['admin_email_msg'] ) AND $form['data']['admin_email_msg'] != '' ) {
+				$admin_email_msg = $form['data']['admin_email_msg'];
+				foreach( $form['field'] as $inserted_field ){
+					$admin_email_msg = str_replace( '[ninja_forms_field id='.$inserted_field['old_id'].']', '[ninja_forms_field id='.$inserted_field['id'].']', $admin_email_msg );
+				}
+				$form['data']['admin_email_msg'] = $admin_email_msg;
+			}
+
+			if ( isset ( $form['data']['mp_confirm_msg'] ) AND $form['data']['mp_confirm_msg'] != '' ) {
+				$mp_confirm_msg = $form['data']['mp_confirm_msg'];
+				foreach( $form['field'] as $inserted_field ){
+					$mp_confirm_msg = str_replace( '[ninja_forms_field id='.$inserted_field['old_id'].']', '[ninja_forms_field id='.$inserted_field['id'].']', $mp_confirm_msg );
+				}
+				$form['data']['mp_confirm_msg'] = $mp_confirm_msg;
+			}
+
+			if ( isset ( $form['data']['save_msg'] ) AND $form['data']['save_msg'] != '' ) {
+				$save_msg = $form['data']['save_msg'];
+				foreach( $form['field'] as $inserted_field ){
+					$save_msg = str_replace( '[ninja_forms_field id='.$inserted_field['old_id'].']', '[ninja_forms_field id='.$inserted_field['id'].']', $save_msg );
+				}
+				$form['data']['save_msg'] = $save_msg;
+			}
+
+			if ( isset ( $form['data']['save_email_msg'] ) AND $form['data']['save_email_msg'] != '' ) {
+				$save_email_msg = $form['data']['save_email_msg'];
+				foreach( $form['field'] as $inserted_field ){
+					$save_email_msg = str_replace( '[ninja_forms_field id='.$inserted_field['old_id'].']', '[ninja_forms_field id='.$inserted_field['id'].']', $save_email_msg );
+				}
+				$form['data']['save_email_msg'] = $save_email_msg;
+			}
+
+			$args = array(
+				'update_array' => array(
+					'data' => serialize( $form['data'] ),
+					),
+				'where' => array(
+					'id' => $form['id'],
+					),
+			);
+			ninja_forms_update_form($args);
 		}
 	}
 }

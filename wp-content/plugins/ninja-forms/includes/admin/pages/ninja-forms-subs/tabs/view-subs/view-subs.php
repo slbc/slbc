@@ -346,6 +346,7 @@ function ninja_forms_tab_view_subs(){
 
 				add_filter('ninja_forms_field', 'ninja_forms_edit_sub_default_value', 15, 2);
 				add_filter('ninja_forms_field', 'ninja_forms_edit_sub_hide_fields', 99, 2);
+				add_filter( 'ninja_forms_display_form_form_data', 'ninja_forms_edit_sub_remove_ajax' );
 				remove_action('ninja_forms_display_before_fields', 'ninja_forms_display_req_items');
 				remove_action('ninja_forms_display_open_form_tag', 'ninja_forms_display_open_form_tag');
 				remove_action('ninja_forms_display_close_form_tag', 'ninja_forms_display_close_form_tag');
@@ -430,8 +431,16 @@ function ninja_forms_tab_view_subs(){
 if(isset($_POST['_ninja_forms_edit_sub']) AND $_POST['_ninja_forms_edit_sub'] == 1){
 	add_action( 'init', 'ninja_forms_setup_processing_class', 5 );
 	add_action( 'init', 'ninja_forms_set_save_sub' );
+	add_action( 'init', 'ninja_forms_edit_sub_remove_ajax_processing', 7 );
 	add_action( 'init', 'ninja_forms_edit_sub_pre_process', 999 );
 }
+
+function ninja_forms_edit_sub_remove_ajax_processing(){
+	global $ninja_forms_processing;
+
+	$ninja_forms_processing->update_form_setting( 'ajax', 0 );
+}
+
 
 function ninja_forms_edit_sub_pre_process(){
 	global $ninja_forms_processing;
@@ -630,4 +639,9 @@ function ninja_forms_view_subs_default_filter( $sub_results ) {
 }
 
 add_filter( 'ninja_forms_view_subs_results', 'ninja_forms_view_subs_default_filter' );
-add_filter( 'ninja_forms_download_all_subs_results', 'ninja_forms_view_subs_default_filter' );	
+add_filter( 'ninja_forms_download_all_subs_results', 'ninja_forms_view_subs_default_filter' );
+
+function ninja_forms_edit_sub_remove_ajax( $form ){
+	$form['data']['ajax'] = 0;
+	return $form;
+}

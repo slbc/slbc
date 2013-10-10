@@ -24,7 +24,7 @@ function ninja_forms_display_form_title( $form_id ){
 		$form_title = '';
 	}
 
-	$title_class = '';
+	$title_class = 'ninja-forms-form-title';
 
 	$title_class = apply_filters( 'ninja_forms_form_title_class', $title_class, $form_id );
 

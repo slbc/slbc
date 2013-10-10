@@ -100,6 +100,7 @@ function ninja_forms_export_subs_to_csv( $sub_ids = '', $return = false ){
 		header("Content-Disposition: attachment; filename=".$filename);
 		header("Pragma: no-cache");
 		header("Expires: 0");
+		echo "\xEF\xBB\xBF"; // Byte Order Mark
 		echo str_putcsv($array);
 
 		die();
