@@ -1,0 +1,258 @@
+--- Manage Options ---
+$LastChangedDate: 2013-06-04 06:02:52 -0700 (Tue, 04 Jun 2013) $
+$Rev: 10354 $
+
+[auto-update]
+<strong>Auto Update</strong><br /><br />
+If you turn on this option, Simple:Press will automatically update the QuickLinks New and Unread Post List,
+the New Posts and Awaiting Moderation Counters on the Admin Bar.
+If you are not using these items then leave this option unchecked.<br /><br />
+You can set the frequency of the auto-updating (in seconds). The default for a new install is 300 (5 minute intervals).
+It is <b>strongly recommended</b> NOT to set the interval to under 120 seconds and indeed a longer interval is to be
+preferred. Depending on your site hosting and how busy your site is this feature could be considered as resource 'hungry'.
+[end]
+
+[lock-down-forum]
+<strong>Lock Down Forum</strong><br /><br />
+This option enables the Admin to completely lock the forum - in other words make it read only - although
+they will still be able to make posts and edits.<br /><br />
+This option is useful for maintenance such as when the Admin wishes to 'prune' out old topics, re-arrange their forums
+or, perhaps, change their user group and permission settings.<br /><br />
+Note that there is no need to lock the forum during an upgrade.
+[end]
+
+[forum-page-title]
+<strong>Page Title</strong><br />
+By default, Simple:Press will display the page title as it is set in the WordPress 'page' record which you can change
+any time by visiting 'Manage > Pages', selecting the forum page and loading it up for editing. However, the title can also be
+changed using these options.<br /><br />
+<strong>Remove Page Title Completely</strong><br />
+As it implies, this option will remove the page title and leave the area blank.<br /><br />
+<strong>Graphic Replacement URL</strong><br />
+It is also possible to display a graphic banner instead of the textual title. By entering the URL of an image file this will be
+displayed instead. Simple:Press attempts to centre any graphic used but this can be altered in the forum skin you are using
+where you can also define any other styling.<br /><br />
+<strong>Please Note:</strong><br />
+If an image URL is found in this field, it WILL be used regardless of the setting of the other option.<br /><br />
+[end]
+
+[users-and-registration]
+<strong>Limit Membership Display</strong><br />
+If checked this option will limit the membership list display for a member to only display user groups and its members that
+the members is actually a member of.  If the option is not set, a member will be able to see member lists and profiles
+for ALL members of the forum.  Guests will never be able to see any membership list.<br /><br />
+<strong>Allow Members to Hide Online Statu</strong><br />
+Enabling this option will allow users to choose not to display their current online status so they can be logged in and other users will not know it.
+However, admins will always be shown the online status.
+[end]
+
+[post-editing]
+<strong>Post Editing</strong><br /><br />
+By default Simple:Press uses the Plain Text Editor for post entry.<br /><br />
+Here you can set the default editor for your members and guests. The available options will match the editor plugins you have active.<br /><br />
+If you have made it available to them, your members will be able to select their own editor of choice on their profiles posting options panel.
+[end]
+
+[display-forum-statistics]
+<strong>Display Forum Statistics</strong><br />
+You can choose a stats interval for updating. By default, Simple:Press updates the stats every hour. You can choose your own interval. The interval is entered in hours.
+<br /><br />
+You can set the number of top posters to set it in the stats and how many new users to show in the stats.  These are options because of how the stats are cached and cannot easily be set in the template tag.<br /><br />
+The rest of the stats display is controlled from the various stats template tag functions.
+[end]
+
+[unread-posts]
+<b>Unread Posts</b><br />
+These options allow you control over the number of unread posts stored per user. The default count is the number of unread posts kept for each user by default. If you want to allow users to
+set their own option for the number of posts to keep, enable this option.  You should then set a maximum number of unread posts they can store.  Caution: the unread post information is stored in the
+database so do not set this number too large.  Our default is 50.  We do not recommend a number larger than 200.
+[end]
+
+[rss-feeds]
+<strong>RSS Feeds</strong><br /><br />
+Simple:Press supports 4 separate RSS feed options: All forums, Group of Forums, Individual Forum and Individual Topic.
+Individual Forum feeds can be disable/enabled on the Manage Forum page. The following options are for enabled RSS feeds.<br /><br />
+<strong>Number of Recent Posts to feed</strong><br />
+Set the number of items that will be sent at any one time when a feed is requested. Note that if the user does not have
+permissions to view a specific forum, posts from that forum will not be included in their feed. Posts awaiting moderation
+are also excluded until approved.<br /><br />
+<strong>Limit to Number of Words</strong><br />
+Post content in an RSS feed can be limited to the number of words you specify. Leaving this value at zero
+allows the entire post to be sent.<br /><br />
+<strong>Feedkeys for Private RSS</strong><br />
+This options assigns each user a unique feedkey for reading RSS feeds. This allows for private rss feeds that follow the rest of the
+Forum permissions checking before a feed can be viewed.  If the feedkey is not present, guest permissions are used.  Feedkeys will work
+with RSS feed readers too.  The private RSS feature is not compatible with external feed urls however since they can't provide the unique user feed key.
+[end]
+
+[email-address-settings]
+<strong>Email Address Settings</strong><br /><br />
+By default, the term 'WordPress' is used as the sender of any email from within the system.
+These settings allow you to override that and enable you to use any email address preferred. These are the email address
+components that will be used in forum emails.
+[end]
+
+[new-user-email]
+<strong>New User Email</strong><br /><br />
+These settings allow you to tailor emails sent to new users following registration to your site and forum. You have full control
+over both the <strong>Email Subject Line</strong> and the content of the <strong>Email Message</strong><br /><br />
+<b>Note:</b> If you prefer the standard WordPress email version - or are using another plugin that is capable of generating the
+new user email, then turn the forum option off and the alternative version will be used in it's place.<br /><br />
+<strong>Placeholders</strong><br />
+The following keywords can be used as placeholders within the email and will be replaced by their values when the email is sent.
+It is very important to to enter these into the message text exactly as shown and the very minimum that should be used
+are the User Name and Password:<ul>
+	<li>%USERNAME%</li>
+	<li>%PASSWORD%</li>
+	<li>%BLOGNAME%</li>
+	<li>%SITEURL%</li>
+	<li>%LOGINURL%</li>
+	<li>%NEWLINE%</li>
+</ul><br />
+Note the use of %NEWLINE% to end paragraphs.<br /><br />
+Also, since emails are sent plain text, HTML is not allowed in the message.
+[end]
+
+[single-forum-sites]
+<strong>Single Forum Sites</strong><br /><br />
+For sites that only have a single forum, checking this option will skip the initial forum 'front' page 'Group' view and will
+directly load the single forums topic listing. In a multi-forum site, this option can also be used to ensure that users with
+access to only one forum are also directed straight to the topic listing.
+[end]
+
+[topic-view-formatting]
+<strong>Topic View Formatting</strong><br /><br />
+<strong>Topics to Display Per Page</strong><br />
+The topic index is paged to cater for large forums. You set here the number of topic rows to show per paged display.<br /><br />
+<strong>Sort Topics by Most recent Postings (newest first)</strong><br />
+By default, topics are displayed in the order in which they were created. By turning on this option, when a topic receives
+a new post, it will then take the topmost position. Topics are therefore shown by those with the most recent postings.<br /><br />
+[end]
+
+[post-view-formatting]
+<strong>Post View Formatting</strong><br /><br />
+<strong>Posts to Display Per Page</strong><br />
+Posts are paged so that a topic with many contributions does not have to scroll too far or take to long too load.
+Select the number of posts to show per page.<br /><br />
+<strong>Sort Posts Newest to Oldest</strong><br />
+By default, the post that started the topic is displayed at the top with each subsequent post following - oldest to newest.
+This option sorts in the reverse order displaying the most recent post in the topic first.<br /><br />
+[end]
+
+[date-time-formatting]
+<strong>Date/Time Formatting</strong><br /><br />
+You can set the way that all dates and times are displayed within the forum. This uses standard php date/time formatting.
+There is a link at the bottom to a page that explains the various options available.<br /><br />
+[end]
+
+[editor-options-toolbar]
+<strong>Using the Integrated Editor Toolbar</strong><br /><br />
+There are many options that will get displayed under the post editor - smileys for example - and many Simple:Press plugins can add more -
+such as attachments, polls, tags etc. This can start to get in the way of the task at hand - writing a forum post.<br /><br />
+The Integrated Editor Toolbar replaces all of those options with a simple row of buttons that can be used to just open up those sections and tasks
+that you need - when you need them. And keep them hidden when you don't.
+[end]
+
+[smileys]
+<strong>Maxmimum Smileys Allowed in Posts</strong><br /><br />
+Some users just get carried away without realising that every smiley requires it's own http request and can slow down the load
+time of the page. Limit the smileys allowed in a post - if smileys are being alliowed at all.<br />
+To allow any number of smileys with no ceiling, leave the option set to zero.
+[end]
+
+[post-links-filtering]
+<strong>Maximum Links Allowed in Posts</strong><br /><br />
+As we all know, most spammers like to fill their posts or emails with lots of links - and some genuine users just get carried away!.
+This option allows you to set the maximum number of links permissible in a single post. If that maximum number is exceeded, the post is rejected.<br />
+To allow any number of links with no ceiling, leave the option set to zero.  There is a permission which controls whether or not to allow links in post content.<br /><br />
+<strong>Post Links Filtering</strong><br /><br />
+You can set links within forum posts to include 'rel=noffolow' and/or 'target=_blank' which will force the link to open in a new
+browser window or tab.  You can use the URL shortening feature to limit the amount of characters shown in a URL.  Any URLs that are over the limit,
+will be shortened.  URLs under the limit will be unaffected.
+[end]
+
+[spam-post]
+<strong>Duplicate Post Refusal</strong><br /><br />
+Duplicate Post detection can be turned on for Members and/or Guests. If enabled and a duplicate post is detected it will simply be refused.
+[end]
+
+[content-width]
+<strong>Post Content Width</strong><br /><br />
+Traditionally, long lines of HTML with no spaces to break it up will not wrap in their given container. In terms of the forum, this is the post content.
+Most modern browsers now support the CSS3 'Word Wrap' rules which resolves this problem and Simple:Press attempts to make use of this
+advanced feature.<br />
+However, the post content width available to any single installation of Simple:Press is unknown and will differ from site to site. Simple:Press will
+attempt to calculate this width and use it for its post display. Under certain circumstances, it may not be quite correct and you can change
+the saved value at any time. Note that the value equates to pixels.<br />
+if you wish to let Simple:Press recalculate the width at any time then:
+<ol>
+<li>Turn on the Text Wrapping option</li>
+<li>Set the value of the 'Maximum Display Width' to zero</li>
+<li>Immediately log out of your WordPress session</li>
+<li>Log back in</li>
+<li>Visit a forum topic page that you know displays correctly</li>
+</ol>
+The above actions will reset the calculated width value. Note it can still be altered manually in this panel for fine tuning.<br />
+<b>Important note:</b> If you are using a 'liquid' layout theme where the width of the post content alters when the browser is resized then
+do NOT use the text-wrap option.
+[end]
+
+[block-admin]
+<strong>Block WordPress Admin Access</strong><br /><br />
+This option allows you to block User access to the WordPress Admin pages.<br /><br />
+It is also possible to block access to the WordPress admin based on a minimum role.  When setting the minimum role, any user having that role or greater (based on cap level assigned to the role) will still be given access to the WordPress admin.  Please note, if you set the min role to subscriber, this will effectively disable block admin.<br /><br />
+When blocking users access to the wp admin pages, you can also specify the url that you want to redirect to such as the site home page, the forum home page, the forum profile page, other 3rd party plugin url, etc.
+[end]
+
+[guest-settings]
+<strong>Guest Settings</strong><br /><br />
+Using the settings here, you can optionally require a guest to enter an email address before they can post.  Also, you can choose whether to store a cookie containing the guest information when they post so it is auto filled the next time they visit your forum.
+[end]
+
+[additional-filters]
+<strong>Additional Filters</strong><br /><br />
+<ul>
+<li>Filter &lt;pre&gt; tags - optionally filter out these html tags which often break formatting of posts.</li>
+</ul>
+[end]
+
+[image-enlarging]
+<strong>Image Enlargement</strong><br /><br />
+When users include images in their forum posts you have no control over the size of the images and this can sometimes cause display problems -
+especially with themes that have narrow columns.
+Turning on this option can help resolve that by showing images as a thumbnail which will expand in a pop-up window to their full size when clicked on.
+A small icon is also placed beside the thumbnail.<br /><br />
+You can also optionally constrain the size of the enlarged popup image to automatically be no larger than the available window size.<br /><br />
+You set the size of the thumbnail (it's width in pixels) here.<br /><br />
+The next paragraph following an image can be forced onto a new line instread of being potentially wrapped beside the image.<br /><br />
+If you do NOT want any of your posted images to be resized to thumbnails then simply turn off the use of Image Thumbnails.<br /><br />
+If you need to completely avoid the image processing for a specific image, then simply add a class to the image tag and it will be ignored. The class name
+does not matter so, for example, adding class="dummy" would be fine and would bypass the processing of images and just show the image as is.
+[end]
+
+[shortcode-filters]
+<strong>Shortcodes Filtering</strong><br /><br />
+Here you can choose to have Simple:Press filter shortcodes out of your post content.<br /><br />
+If you choose not to filter out shortcodes, ANY shortcodes that can be used on your site in WordPress posts or pages, can be used by any user with posting privileges on the forum.  This may not be desirable depending upon what shortcodes are defined on your site.<br /><br />
+If you choose to filter out shortcodes, you can also optionally specify a set of shortcodes to allow.  This is useful if you want to allow galleries, polls or other shortcodes in your post content.<br /><br />
+To enter a list of allowed shortcodes, enter one shortcode per line without the brackets [ ].  That is, to allow [gallery] shortcode, you would just enter gallery.
+[end]
+
+[user-removal]
+<strong>Auto User Removal</strong><br /><br />
+With this feature, you can have inactive users auto removed from WordPress and Simple:Press.  You can have users auto removed in two ways.  The first is if they have not made a WordPress and Simple:Press post in the number of days specified in the form.  The second is if they have not visited the forum within the number of days specified on the form.<br /><br />
+The auto removal feature uses the WordPress Cron system to remove users.  It should run shortly after being enabled.  Exactly when depends on the traffic to your site. Once enabled, the Cron job will run once per day and check for users to remove.
+[end]
+
+[combined-caches]
+<strong>Combined CSS and Scripts Cache Files</strong><br /><br />
+In order to improve performance and limit the number of HTTP requests per page load for all the forum CSS and script (JS) files, by default Simple Press combines or
+concatenates the CSS and script files into one CSS file and two script files (one for header and one for footer). With these options, you can disable this combining and force individual
+loading of each CSS and script file.  This should not need to be done, but the option is provided for debugging or other rare cases.
+[end]
+
+[delete-count]
+<strong>Post Count Update on Post Deletion</strong><br /><br />
+This option will allow you to decide how to handle a user's post count when one of their posts is deleted.  If the option is enabled, when a user's post is deleted, their post count will be
+decremented by one.  If the option is disabled, post counts will be unaffected by post deletion - a post made is a post counted.
+[end]

@@ -1,0 +1,387 @@
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/hupso-share-buttons-for-"
+"twitter-facebook-google\n"
+"POT-Creation-Date: 2013-12-10 08:40:27+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-12-10 14:57+0100\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#: share-buttons-hupso-meta.php:20
+msgid "Hupso"
+msgstr "Hupso"
+
+#: share-buttons-hupso-meta.php:35 share-buttons-hupso-meta.php:38
+#: share-buttons-hupso-meta.php:95
+msgid "Default"
+msgstr "Standaard"
+
+#: share-buttons-hupso-meta.php:41 share-buttons-hupso-meta.php:96
+msgid "Enabled"
+msgstr "Ingeschakeld"
+
+#: share-buttons-hupso-meta.php:44 share-buttons-hupso-meta.php:97
+msgid "Disabled"
+msgstr "Uitgeschakeld"
+
+#: share-buttons-hupso-meta.php:95 share-buttons-hupso-widget.php:76
+#: share-buttons-hupso.php:1893
+msgid "Settings"
+msgstr "Instellingen"
+
+#: share-buttons-hupso-widget.php:15 share-buttons-hupso-widget.php:68
+#: share-buttons-hupso.php:282
+msgid "Share"
+msgstr "Deel"
+
+#: share-buttons-hupso-widget.php:72
+msgid "Title"
+msgstr "Titel"
+
+#: share-buttons-hupso.php:280
+msgid "en_US"
+msgstr "nl_BE"
+
+#: share-buttons-hupso.php:281
+msgid "English"
+msgstr "Nederlands"
+
+#: share-buttons-hupso.php:283 share-buttons-hupso.php:732
+msgid "Excerpts"
+msgstr "Fragmenten"
+
+#: share-buttons-hupso.php:287
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Je hebt niet voldoende rechten om deze pagina te bekijken"
+
+#: share-buttons-hupso.php:297
+msgid "Hupso Share Buttons for Twitter, Facebook & Google+ (Settings)"
+msgstr "Hupso knoppen voor Twitter, Facebook & Google+ (Instellingen)"
+
+#: share-buttons-hupso.php:301
+msgid "Preview"
+msgstr "Voorbeeld"
+
+#: share-buttons-hupso.php:301
+msgid "Update"
+msgstr "Update"
+
+#: share-buttons-hupso.php:304 share-buttons-hupso.php:974
+msgid "Save Settings"
+msgstr "Instellingen bewaren"
+
+#: share-buttons-hupso.php:308
+msgid "Shortcodes"
+msgstr "Verkorte code"
+
+#: share-buttons-hupso.php:371
+msgid "Button type"
+msgstr "Knop type"
+
+#: share-buttons-hupso.php:399
+msgid "Button size"
+msgstr "Knop grootte"
+
+#: share-buttons-hupso.php:407 share-buttons-hupso.php:497
+#: share-buttons-hupso.php:884
+msgid "Custom image from URL"
+msgstr "Eigen afbeelding via URL"
+
+#: share-buttons-hupso.php:418
+msgid "Toolbar size"
+msgstr "Toolbar grootte"
+
+#: share-buttons-hupso.php:433
+msgid "Big"
+msgstr "Groot"
+
+#: share-buttons-hupso.php:434
+msgid "Medium"
+msgstr "Medium"
+
+#: share-buttons-hupso.php:435
+msgid "Small"
+msgstr "Klein"
+
+#: share-buttons-hupso.php:446
+msgid "Share image"
+msgstr "Gedeelde afbeelding"
+
+#: share-buttons-hupso.php:469
+msgid "Show in language"
+msgstr "Toon in taal"
+
+#: share-buttons-hupso.php:496
+msgid "Hide"
+msgstr "Verstop"
+
+#: share-buttons-hupso.php:497
+msgid "Optimal image height: 32px - big, 24px - medium, 16px - small/counters"
+msgstr ""
+"Optimale afbeelding hoogte: 32px - groot, 24px - medium, 16px - klein/tellers"
+
+#: share-buttons-hupso.php:511
+msgid "Background color"
+msgstr "Achtergrond kleur"
+
+#: share-buttons-hupso.php:512
+msgid "Border color"
+msgstr "Rand kleur"
+
+#: share-buttons-hupso.php:521 share-buttons-hupso.php:564
+msgid "Social networks"
+msgstr "Sociale netwerken"
+
+#: share-buttons-hupso.php:610
+msgid "Show counters in language"
+msgstr "Toon tellers in taal"
+
+#: share-buttons-hupso.php:614
+msgid "Language changes will not show in preview"
+msgstr "Taal veranderingen zullen niet getoond worden in voorbeeld"
+
+#: share-buttons-hupso.php:615
+msgid ""
+"Select which language to use for Counters (Tweet, Facebook Like, Facebook "
+"Share...)"
+msgstr ""
+"Selecteer welke taal je wil gebruiken bij je tellers (Tweet, Facebook Like, "
+"Facebook Share...)"
+
+#: share-buttons-hupso.php:615 share-buttons-hupso.php:627
+msgid "Type of menu"
+msgstr "Soort menu"
+
+#: share-buttons-hupso.php:640
+msgid "Show icons and service names"
+msgstr "Toon iconen en namen"
+
+#: share-buttons-hupso.php:641
+msgid "Show icons only"
+msgstr "Toon enkel iconen"
+
+#: share-buttons-hupso.php:648
+msgid "Button position"
+msgstr "Knop positie"
+
+#: share-buttons-hupso.php:663
+msgid "Above the post"
+msgstr "Boven het bericht"
+
+#: share-buttons-hupso.php:664
+msgid "Below the post"
+msgstr "Onder het bericht"
+
+#: share-buttons-hupso.php:665
+msgid "Above and below the post"
+msgstr "Boven en onder het bericht"
+
+#: share-buttons-hupso.php:668
+msgid "Show buttons on"
+msgstr "Toon knoppen op"
+
+#: share-buttons-hupso.php:728
+msgid "Posts"
+msgstr "Berichten"
+
+#: share-buttons-hupso.php:729
+msgid "Pages"
+msgstr "Pagina's"
+
+#: share-buttons-hupso.php:730
+msgid "Front page"
+msgstr "Voorpagina"
+
+#: share-buttons-hupso.php:731
+msgid "Archive pages (categories, tags, dates, authors)"
+msgstr "Archief pagina's (categorieën, tags, datums, auteurs"
+
+#: share-buttons-hupso.php:733
+msgid "Search pages"
+msgstr "Zoek pagina's"
+
+#: share-buttons-hupso.php:734
+msgid "Password protected posts"
+msgstr "Paswoord beveiligd bericht"
+
+#: share-buttons-hupso.php:747
+msgid "Custom post types:"
+msgstr "Eigen bericht types"
+
+#: share-buttons-hupso.php:764
+msgid "If you want to show share buttons just on some posts/pages do this:"
+msgstr ""
+"Indien je enkel bij bepaalde berichten / pagina's je deel-knoppen wil tonen, "
+"doe het volgende"
+
+#: share-buttons-hupso.php:764
+msgid "1. Clear options for posts/pages above"
+msgstr "1. Verwijder opties voor berichten en pagina's hierboven"
+
+#: share-buttons-hupso.php:764
+msgid "2. Enable Add share buttons option to \"Edit Post\" screen - below"
+msgstr ""
+"2. Schakel deel-knoppen opties in voor \"Edit Post\" scherm - hieronder"
+
+#: share-buttons-hupso.php:764
+msgid ""
+"3. Edit any post or page and configure display of share buttons at the "
+"bottom of right sidebar (on \"Edit Post\" screen)"
+msgstr ""
+"Bewerk elk bericht of pagina en configureer de deel-knoppen aande onderkant "
+"van de rechter sidebar (on \"Edit Post\" screen)"
+
+#: share-buttons-hupso.php:773
+msgid "Add share buttons option to \"Edit Post\" screen"
+msgstr "Voeg deel-knoppen opties toe aan \"Edit Post\" scherm"
+
+#: share-buttons-hupso.php:777
+msgid "Hide buttons for specific categories"
+msgstr "Verberg knoppen voor specifieke categorieën"
+
+#: share-buttons-hupso.php:798
+msgid "Always show"
+msgstr "Toon altijd"
+
+#: share-buttons-hupso.php:800
+msgid "Select categories where you want to hide share buttons."
+msgstr "Selecteer de categorieën waar je de knoppen wil verbergen"
+
+#: share-buttons-hupso.php:801
+msgid ""
+"To select multiple categories, you need to hold down the Control Key for "
+"each selected category after the first one."
+msgstr ""
+"Indien je meerdere categorieën wil selecteren houd je de CTRL toets "
+"ingedruktvoor elke categorie die je kiest na de eerst gekozene"
+
+#: share-buttons-hupso.php:802
+msgid ""
+"Leave all options unselected or select just the last option to show buttons "
+"inside every category."
+msgstr ""
+"Laat alle opties leeg of selecteer enkel de laatste optie om de knoppen te "
+"tonenbinnen elke categorie"
+
+#: share-buttons-hupso.php:807
+msgid "Get share text from"
+msgstr "Haal deel tekst van"
+
+#: share-buttons-hupso.php:821
+msgid "Title of post in Wordpress"
+msgstr "Titel van het bericht in Wordpress"
+
+#: share-buttons-hupso.php:822
+msgid "Title of current web page"
+msgstr "Titel van de huidige pagina"
+
+#: share-buttons-hupso.php:827
+msgid "Twitter via"
+msgstr "Twitter via"
+
+#: share-buttons-hupso.php:835
+msgid "Add \"via @yourprofile\" to tweets"
+msgstr "Voeg \"via @yourprofile\" toe aan je tweets"
+
+#: share-buttons-hupso.php:840
+msgid "Image for Facebook thumbnail"
+msgstr "Afbeelding voor facebook thumbnail"
+
+#: share-buttons-hupso.php:880
+msgid ""
+"All images for Facebook should be at least 200px in both dimensions "
+"(Facebook limitation)"
+msgstr ""
+"Alle afbeeldingen voor facebook moeten op zijn minst 200px zijn in beide "
+"richtingen (Facebook limitatie)"
+
+#: share-buttons-hupso.php:880
+msgid ""
+"After you change settings here, please wait 24 hours (or more) for Facebook "
+"to fetch new thumbnails"
+msgstr ""
+"Na het veranderen van de instellingen hier, wact ten minste 24 uur (of meer) "
+"voor Facebook de nieuwe thumbnails kan binnenhalen"
+
+#: share-buttons-hupso.php:880 share-buttons-hupso.php:882
+msgid "Header image"
+msgstr "Header afbeelding"
+
+#: share-buttons-hupso.php:882
+msgid "Click here to see full header image"
+msgstr "Klik hier om de volledige header afbeelding te zien"
+
+#: share-buttons-hupso.php:882
+msgid "preview"
+msgstr "Voorbeeld"
+
+#: share-buttons-hupso.php:883
+msgid "Featured image of post"
+msgstr "Voorgestelde afbeelding van het bericht"
+
+#: share-buttons-hupso.php:885
+msgid "None"
+msgstr "Geen"
+
+#: share-buttons-hupso.php:886 share-buttons-hupso.php:891
+msgid "CSS style"
+msgstr "CSS stijl"
+
+#: share-buttons-hupso.php:899 share-buttons-hupso.php:904
+msgid "Widget Text"
+msgstr "Widget tekst"
+
+#: share-buttons-hupso.php:917
+msgid "Use shortcodes in text widgets"
+msgstr "Gebruik verkorte code in tekst widgets"
+
+#: share-buttons-hupso.php:917 share-buttons-hupso.php:922
+msgid "Custom title"
+msgstr "Eigen titel"
+
+#: share-buttons-hupso.php:930
+msgid "Enter custom text that will always be used for sharing."
+msgstr "Gebruik eigen tekst die zal gebruikt worden voor te delen"
+
+#: share-buttons-hupso.php:930
+msgid ""
+"Leave this blank to use title of current page as text for sharing. [Default]"
+msgstr ""
+"Laat dit blank om de titel van de huidige pagina als tekst te gebruiken om "
+"te delen. [Default]"
+
+#: share-buttons-hupso.php:935
+msgid "Custom url"
+msgstr "Eigen url"
+
+#: share-buttons-hupso.php:942
+msgid "Leave this blank to use url of current page for sharing. [Default]"
+msgstr ""
+"Laat dit blank om de url van de huidige pagina te gebruiken om te delen. "
+"[Default]"
+
+#: share-buttons-hupso.php:947
+msgid "Use custom social share icons"
+msgstr "Gebruik eigen iconen om te delen"
+
+#: share-buttons-hupso.php:964
+msgid "No. [Default. Do not change this unless you know what you are doing.]"
+msgstr "Nee. [Default. Verander dit niet tenzij je weet wat je doet]"
+
+#: share-buttons-hupso.php:965
+msgid "Yes, serve images from local Wordpress folder. "
+msgstr "Ja, gebruik eigen afbeeldingen van lokale wordpress folder"
+
+#: share-buttons-hupso.php:967
+msgid "Yes, serve images from remote URL: "
+msgstr "Ja, gebruik afbeeldingen vanuit een externe url"
+
+#: share-buttons-hupso.php:968
+msgid "This setting has no effect when using Counters."
+msgstr "Deze instelling heeft geen effect als je tellers gebruikt"

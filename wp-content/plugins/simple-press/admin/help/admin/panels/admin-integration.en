@@ -1,0 +1,89 @@
+--- WordPress Integration ---
+$LastChangedDate: 2012-06-05 05:42:33 -0700 (Tue, 05 Jun 2012) $
+$Rev: 8661 $
+
+[forum-page-details]
+<strong>Forum Page Slug</strong><br /><br />
+When Simple:Press was installed, it attempted to create a new WordPress '<strong>page</strong>'.  If successful, the
+<strong>Slug</strong> of the page will be recorded here.  If for any reason this field is empty, and the dropdown list of pages
+does not include one to use for the forum display, create a new blank page and come back to complete this setting, selecting the
+new page you have created. <b>Note that the slug is always all lower case.</b><br /><br />
+The 'slug' is what is used in the url to enable access to the forum page. Matching the slug is how Simple:Press knows which
+'page' to use for it's display.<br /><br />
+Note also that if your choice of a forum page is a 'sub-page' then the slug will need to use both parent and child slugs.<br /><br />
+[end]
+
+[forum-permalink]
+<strong>Update Forum Permalink</strong><br /><br />
+When Simple:Press is installed it sets the forum permalink to match the structure of your Blog. This is a backup method
+for updating your permalink.  Simple:Press should automatically update itself if your permalink is changed, but this method can be
+used if that doesn't seem to be functioning correctly.
+[end]
+
+[integration-options]
+<strong>Integration Options</strong><br />
+On some WordPress installs, there are integration issues with the theme or other plugins.  The options below will allow some tweaking options to allow
+Simple:Press integration with those themes and plugins that do things a bit differently.<br /><br />
+<b>Filter WordPress List Pages</b><br />
+The WordPress function <code>wp_list_pages()</code> and the newer <code>wp_nav_menu()</code> have long standing problems that remain unfixed.<br /><br />
+If the forum title or topic title is appearing in your navigation bar or page list instead of just the forum page name link, turn this option and Simple:Press
+will attempt to filter it correctly.<br /><br />
+<b>Load JavaScript in the Footer</b><br />
+This option will set Simple:Press to load most of its scripts into the footer. This should give a better level of performance of page
+loading. If you encounter any script errors or problems try turning this option off before seeking support.<br /><br />
+<b>Force the strict use of the WordPress API</b><br />
+To aid the perception that content is loading, Simple:Press does not adhere strictly to the WordPress API when displaying content. In some cases this
+can be undesirable. Using this option will ensure the API is used in full but we would recommend only turning this on if necessary.
+[end]
+
+[theme-options]
+<strong>Theme Options</strong><br /><br />
+<b>WordPress Loop, Multiple Loading, and Bypass wp_head Options</b><br /><br />
+Some WordPress themes add special processing of a page's content - for example a 'featured post' option. Some of these non-standard features
+can cause the forum content not to display. If this is the case with your theme, these two option settings can try and bypass the problem
+and force the forum display. Try each one individually and try then both turned on as well. Note that if your forum displays without hitch
+then both of these options should be turned off to avoid any necessary overhead.  The bypass wp_head requirement option is useful if your them
+has a unique layout engine and may not use the wp_head action directly (such as the Gantry Framework)<br /><br />
+[end]
+
+[storage-locations]
+<b>Why Change Locations?</b><br /><br />
+There are two compelling reasons to site some Simple:Press files outside of the WordPress plugins folder:
+<ul>
+<li>WordPress periodically scans ALL the files in ALL of your plugins. This obviously takes time. By removing some of them from
+the plugins folder, they will not be included in these scans which will aid general performance.</li>
+<li>If you make customizations to any of these files, storing these files outside of the plugins folder
+ensures they will never be touched by an upgrade of the plugin.</li>
+</ul><br />
+The downside of course, is that you have to manually move components to their new location and also copy these components into their
+new home on subsequent upgrades of Simple:Press.
+<br /><br />
+<b>The Rules</b><br /><br />
+The rules are simple and straightforward:
+<ul>
+<li>All locations MUST reside under the WordPress '<b>wp-content</b>' folder.</li>
+<li>You are responsible for creating the new location folders and setting the appropriate permissions.</li>
+<li>You are responsible for copying the content from their current locations to their new, custom locations.</li>
+<li>You are responsible for maintaining these folders and re-copying where required on future upgrades.</li>
+</ul>
+<b>Note: Upgrades of Simple:Press will NEVER copy files to your custom locations.</b><br /><br />
+<b>Specifying the New Locations</b><br /><br />
+To specify a new, custom location, simply enter the exact path NOT including the 'wp-content' folder which is assumed.
+Any leading or trailing slashes will be removed as they are not required. Locations that exist will be shown with the tick graphic.
+Any that do not will be shown with the cross graphic.<br /><br />
+If the folder is writeable, a pencil icon will show, if not a red 'denied' icon will show which means that permissions on the folder
+require setting for file saving to take place.
+[end]
+
+[rebuild-indexes]
+<strong>Rebuild Forum and Post Indexes</strong><br /><br />
+As a performance aid, Simple:Press database tables for forums and topics maintain an index for latest activity.  Under normal conditions, you will never need to worry about this.  Some actions, like moving to a new domain, or importing other forum data, rebuilding these indexes is needed.  You should not need to use these unless asked to by Simple:Press support (though doing so won't hurt anything).<br /><br />
+Please note, that if you have a significant number of forums or topics, the process of rebuilding these indexes may take a few moments.  Please be patient.
+[end]
+
+[transient-cleanup]
+<strong>WordPress Transient Cleanup</strong><br /><br />
+To aid in performance, WordPress uses something called transients in the WordPress options table.  These transients have a limited time of validity.  Unfortunately, if a transient expires, it is not automatically removed from the options table.  It is only removed when it is accessed and its determined it has expired.<br /><br />
+Simple:Press uses these WordPress transients for some tasks.  If you have many short term users, like in a support forum, where the users may cause transients to be created but infrequently or rarely visit the forum, these expire
+[end]
+

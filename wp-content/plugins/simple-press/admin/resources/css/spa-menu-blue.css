@@ -1,0 +1,25 @@
+/*
+Simple:Press Admin Menu CSS (Blue)
+$LastChangedDate:2009-10-30 21:19:52 +0000 (Fri, 30 Oct 2009) $
+$Rev:2882 $
+*/
+
+.sfsidebutton, .sfsidebutton a, .ui-widget-header { background-color: #eff8ff; color: #1c6280; }
+.sfsideitem:hover { background-color: #eff8ff; color: #000000; }
+.sfform-panel-head { background: #5883a9; color: #ffffff; }
+.sfform-panel, sfform-panel-nohead { background: #ffffff; color: #333333; }
+.form-table td.longmessage { color: #333333; }
+.sffieldset legend { background-color: #eff8ff; color: #1c6280; }
+.sfsubfieldset legend { background-color: #eff8ff; color: #333333; }
+.subhead { color: #333333 }
+.form-table td { color: #000000; }
+.sffieldset { color: #000000; background-color: #ffffff; }
+.sublabel { color: #000000 }
+.sfsubfieldset { color: #333333; background-color: #eff8ff; }
+.sfhelptext fieldset { background-color: #eff8ff; color: #333333; }
+.form-table th { background-color: #eff8ff; color: #333333; }
+.sfmaintable th, .sfsubtable th, .sfsubsubtable th { background: #eff8ff; color: #1c6280; }
+.sfmaintable { background-color: #ffffff; }
+.sfmaintable td { color: #333333; }
+.sfsubtable, .sfsubsubtable,.sfhelptext .sfhelptag { background-color: #ffffff; }
+.sfsubtable td, .sfsubsubtable td, .sfhelptext .sfhelptag p { color: #333333; }

@@ -1,0 +1,25 @@
+/*
+Simple:Press Admin Menu CSS (Gray)
+$LastChangedDate:2009-10-30 21:19:52 +0000 (Fri, 30 Oct 2009) $
+$Rev:2882 $
+*/
+
+.sfsidebutton, .sfsidebutton a, .ui-widget-header { background-color: #f1f1f1; color: #21759b; }
+.sfsideitem:hover { background-color: #f1f1f1; color: #000000; }
+.sfform-panel-head { background: #dfdfdf; color: #21759b; }
+.sfform-panel, .sfform-panel-nohead { background: #ffffff; color: #333333; }
+.form-table td.longmessage { color: #333333; }
+.sffieldset legend { background-color: #f1f1f1; color: #21759b; }
+.sfsubfieldset legend { background-color: #f1f1f1; color: #333333; }
+.subhead { color: #333333; }
+.form-table td { color: #333333; }
+.sffieldset { color: #333333; background-color: #ffffff; }
+.sublabel { color: #333333; }
+.sfsubfieldset { color: #333333; background-color: #f1f1f1; }
+.sfhelptext fieldset { background-color: #f1f1f1; color: #333333; }
+.form-table th { background-color: #f1f1f1; color: #333333; }
+.sfmaintable th, .sfsubtable th, .sfsubsubtable th { background: #f1f1f1; color: #333333; }
+.sfmaintable { background-color: #ffffff; }
+.sfmaintable td { color: #333333; }
+.sfsubtable, .sfsubsubtable,.sfhelptext .sfhelptag { background-color: #ffffff; }
+.sfsubtable td, .sfsubsubtable td, .sfhelptext .sfhelptag p { color: #333333; }
