@@ -48,14 +48,15 @@ class TablePress_WP_Option {
 	 * @param array $params Name of the Option in string $params['option_name'],
 	 *						Default values for the Option in array $params['default_value']
 	 */
-	public function __construct( $params ) {
+	public function __construct( array $params ) {
 		$this->option_name = $params['option_name'];
 
 		$option_value = $this->_get_option( $this->option_name, null );
-		if ( ! is_null( $option_value ) )
+		if ( ! is_null( $option_value ) ) {
 			$this->option_value = json_decode( $option_value, true ); // decode JSON as associative array
-		else
+		} else {
 			$this->option_value = $params['default_value'];
+		}
 	}
 
 	/**
@@ -75,19 +76,21 @@ class TablePress_WP_Option {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $name (optional) Name of a single option to get, or false for all options
+	 * @param string|bool $name (optional) Name of a single option to get, or false for all options
 	 * @param mixed $default_value (optional) Default value to return, if a single option $name does not exist
 	 * @return mixed|array Value of the retrieved option $name or $default_value if it does not exist, or all options
 	 */
 	public function get( $name = false, $default_value = null ) {
-		if ( false === $name )
+		if ( false === $name ) {
 			return $this->option_value;
+		}
 
 		// Single Option wanted
-		if ( isset( $this->option_value[ $name ] ) )
+		if ( isset( $this->option_value[ $name ] ) ) {
 			return $this->option_value[ $name ];
-		else
+		} else {
 			return $default_value;
+		}
 	}
 
 	/**
@@ -98,7 +101,7 @@ class TablePress_WP_Option {
 	 * @param array $new_options New options ( name => value )
 	 * @return bool True on success, false on failure
 	 */
-	public function update( $new_options ) {
+	public function update( array $new_options ) {
 		$this->option_value = $new_options;
 		return $this->_update_option( $this->option_name, json_encode( $this->option_value ) );
 	}

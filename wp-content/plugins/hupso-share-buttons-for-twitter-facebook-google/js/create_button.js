@@ -264,7 +264,13 @@ function hupso_create_code() {
 			if ( $( "input:checkbox[name=vkontakte]:checked" ).val() == 1 )
 				hupso_services += '"VKontakte",';			
 			if ( $( "input:checkbox[name=odnoklassniki]:checked" ).val() == 1 )
-				hupso_services += '"Odnoklassniki",';					
+				hupso_services += '"Odnoklassniki",';			
+			if ( $( "input:checkbox[name=sinaweibo]:checked" ).val() == 1 )
+				hupso_services += '"Sina Weibo",';						
+			if ( $( "input:checkbox[name=qzone]:checked" ).val() == 1 )
+				hupso_services += '"QZone",';					
+			if ( $( "input:checkbox[name=renren]:checked" ).val() == 1 )
+				hupso_services += '"Renren",';						
 			if ( $( "input:checkbox[name=email]:checked" ).val() == 1 )
 				hupso_services += '"Email",';		
 			if ( $( "input:checkbox[name=print]:checked" ).val() == 1 )

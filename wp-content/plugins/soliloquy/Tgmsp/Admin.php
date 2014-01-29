@@ -1018,7 +1018,7 @@ class Tgmsp_Admin {
 			else
 				return stripslashes_deep( $custom_field[$setting] );
 		} elseif ( is_array( $custom_field ) ) {
-			return stripslashes_deep( $custom_field );
+            return $custom_field;
 		} else {
 			return stripslashes( $custom_field );
 		}

@@ -12,7 +12,7 @@ function wpfc_plugin_get_version() {
 function wpfc_sermon_update_warning() {
 	$sermon_settings = get_option('wpfc_options');
 	$sermon_version = $sermon_settings['version'];
-		if(empty($sermon_version)):
+		if( $sermon_version < '1.8' ):
 			add_action('admin_notices', 'wpfc_sermon_warning_html');
 		endif;
 }
@@ -29,6 +29,9 @@ function wpfc_sermon_warning_html() {
 		
 function wpfc_sermon_update() {
 	
+	$sermon_settings = get_option('wpfc_options');
+	$sermon_version = $sermon_settings['version'];
+	
 	$args = array(
 	  'post_type'       => 'wpfc_sermon',
 	  'posts_per_page'  => '-0'
@@ -37,10 +40,59 @@ function wpfc_sermon_update() {
 	
 	while ($wpfc_sermon_update_query->have_posts()) : $wpfc_sermon_update_query->the_post();
 		global $post;
-		$service_type = get_post_meta($post->ID, 'service_type', 'true');
-		if( !has_term('wpfc_service_type') ){      
-			wp_set_object_terms($post->ID, $service_type, 'wpfc_service_type');
-		}
+		if( empty($sermon_version) ):
+			$service_type = get_post_meta($post->ID, 'service_type', 'true');
+			if( !has_term('wpfc_service_type') ){      
+				wp_set_object_terms($post->ID, $service_type, 'wpfc_service_type');
+			}
+			
+			$current = get_post_meta($post->ID, 'sermon_audio', 'true');
+			$currentsize = get_post_meta($post->ID, '_wpfc_sermon_size', 'true');
+
+			// only grab if different (getting data from dropbox can be a bit slow)
+			if ( empty($currentsize) ) {
+
+				// get file data
+				$size =  wpfc_get_filesize( $current );
+				$duration = wpfc_mp3_duration( $current );
+
+				// store in hidden custom fields
+				update_post_meta( $post->ID, '_wpfc_sermon_duration', $duration );
+				update_post_meta( $post->ID, '_wpfc_sermon_size', $size );
+
+			}
+			//Alter the options array appropriately
+			$sermon_settings['version'] = wpfc_plugin_get_version();
+
+			//Update entire array
+			update_option('wpfc_options', $sermon_settings);
+
+		endif;
+		if( $sermon_version < '1.8' ):
+			
+			$current = get_post_meta($post->ID, 'sermon_audio', 'true');
+			$currentsize = get_post_meta($post->ID, '_wpfc_sermon_size', 'true');
+
+			// only grab if different (getting data from dropbox can be a bit slow)
+			if ( empty($currentsize) ) {
+
+				// get file data
+				$size =  wpfc_get_filesize( $current );
+				$duration = wpfc_mp3_duration( $current );
+
+				// store in hidden custom fields
+				update_post_meta( $post->ID, '_wpfc_sermon_duration', $duration );
+				update_post_meta( $post->ID, '_wpfc_sermon_size', $size );
+
+			}
+			//Alter the options array appropriately
+			$sermon_settings['version'] = wpfc_plugin_get_version();
+
+			//Update entire array
+			update_option('wpfc_options', $sermon_settings);
+
+			
+		endif;
 	endwhile;
 	wp_reset_query();
 }

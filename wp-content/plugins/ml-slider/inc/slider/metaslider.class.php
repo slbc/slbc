@@ -15,19 +15,17 @@ class MetaSlider {
     /**
      * Constructor
      */
-    public function __construct($id) {
+    public function __construct($id, $shortcode_settings) {
         $this->id = $id;
-        $this->settings = $this->get_settings();
+        $this->settings = array_merge($shortcode_settings, $this->get_settings());
         $this->identifier = 'metaslider_' . $this->id;
         $this->save();
         $this->populate_slides();
-
-        add_filter('metaslider_css', array($this, 'get_slider_css'), 10, 3);
     }
 
     /**
      * Return the unique identifier for the slider (used to avoid javascript conflicts)
-     * 
+     *
      * @return string unique identifier for slider
      */
     protected function get_identifier() {
@@ -42,9 +40,9 @@ class MetaSlider {
     private function get_settings() {
         $settings = get_post_meta($this->id, 'ml-slider_settings', true);
 
-        if (is_array($settings) && 
-            isset($settings['type']) && 
-            in_array($settings['type'], array('flex', 'coin', 'nivo', 'responsive'))) 
+        if (is_array($settings) &&
+            isset($settings['type']) &&
+            in_array($settings['type'], array('flex', 'coin', 'nivo', 'responsive')))
         {
             return $settings;
         } else {
@@ -88,8 +86,8 @@ class MetaSlider {
             'cssClass' => '',
             'printCss' => true,
             'printJs' => true,
-            'width' => 565,
-            'height' => 290,
+            'width' => 700,
+            'height' => 300,
             'spw' => 7,
             'sph' => 5,
             'delay' => 3000,
@@ -113,9 +111,13 @@ class MetaSlider {
             'easing' => 'linear',
             'autoPlay' => true,
             'thumb_width' => 150,
-            'thumb_height' => 100
+            'thumb_height' => 100,
+            'fullWidth' => false,
+            'noConflict' => false
         );
-        
+
+        $params = apply_filters('metaslider_default_parameters', $params);
+
         return $params;
     }
 
@@ -126,11 +128,14 @@ class MetaSlider {
         if (!is_admin()) {
             return;
         }
+
         // make changes to slider
         if (isset($_POST['settings'])) {
+            check_admin_referer('metaslider_save_' . $this->id);
             $this->update_settings($_POST['settings']);
         }
         if (isset($_POST['title'])) {
+            check_admin_referer('metaslider_save_' . $this->id);
             $this->update_title($_POST['title']);
         }
         if (isset($_GET['deleteSlide'])) {
@@ -139,24 +144,23 @@ class MetaSlider {
 
         // make changes to slides
         if (isset($_POST['attachment'])) {
+            check_admin_referer('metaslider_save_' . $this->id);
             $this->update_slides($_POST['attachment']);
         }
     }
 
     /**
-     * Return slides for the current slider
-     *
-     * @return array collection of slides belonging to the current slider
+     * The main query for extracting the slides for the slideshow
      */
-    private function populate_slides() {
-        $slides = array();
-
+	public function get_slides() {
         $args = array(
             'force_no_custom_order' => true,
             'orderby' => 'menu_order',
             'order' => 'ASC',
             'post_type' => 'attachment',
             'post_status' => 'inherit',
+            'lang' => '', // polylang, ingore language filter
+            'suppress_filters' => 1, // wpml, ignore language filter
             'posts_per_page' => -1,
             'tax_query' => array(
                 array(
@@ -167,9 +171,22 @@ class MetaSlider {
             )
         );
 
+        $args = apply_filters('metaslider_populate_slides_args', $args, $this->id, $this->settings);
+
         $query = new WP_Query($args);
 
+        return $query;
+	}
+
+    /**
+     * Return slides for the current slider
+     *
+     * @return array collection of slides belonging to the current slider
+     */
+    private function populate_slides() {
         $slides = array();
+
+        $query = $this->get_slides();
 
         while ($query->have_posts()) {
             $query->next_post();
@@ -213,6 +230,41 @@ class MetaSlider {
      * @return string HTML & Javascrpt
      */
     public function render_public_slides() {
+        $html[] = '<!-- meta slider -->';
+        $html[] = '<div style="' . $this->get_container_style() . '" class="' . $this->get_container_class() .'">';
+        $html[] = '    ' . $this->get_inline_css();
+        $html[] = '    <div id="' . $this->get_container_id() . '">';
+        $html[] = '        ' . $this->get_html();
+        $html[] = '        ' . $this->get_html_after();
+        $html[] = '    </div>';
+        $html[] = '    <script type="text/javascript">';
+        $html[] = '        ' .  $this->get_inline_javascript();
+        $html[] = '    </script>';
+        $html[] = '</div>';
+        $html[] = '<!--// meta slider-->';
+
+        $slideshow = implode("\n", $html);
+
+        $slideshow = apply_filters('metaslider_slideshow_output', $slideshow, $this->id, $this->settings);
+
+        return $slideshow;
+    }
+
+    /**
+     * Return the ID to use for the container
+     */
+    private function get_container_id() {
+        $container_id = 'metaslider_container_' . $this->id;
+
+        $id = apply_filters('metaslider_container_id', $container_id, $this->id, $this->settings);
+
+        return $id;
+    }
+
+    /**
+     * Return the classes to use for the slidehsow container
+     */
+    private function get_container_class() {
         $class = "metaslider metaslider-{$this->get_setting('type')} metaslider-{$this->id} ml-slider";
 
         // apply the css class setting
@@ -223,11 +275,24 @@ class MetaSlider {
         // handle any custom classes
         $class = apply_filters('metaslider_css_classes', $class, $this->id, $this->settings);
 
+        return $class;
+    }
+
+    /**
+     * Return the inline CSS style for the slideshow container.
+     */
+    private function get_container_style() {
+        // default
+        $style = "max-width: {$this->get_setting('width')}px;";
+
         // carousels are always 100% wide
-        if ($this->get_setting('carouselMode') != 'true') {
-            $style = "max-width: {$this->get_setting('width')}px;";
-        } else {
+        if ($this->get_setting('carouselMode') == 'true' || ($this->get_setting('fullWidth') == 'true') && $this->get_setting('type') != 'coin') {
             $style = "width: 100%;";
+        }
+
+        // percentWidth showcode parameter takes precedence
+        if ($this->get_setting('percentwidth') != 'false' && $this->get_setting('percentwidth') > 0) {
+            $style = "width: {$this->get_setting('percentwidth')}%;";
         }
 
         // center align the slideshow
@@ -235,56 +300,94 @@ class MetaSlider {
             $style .= " margin: 0 auto;";
         }
 
-        // build the HTML
-        $html  = "\n<!-- meta slider -->";
-        $html .= "\n<div style=\"{$style}\" class=\"{$class}\">";
-        $html .= "\n    " . $this->get_inline_css();
-        $html .= "\n    <div id=\"metaslider_container_{$this->id}\">";
-        $html .= "\n        " . $this->get_html(); 
-        $html .= "\n    </div>";
-        $html .= $this->get_inline_javascript();
-        $html .= "\n</div>";
-        $html .= "\n<!--// meta slider-->";
+        // handle any custom container styles
+        $style = apply_filters('metaslider_container_style', $style, $this->id, $this->settings);
 
-        return $html;
+        return $style;
     }
 
     /**
      * Return the Javascript to kick off the slider. Code is wrapped in a timer
      * to allow for themes that load jQuery at the bottom of the page.
-     * 
+     *
      * Delay execution of slider code until jQuery is ready (supports themes where
      * jQuery is loaded at the bottom of the page)
      *
      * @return string javascript
      */
     private function get_inline_javascript() {
-        $identifier = $this->identifier;
-        $type = $this->get_setting('type');
+        $custom_js_before = $this->get_custom_javascript_before();
+        $custom_js_after = $this->get_custom_javascript_after();
 
-        $custom_js = apply_filters("metaslider_{$type}_slider_javascript", "", $this->id);
-
-        $script  = "\n    <script type=\"text/javascript\">";
-        $script .= "\n        var " . $identifier . " = function($) {";
-        $script .= "\n            $('#" . $identifier . "')." . $this->js_function . "({ ";
+        $script = "var " . $this->identifier . " = function($) {";
+        $script .= $custom_js_before;
+        $script .= "\n            $('#" . $this->identifier . "')." . $this->js_function . "({ ";
         $script .= "\n                " . $this->get_javascript_parameters();
         $script .= "\n            });";
-        if (strlen ($custom_js)) {
-            $script .= "\n            {$custom_js}";
-        }
+        $script .= $custom_js_after;
         $script .= "\n        };";
-        $script .= "\n        var timer_" . $identifier . " = function() {";
-        $script .= "\n            var slider = !window.jQuery ? window.setTimeout(timer_{$identifier}, 100) : !jQuery.isReady ? window.setTimeout(timer_{$identifier}, 100) : {$identifier}(window.jQuery);";
+        $script .= "\n        var timer_" . $this->identifier . " = function() {";
+        $script .= "\n            var slider = !window.jQuery ? window.setTimeout(timer_{$this->identifier}, 100) : !jQuery.isReady ? window.setTimeout(timer_{$this->identifier}, 100) : {$this->identifier}(window.jQuery);";
         $script .= "\n        };";
-        $script .= "\n        timer_" . $identifier . "();";
-        $script .= "\n    </script>";
+        $script .= "\n        timer_" . $this->identifier . "();";
 
         return $script;
     }
 
     /**
+     * Custom HTML to add immediately below the markup
+     */
+    private function get_html_after() {
+        $type = $this->get_setting('type');
+
+        $html = apply_filters("metaslider_{$type}_slider_html_after", "", $this->id, $this->settings);
+
+        if (strlen($html)) {
+            return "        {$html}";
+        }
+
+        return "";
+    }
+
+    /**
+     * Custom JavaScript to execute immediately before the slideshow is initialized
+     */
+    private function get_custom_javascript_before() {
+        $type = $this->get_setting('type');
+
+        $javascript = "";
+
+        if ($this->get_setting('noConflict') == 'true' && $type == 'flex') {
+            $javascript = "$('#metaslider_{$this->id}').addClass('flexslider'); // theme/plugin conflict avoidance";
+        }
+
+        $custom_js = apply_filters("metaslider_{$type}_slider_javascript_before", $javascript, $this->id);
+
+        if (strlen($custom_js)) {
+            return "\n            {$custom_js}";
+        }
+
+        return "";
+    }
+
+    /**
+     * Custom Javascript to execute immediately after the slideshow is initialized
+     */
+    private function get_custom_javascript_after() {
+        $type = $this->get_setting('type');
+
+        $custom_js = apply_filters("metaslider_{$type}_slider_javascript", "", $this->id);
+
+        if (strlen($custom_js)) {
+            return "\n            {$custom_js}";
+        }
+
+        return "";
+    }
+
+    /**
      * Build the javascript parameter arguments for the slider.
-     * 
+     *
      * @return string parameters
      */
     private function get_javascript_parameters() {
@@ -299,23 +402,21 @@ class MetaSlider {
                     $options[$param] = $val;
                 } else {
                     $options[$param] = '"' . $val . '"';
-                }                
+                }
             }
         }
 
         // deal with any customised parameters
         $type = $this->get_setting('type');
-
-        if (has_filter("metaslider_{$type}_slider_parameters")) {
-            $options = apply_filters("metaslider_{$type}_slider_parameters", $options, $this->id, $this->settings);
-        }
+        $options = apply_filters("metaslider_{$type}_slider_parameters", $options, $this->id, $this->settings);
+        $arg = $type == 'flex' ? 'slider' : '';
 
         // create key:value strings
         foreach ($options as $key => $value) {
             if (is_array($value)) {
-                $pairs[] = "{$key}: function() {\n                " 
-                            . implode("\n                ", $value) 
-                            . "\n            }";
+                $pairs[] = "{$key}: function($arg) {\n                "
+                            . implode("\n                ", $value)
+                            . "\n                }";
             } else {
                 $pairs[] = "{$key}:{$value}";
             }
@@ -326,43 +427,21 @@ class MetaSlider {
 
     /**
      * Apply any custom inline styling
-     * 
+     *
      * @return string
      */
     private function get_inline_css() {
-        if (has_filter("metaslider_css")) {
-            $css = apply_filters("metaslider_css", "", $this->settings, $this->id);
+        $css = apply_filters("metaslider_css", "", $this->settings, $this->id);
 
-            // use this to add the scoped attribute for HTML5 validation (if needed)
-            $attributes = apply_filters("metaslider_style_attributes", "", $this->settings, $this->id);
+        // use this to add the scoped attribute for HTML5 validation (if needed)
+        $attributes = apply_filters("metaslider_style_attributes", "", $this->settings, $this->id);
 
-            if (strlen($css)) {
-                return "<style type=\"text/css\"{$attributes}>{$css}\n    </style>";
-            }
+        if (strlen($css)) {
+            return "<style type=\"text/css\"{$attributes}>{$css}\n    </style>";
         }
 
         return "";
     }
-
-    /**
-     * 
-     */
-    public function get_slider_css($css, $settings, $slider_id) {
-        if ($slider_id != $this->id) {
-            return $css;
-        }
-
-        $imports = "";
-
-        if ($this->get_setting('printCss') == 'true') {
-            $stylesheets[] = "@import url('" . METASLIDER_ASSETS_URL . "metaslider/public.css?ver=" . METASLIDER_VERSION . "');";
-            $stylesheets[] = "@import url('" . METASLIDER_ASSETS_URL . $this->css_path . "?ver=" . METASLIDER_VERSION . "');";
-            $imports = "\n        " . implode("\n        ", $stylesheets);
-        }
-
-        return $css . $imports;
-    }
-
 
     /**
      * Include slider assets, JS and CSS paths are specified by child classes.
@@ -370,6 +449,13 @@ class MetaSlider {
     public function enqueue_scripts() {
         if ($this->get_setting('printJs') == 'true') {
             wp_enqueue_script('metaslider-' . $this->get_setting('type') . '-slider', METASLIDER_ASSETS_URL . $this->js_path, array('jquery'), METASLIDER_VERSION);
+        }
+
+        if ($this->get_setting('printCss') == 'true') {
+            // this will be added to the bottom of the page as <head> has already been processed by WordPress.
+            // For HTML5 compatibility, use a minification plugin to move the CSS to the <head>
+            wp_enqueue_style('metaslider-' . $this->get_setting('type') . '-slider', METASLIDER_ASSETS_URL . $this->css_path, false, METASLIDER_VERSION);
+            wp_enqueue_style('metaslider-public', METASLIDER_ASSETS_URL . 'metaslider/public.css', false, METASLIDER_VERSION);
         }
 
         do_action('metaslider_register_public_styles');
@@ -382,7 +468,7 @@ class MetaSlider {
         $old_settings = $this->get_settings();
 
         // convert submitted checkbox values from 'on' or 'off' to boolean values
-        $checkboxes = array('hoverPause', 'links', 'reverse', 'random', 'printCss', 'printJs', 'smoothHeight', 'center', 'smartCrop', 'carouselMode', 'autoPlay');
+        $checkboxes = array('noConflict', 'fullWidth', 'hoverPause', 'links', 'reverse', 'random', 'printCss', 'printJs', 'smoothHeight', 'center', 'smartCrop', 'carouselMode', 'autoPlay');
 
         foreach ($checkboxes as $checkbox) {
             if (isset($new_settings[$checkbox]) && $new_settings[$checkbox] == 'on') {
@@ -406,13 +492,15 @@ class MetaSlider {
             'ID' => $this->id,
             'post_title' => $title
         );
-        
+
         wp_update_post($slide);
     }
 
     /**
      * Delete a slide. This doesn't actually remove the slide from WordPress, simply untags
-     * it from the slide taxonomy
+     * it from the slide taxonomy.
+     *
+     * @param int $slide_id
      */
     private function delete_slide($slide_id) {
         // Get the existing terms and only keep the ones we don't want removed
@@ -425,16 +513,18 @@ class MetaSlider {
                 $new_terms[] = intval($current_term);
             }
         }
-     
+
         return wp_set_object_terms($slide_id, $new_terms, 'ml-slider');
     }
 
     /**
      * Loop over each slide and call the save action on each
+     *
+     * @param array $data - posted form data.
      */
     private function update_slides($data) {
         foreach ($data as $slide_id => $fields) {
-            do_action("metaslider_save_{$fields['type']}_slide", $slide_id, $this->id, $fields); 
+            do_action("metaslider_save_{$fields['type']}_slide", $slide_id, $this->id, $fields);
         }
     }
 }

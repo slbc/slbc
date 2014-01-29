@@ -1,11 +1,11 @@
 === The Events Calendar ===
 
-Contributors:  ModernTribe, PaulHughes01, roblagatta, jonahcoyote, MZAWeb, codearachnid, ryancurban, faction23, jazbek, kyleunzicker, leahkoerper, WebsiteBakery, peterchester, reid.peifer, shane.pearlman
+Contributors:  ModernTribe, roblagatta, MZAWeb, ryancurban, faction23, jazbek, jbrinley, kyleunzicker, leahkoerper, WebsiteBakery, barry.hughes, kellykathryn, neillmcshea, peterchester, reid.peifer, shane.pearlman
 Tags: events, calendar, event, venue, organizer, dates, date, google maps, conference, workshop, concert, meeting, seminar, summit, class, modern tribe, tribe, widget
 Donate link: http://m.tri.be/29
-Requires at least: 3.5
-Tested up to: 3.6.1
-Stable tag: 3.1
+Requires at least: 3.6
+Tested up to: 3.8
+Stable tag: 3.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,15 +23,15 @@ The Events Calendar is crafted the WordPress way.
 
 The Events Calendar has been audited by many of the industry's WordPress experts including core developer Mark Jaquith for security & plugin review team member Pippin Williamson for best practices and plugin compatibility.
 
-We've poured 100s of hours into QA by a dedicated support team, monthly usability tests to guarantee that it's easy to use, and numerous user interviews to make sure you get what you want. We care about quality and crafting products that thrive in the wild.
+We've poured hundreds of hours into QA by a dedicated support team, monthly usability tests to guarantee that it's easy to use, and numerous user interviews to make sure you get what you want. We care about quality and crafting products that thrive in the wild.
 
-The team at Modern Tribe stands by our work and offers light support once a week for free to the community via the WordPress.org support forums. Feel free to ask a question if you're having a problem with implementation or if you find bugs. Looking for help NOW or need a deeper level of support? Add the <a href="http://m.tri.be/2c">premium add-on plugin</a> and you get access to premium support forums with under 24hr response times on weekdays.
+The team at Modern Tribe stands by our work and offers light support every Wednesday to the community via the WordPress.org support forums. Feel free to ask a question if you're having a problem with implementation or if you find bugs. Looking for help NOW or need a deeper level of support? Add the <a href="http://m.tri.be/2c">premium add-on plugin</a> and you get access to premium support forums with under 24hr response times on weekdays.
 
 = PLUG-N-PLAY & HIGHLY CUSTOMIZABLE =
 
-TEC is built to work out of the box. Just turn it on, configure the settings to match your needs and you'll be making events within less than 5 minutes.
+The Events Calendar is built to work out of the box: it doesn’t use a shortcode (nor is one available). Just turn it on, configure the settings to match your needs and you'll be making events within less than 5 minutes.
 
-By devs for devs, it's ready to be the foundation for your wildest hack sessions. Complete with a skeleton stylesheet to theme fast and efficiently, loads of tools including partial template overrides, a host of template tags, hooks and filters, <a href="http://m.tri.be/2b">careful documentation</a>, as well as a <a href="https://github.com/moderntribe">library of code snippets</a> on GitHub. The Events Calendar is built FOR people who build websites.
+By developers, for developers...it's ready to be the foundation for your wildest hack sessions. Complete with a skeleton stylesheet to theme fast and efficiently, loads of tools including partial template overrides, a host of template tags, hooks and filters, <a href="http://m.tri.be/eu">careful documentation</a>, as well as a <a href="https://github.com/moderntribe">library of code snippets</a> on GitHub. The Events Calendar is built FOR people who build websites.
 
 Whether your vision is big or small, we have you in mind.
 
@@ -41,7 +41,7 @@ We've scaled The Events Calendar to work on a network with over 25 million uniqu
 
 Whether you're operating a hyperlocal hub listing thousands of events, a university with many thousands of users, or you're a sole business owner listing your classes, The Events Calendar has your back.
 
-Just getting started? Definitely watch and read through the <a href="http://m.tri.be/2d">New User Primer</a>.
+Just getting started? Definitely watch and read through the <a href="http://m.tri.be/2d">New User Primer</a> before going much forther.
 
 * Rapidly create events
 * Saved venues & organizers
@@ -97,7 +97,7 @@ If you're unclear about the installation process or get stuck, check out our <a 
 = Requirements =
 
 * PHP 5.2 or above
-* WordPress 3.3 or above
+* WordPress 3.6 or above
 * jQuery 1.7 or above
 
 == Screenshots ==
@@ -119,17 +119,21 @@ If you're unclear about the installation process or get stuck, check out our <a 
 
 == Frequently Asked Questions ==
 
+= Is there a shortcode available for The Events Calendar? +
+
+No, this plugin does not use a shortcode nor is one available at the time being.
+
 = Are there any troubleshooting steps you'd suggest I try that might resolve my issue before I post a new thread? =
 
-First, make sure that you're running the latest version of The Events Calendar (3.0.0 as of this release). If you're running Events Calendar PRO it needs to match the version number of The Events Calendar. And if you've got any other add-ons, make sure those are current / running the latest code as well.
+First, make sure that you're running the latest version of The Events Calendar (3.4 as of this release). If you're running Events Calendar PRO it needs to match the version number of The Events Calendar. And if you've got any other add-ons, make sure those are current / running the latest code as well.
 
-The most common issues we see are either plugin or theme conflicts. You can test if a plugin or theme is conflicting by manually deactivating other plugins until just The Events Calendar 3.0 is running on your site. If the issue persists from there, revert to the default Twenty Twelve theme. If the issue is resolved after deactivating a specific plugin or your theme, you'll know that is the source of the conflict.
+The most common issues we see are either plugin or theme conflicts. You can test if a plugin or theme is conflicting by manually deactivating other plugins until just The Events Calendar 3.4 is running on your site. If the issue persists from there, revert to the default Twenty Thirteen theme. If the issue is resolved after deactivating a specific plugin or your theme, you'll know that is the source of the conflict.
 
 Note that we aren't going to say "tough luck" if you identify a plugin/theme conflict. While we can't guarantee 100% integration with any plugin or theme out there, we will do our best (and reach out the plugin/theme author as needed) to figure out a solution that benefits everyone.
 
 = I'm still stuck. Where do I go to file a bug or ask a question? =
 
-Users of the free The Events Calendar should post their questions in the plugin's <a href="http://wordpress.org/support/plugin/the-events-calendar/">WordPress.org forum</a>, which we hit about once a week. Please make sure to read <a href="http://wordpress.org/support/topic/welcome-the-events-calendar-users-read-this-first">our sticky post</a> providing an overview of the support we provide free users BEFORE posting. If you find you're not getting support in as timely a fashion as you wish, you might want to consider purchasing a PRO license.
+Users of the free The Events Calendar should post their questions in the plugin's <a href="http://wordpress.org/support/plugin/the-events-calendar/">WordPress.org forum</a>, which we hit about once a week (on Wednesdays). Please make sure to read <a href="http://wordpress.org/support/topic/welcome-the-events-calendar-users-read-this-first">our sticky post</a> providing an overview of the support we provide free users BEFORE posting. If you find you're not getting support in as timely a fashion as you wish, you might want to consider purchasing a PRO license.
 
 If you're already a PRO user, you're entitled access to our more actively-monitored <a href="http://m.tri.be/2r">PRO forums</a> at the tri.be website. We can provide a deeper level of support here and hit these forums on a daily basis during the work week. No post should go more than 24-hours during that time without a response.
 
@@ -150,8 +154,11 @@ Currently, the following add-ons are available for The Events Calendar/Events Ca
 * <a href="http://m.tri.be/2e">Eventbrite Tickets</a>, for selling tickets to your event directly through Eventbrite.
 * <a href="http://m.tri.be/2g">Community Events</a>, for allowing frontend event submission from your readers.
 * <a href="http://m.tri.be/2h">Facebook Events</a>, for importing events directly from an organization or page on Facebook.
-* <a href="http://m.tri.be/2f">Tickets: WooCommerce</a>, for harnessing the power of WooCommerce to sell event tickets directly on your site without being subject to fees or relying on a third-party service.
-* Filter Bar (COMING SOON) for adding advanced frontend filtering capabilities to your events calendar.
+* <a href="http://m.tri.be/2f">WooCommerce Tickets</a>, for harnessing the power of WooCommerce to sell event tickets directly on your site without being subject to fees or relying on a third-party service.
+* <a href="http://m.tri.be/ci">EDD Tickets</a>, for using our ticketing framework to sell tickets on your events through The Events Calendar + Easy Digital Downloads.
+* <a href="http://m.tri.be/cu">WPEC Tickets</a>, for using WP-eCommerce + The Events Calendar to sell event tickets directly from the frontend of your site. 
+* <a href="http://m.tri.be/dp">Shopp Tickets</a>, for harnessing the power of Shopp to sell event tickets on your WordPress site. 
+* <a href="http://m.tri.be/fa">Filter Bar</a>, for adding advanced frontend filtering capabilities to your events calendar.
 
 = I have a feature idea. What's the best way to tell you about it? =
 
@@ -163,14 +170,14 @@ We do. If you check out our <a href="http://m.tri.be/2n">Frequently Asked Questi
 
 == Documentation ==
 
-All of our online documentation can be found on <a href="http://m.tri.be/2o">our documentation site</a>.
+All of our online documentation can be found on <a href="http://m.tri.be/eu">our documentation site</a>.
 
 Some docs you may find particularly useful are:
 
 * <a href="http://m.tri.be/2l">The Events Calendar New User Primer</a>
 * <a href="http://m.tri.be/2m">The Themer's Guide to The Events Calendar</a>
 * <a href="http://m.tri.be/2n">The Events Calendar FAQ</a>
-* <a href="http://m.tri.be/2u" target="_blank">Tutorials</a>
+* <a href="http://m.tri.be/2u" target="_blank">The Events Calendar Tutorials</a>
 
 For template tags, open the plugin directory and visit /plugins/events/public/template-tags/ where you can find a list of those available.
 
@@ -184,17 +191,16 @@ The plugin is produced by <a href="http://m.tri.be/2s">Modern Tribe Inc</a>.
 
 = Current Contributors =
 
-* <a href="http://profiles.wordpress.org/users/paulhughes01">Paul Hughes</a>
+* <a href="http://profiles.wordpress.org/users/jazbek">Jessica Yazbek</a>
 * <a href="http://profiles.wordpress.org/users/roblagatta">Rob La Gatta</a>
 * <a href="http://profiles.wordpress.org/users/MZAWeb">Daniel Dvorkin</a>
-* <a href="http://profiles.wordpress.org/users/codearachnid">Timothy Wood</a>
-* <a href="http://profiles.wordpress.org/users/jonahcoyote">Jonah West</a>
 * <a href="http://profiles.wordpress.org/users/barryhughes">Barry Hughes</a>
 * <a href="http://profiles.wordpress.org/users/ryancurban">Ryan Urban</a>
 * <a href="http://profiles.wordpress.org/users/kyleunzicker">Kyle Unzicker</a>
-* <a href="http://profiles.wordpress.org/users/jazbek">Jessica Yazbek</a>
 * <a href="http://profiles.wordpress.org/users/jbrinley">Jonathan Brinley</a>
 * <a href="http://profiles.wordpress.org/users/faction23">Samuel Estok</a>
+* <a href="http://profiles.wordpress.org/users/neillmcshea">Neill McShea</a>
+* <a href="http://profiles.wordpress.org/users/kellykathryn">Kelly Groves</a>
 * <a href="http://profiles.wordpress.org/users/leahkoerper">Leah Koerper</a>
 * <a href="http://profiles.wordpress.org/users/peterchester">Peter Chester</a>
 * <a href="http://profiles.wordpress.org/users/reid.peifer">Reid Peifer</a>
@@ -202,6 +208,9 @@ The plugin is produced by <a href="http://m.tri.be/2s">Modern Tribe Inc</a>.
 
 = Past Contributors =
 
+* <a href="http://profiles.wordpress.org/users/paulhughes01">Paul Hughes</a>
+* <a href="http://profiles.wordpress.org/users/codearachnid">Timothy Wood</a>
+* <a href="http://profiles.wordpress.org/users/jonahcoyote">Jonah West</a>
 * <a href="http://profiles.wordpress.org/users/jkudish">Joachim Kudish</a>
 * <a href="http://profiles.wordpress.org/users/nickciske">Nick Ciske</a>
 * <a href="http://profiles.wordpress.org/users/kelseydamas">Kelsey Damas</a>
@@ -221,10 +230,10 @@ The plugin is produced by <a href="http://m.tri.be/2s">Modern Tribe Inc</a>.
 * Danish from Anonymous
 * Dutch from Erik Massop
 * Finnish by Ari-Pekka Koponen
-* French from Benoît Burgener
-* German from Michael Sebel
+* French from Bastien BC
+* German from by Dieter Dannecker
 * Greek from Maria Tsilimidou
-* Icelandic by Baldvin Örn Berndsen
+* Icelandic by Baldvin Berndsen
 * Italian from Roberto Scano
 * Norwegian from Andreas Lorentsen
 * Polish from Marek Kosina
@@ -233,9 +242,9 @@ The plugin is produced by <a href="http://m.tri.be/2s">Modern Tribe Inc</a>.
 * Serbian from Marko Manojlovic
 * Spanish from Hector Gil Rizo
 * Swedish from Ben Andersen
-* Turkish by Burak Pehlevan
+* Turkish by Derin Korman
 
-* Previous translators include Mikhail Michouris, Ed Boon, Rick van Dalen, Jacob Roel Meijering, hristian Andersen, Filippo Montanari, David Decker, Kamil Szymanski, "Terje With Lunndal", Sagi Shrieber, Matthew Meyer, Arno Faure, Fanny Heraud, Vincent G from Host1Free, , Petri Kajander, Fran Rosa, Nico (wsMaurik), Panos Efstratiou, Dominique Monhardt, Thomas Butzek, Kjell Vestnes, Luiza Libardi, Diego Meneghetti, and Alexey Fedorov
+* Previous translators include Mikhail Michouris, Ed Boon, Rick van Dalen, Jacob Roel Meijering, hristian Andersen, Michael Sebel, Filippo Montanari, David Decker, Kamil Szymanski, "Terje With Lunndal", Sagi Shrieber, Matthew Meyer, Arno Faure, Fanny Heraud, Vincent G from Host1Free, , Petri Kajander, Fran Rosa, Nico (wsMaurik), Panos Efstratiou, Dominique Monhardt, Thomas Butzek, Kjell Vestnes, Oliver Heinrich, Luiza Libardi, Diego Meneghetti, Beno Burgener, Burak Pehlevan, and Alexey Fedorov
 
 == Add-Ons ==
 
@@ -255,7 +264,10 @@ Our Premium Plugins:
 * <a href="http://m.tri.be/2g" target="_blank">The Events Calendar: Community Events</a>
 * <a href="http://m.tri.be/2h" target="_blank">The Events Calendar: Facebook Events</a>
 * <a href="http://m.tri.be/2i" target="_blank">The Events Calendar: WooCommerce Tickets</a>
-* The Events Calendar: Filter Bar (coming summer 2013)
+* <a href="http://m.tri.be/ci" target="_blank">The Events Calendar: EDD Tickets Tickets</a>
+* <a href="http://m.tri.be/cu" target="_blank">The Events Calendar: WPEC Tickets</a>
+* <a href="http://m.tri.be/dp" target="_blank">The Events Calendar: Shopp Tickets</a>
+* <a href="http://m.tri.be/fa" target="_blank">The Events Calendar: Filter Bar</a>
 
 == Versioning ==
 
@@ -283,9 +295,83 @@ At no point during the 3.0 lifecycle will the major version change. But you can 
 
 3.x is a complete overhaul of the plugin, and as a result we're starting the changelog fresh. For release notes from the 2.x lifecycle, see <a href="http://m.tri.be/k">our 2.x release notes.</a>
 
+= 3.4.1 =
+
+* Fixed an issue where jQuery UI Datepicker could overwrite our datepicker before its noconflict method was called
+
+= 3.4 =
+
+* Complete overhaul and update to new fork of datepicker for all views! Corrects day 31 empty next month bug and adds many new features for future expansion (Thanks to Eric on the forums for the first report on this!)
+* Fixed a bug where past events were listed in the incorrect order (Thanks to Alastair on the forums for reporting this one!)
+* Number of events that can be imported from CSV in a single batch is now customizable to help avoid timeouts in low powered environments (Thanks to baynature on the forums for the original report here!)
+* General compatibility improvements to ensure better integration with WP e-Commerce
+* Fixed bug with display of comments for single event pages (Thanks to John on the forums for reporting this bug!)
+* Fixed issue with tribe_create_venue() API function, resulting in unnamed venues (Thanks to Oliver for the original report of this!)
+* Fixed bug leading to list widget linking to deactivated views
+* Added hooks for use in widgets (Thanks to Andy Fragen for the request on this one!)
+* Added styles for compatibility with the Twenty Fourteen theme
+* Fixed typo in the rel attribute on "Previous Events" links (thanks to Nate on the forums for his report!)
+* When the List Widget is set to display events from a particular category, the "View All Events" link will now read "View All Events in Category" (Thanks to WCKG on our UserVoice page for requesting this tweak!)
+* Fixed an SQL error that could occur when our queries are mixed with multiple post types and a meta query (Thanks to karen on the forums for the heads up here!)
+* Classes that identify the current theme are now echoed by the body_class() function
+* Addressed an issue where the admin CSS was referencing non-existent images (thanks to geoz on the dot-org forum for the report here!)
+* Fixed a few broken/outdated links on the Help page
+* Tweaked the update notice prompts that display to appear more consistently in certain environments
+* Updated the admin icon to use a dashicon in 3.8+
+
+= 3.3.1 =
+
+* Fixed a bug where all day events created prior to 3.3 would show as ending on the previous day.
+
+= 3.3 =
+
+* Improved support for international date formats (big props to jeroenjoosen on the forums for the original report on this!)
+* Localization improvements for displaying the event cost field (thanks to mastafu on the forums for the heads up!)
+* List view will now link to a page of previous events if there are indeed previous events to show (props to oceanfilm on the forums for pointing this out!)
+* Fixed an issue with empty category views that could result in a fatal error (thanks to mastafu on the forums for this one, too!)
+* Fixed an issue where titles for single events were empty in some installations
+* Fixes for the tribe_get_the_day_link_date() function (thanks to @nathanielks on Twitter for catching + patching this one for us!)
+* Fixed admin menu highlighting when editing tags for events
+* Google maps will now be included properly on pages with https URLs (thanks to bmitchellini on the forums for the first report here!)
+* Tag queries that don't specify a post type will no longer be modified to be an events query (thanks to Jason on the forums for reporting this first!)
+* Fixed an issue that caused some events not to show on month view when viewing a category (thanks to yorkshiretots on the forum for catching this!)
+* All day events are now saved with a start/end time that is determined by the end of day cutoff. This fix will not modify previously created all day events (thanks to wallyglenn on the forums for spotting this!)
+* Fixed a lot of strings that were not getting included in our language files and updated our POT file
+* Removed an invalid iCal link from the markup to prevent it being indexed by search engines (Thanks to Kevin Lisota for the original report!)
+* Fixed an XSS vulnerability in the Tribe Bar (Mega props to Yasser Khan and Chuck Tsang for the research and responsible disclosure!)
+* Implemented performance improvements in some queries for large amounts of data
+* Fixed a bug that was making our date pickers ignore the start-of-the-week setting in WordPress core (thanks to Katarina for the original report!)
+* Added CSS classes to the list widget events (thanks to Andy Fragen for requesting these!)
+* Fixed some small CSS bugs
+* Incorporated updated German translation files, courtesy of Oliver Heinrich
+* Incorporated updated French translation files, courtesy of Bastien BC
+
+= 3.2 =
+
+* Incorporated the much-fabled CSV importer! Import CSV files directly into your The Events Calendar/Events Calendar PRO site (for an overview on how to use it, read this: http://m.tri.be/9t)
+* Implemented code requesting that search engines do not index calendar pages that have no events to display
+* Addressed a number of Twenty Thirteen theme compatibility fixes
+* Improved how date and time are displayed on single event entries for single day events (thanks to Robin for the heads up!)
+* Added a suggestion by the Organizer email field to obfuscate email addresses published on your site (thanks, Thea, for requesting this on our UserVoice page!)
+* Improved compliance with PHP strict standards (thanks to Bryan in the forums for making this request!)
+* Added more flexible formatting options for event schedule details
+* Incorporated a fix to improve behaviors of the tribe_is_month() template tag (thanks jhned at the WordPress.org forums for this report!)
+* Added a fix for when "show events in main blog loop" option disrupts certain static home pages (thanks to yorkshiretots for reporting this on the forum!)
+* Added a fix for when the "show events in main blog loop" option disrupts the product listing on WooCommerce storefront for certain users (thanks to forge for the first report on this!)
+* Fixed an issue with broken commenting that appeared on some templates (thanks to Tom for first reporting this at the PRO forums!)
+* Added ability to create recurring events that happen every 5th occurence of a day in the month; e.g., every 5th Sunday (thanks to gregwiley for the original report!)
+* Fixed an issue where future recurring events displayed as having passed when object caching is enabled (a big thanks to Ray for first bringing this up on the forums!)
+* Fixed the calculation used for determining all events in a month, which was causing the last day of multi-day events to be incorrectly left off (thanks to paracleteweb for first reporting this at the WordPress.org forums!)
+* Added code to make sure tribe_show_month() won't break any event views that come after it (thanks to our friend Big on the forums for the first report of this!)
+* Incorporated a number of enhancements to ease compatibility with Easy Digital Downloads (thanks for all your help, Pippin!)
+* Removed a PHP notice that arose when querying from events and other post types at the same time
+* Fixed an issue where inaccurate draft counts were appearing on the backend events list (thanks to Neil on the forums for the first report!)
+* Incorporated updated Icelandic translation by Baldvin Berndsen
+
+
 = 3.1 =
 
-* Significant performance improvements to month view (thanks to Grégory for the initial report!)
+* Significant performance improvements to month view (thanks to Gr‚àö¬©gory for the initial report!)
 * Improved compatibility with Canvas and other themes by WooThemes (thanks to Paul Pruneau for the heads up!)
 * Fixed several bugs relating to event cutoff times and month view (thanks jadonulrich for the report!)
 * The correct default view now applies to event category listings
@@ -341,7 +427,7 @@ If you aren't familiar with The Events Calendar, check out our <a href="http://m
 
 Additional resources available include:
 
-* <a href="http://m.tri.be/2o">Documentation</a>
+* <a href="http://m.tri.be/eu">Documentation</a>
 * <a href="http://m.tri.be/2n">FAQ</a>
 * <a href="http://m.tri.be/2t">Help Videos</a>
 * <a href="http://m.tri.be/2u">Tutorials</a>
@@ -362,9 +448,25 @@ Still not happy? Shoot us an email to pro@tri.be or tweet to @moderntribeinc and
 
 IMPORTANT NOTICE: 3.x upgrade is a HUGE upgrade from 2.x versions. If you are upgrading from an older version, please test thoroughly before updating on your live website.
 
+= 3.4 =
+
+Please see the changelog for the complete list of changes in this release. Remember to always make a backup of your database and files before updating!
+
+= 3.3.1 =
+
+Fixed a bug with all day events when event cutoff time is set to be past midnight.
+
+= 3.3 =
+
+Please see the changelog for the complete list of changes in this release. Remember to always make a backup of your database and files before updating!
+
+= 3.2 =
+
+Please see the changelog for the complete list of changes in this release. Remember to always make a backup of your database and files before updating!
+
 = 3.1 =
 
-There have been a number of architectural changes in 3.1. If you have a lot of customizations you may want to do some thorough testing before upgrading.
+Please see the changelog for the complete list of changes in this release. Remember to always make a backup of your database and files before updating!
 
 = 3.0 =
 

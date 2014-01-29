@@ -1122,6 +1122,8 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
     }
 
     function editTemplate($data=false){
+        wp_print_styles('editor-buttons');
+
         $wjEngine = WYSIJA::get('wj_engine', 'helper');
 
         if(isset($data['email']['wj_data'])) {
@@ -1222,11 +1224,18 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
                     <ul id="wj-images-quick" class="clearfix">
                         <?php
                         //get list images from template
-                        $helperImage=WYSIJA::get('images','helper');
-                        $result=$helperImage->getList();
+                        $helper_image = WYSIJA::get('image','helper');
+                        $result = $helper_image->get_list_directory();
 
                         $quick_select = $data['email']['params'];
-                        if(!isset($quick_select['quickselection'])) $quick_select['quickselection'] = array();
+                        if(!isset($quick_select['quickselection'])){
+                            $quick_select['quickselection'] = array();
+                        }else{
+                            foreach($quick_select['quickselection'] as &$image){
+                                $image = $helper_image->valid_image($image);
+                            }
+
+                        }
 
                         if($result && empty($quick_select['quickselection'])) {
                             echo $wjEngine->renderImages($result);
@@ -1297,7 +1306,9 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
                 <input data-type="<?php echo (int)$data['email']['type'] ?>" type="hidden" name="wysija[email][email_id]" id="email_id" value="<?php echo esc_attr($data['email']['email_id']) ?>" />
                 <input type="hidden" value="saveemail" name="action" />
 
-                <a id="wj_next" class="button-primary wysija" href="admin.php?page=wysija_campaigns&action=editDetails&id=<?php echo $data['email']['email_id'] ?>"><?php _e("Next step",WYSIJA) ?></a>
+                <a id="wysija-do-save" class="button-primary wysija" href="javascript:;"><?php _e("Save changes", WYSIJA) ?></a>
+                <a id="wysija-next-step" class="button-primary wysija" href="admin.php?page=wysija_campaigns&action=editDetails&id=<?php echo $data['email']['email_id'] ?>"><?php _e("Next step",WYSIJA) ?></a>
+
                 <?php
                 // we cannot have it everywhere
                  if(false && $data && (int)$data['email']['type'] === 2) {
@@ -1317,17 +1328,8 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
                 WYSIJA_SYNC_AJAX({ success: callback });
             }
 
-
-            // make sure we save the editor when leaving the page
-            Event.observe(window, 'unload', function(e) {
-                if(Wysija.options.debug === false) {
-                    // save the editor in a synchronous way
-                    saveWYSIJA();
-                }
-            });
-
-            // make sure we save the newsletter when clicking on links in VIB or unsubscribe
-            $$('#wysija_viewbrowser a, #wysija_unsubscribe a').invoke('observe', 'click', function() {
+            // trigger the save on these links/buttons (save, next step, view in browser, unsubscribe)
+            $$('#wysija-do-save, #wysija-next-step, #wysija_viewbrowser a, #wysija_unsubscribe a').invoke('observe', 'click', function() {
                 saveWYSIJA();
                 return false;
             });
@@ -2720,6 +2722,7 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
 
             $selectedImages=$this->_getSelectedImages();
             $output = '';
+            $helper_image = WYSIJA::get('image','helper');
             foreach ( (array) $attachments as $id => $attachment ) {
 
                  if(!$post_id && $attachment->post_parent==$_REQUEST['post_id']){
@@ -2744,7 +2747,19 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
                         $full_url = $attachment->guid;
                     }
 
-                     if ( ( $id = intval( $id ) )) $img_details = wp_get_attachment_image_src( $id, 'full', true );
+                    if ( ( $id = intval( $id ) )) $img_details = wp_get_attachment_image_src( $id, 'full', true );
+
+                    $image_template = array(
+                           'width'=> $img_details[1],
+                           'height'=> $img_details[2],
+                           'url'=> $full_url,
+                           );
+
+                    if(empty($image_template['width']) || empty($image_template['height']) || (empty($image_template['width']) && empty($image_template['height']))){
+                        $image_template = $helper_image->valid_image($image_template);
+                    }
+
+
                      $classname="";
 
                      if(isset($selectedImages["wp-".$attachment->ID])) $classname=" selected ";
@@ -2753,8 +2768,8 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
                     $output .= '<img title="'.$attachment->post_title.'" alt="'.$attachment->post_title.'" src="'.$thumb_url.'" class="thumbnail" />';
                     if(!$wpimage)    $output.='<span class="delete-wrap"><span class="delete del-attachment">'.$attachment->ID.'</span></span>';
                     $output.='<span class="identifier">'.$attachment->ID.'</span>
-                        <span class="width">'.$img_details[1].'</span>
-                        <span class="height">'.$img_details[2].'</span>
+                        <span class="width">'.$image_template['width'].'</span>
+                        <span class="height">'.$image_template['height'].'</span>
                         <span class="url">'.$full_url.'</span>
                         <span class="thumb_url">'.$thumb_url.'</span></div>';
             }
@@ -2868,7 +2883,11 @@ class WYSIJA_view_back_campaigns extends WYSIJA_view_back{
                                             echo '<div class="socials">'.$section['follow']['content'].'</div></div>';
                                             echo '</div>';
 
-                                            echo '<div class="follow-right">';
+                                            $class_name = 'follow-right';
+                                            if(version_compare(get_bloginfo('version'), '3.8.0')>= 0){
+                                                $class_name .= '38';
+                                            }
+                                            echo '<div class="follow-right38">';
                                             echo '</div>';
                                         echo '</div>';
                                         break;

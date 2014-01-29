@@ -73,7 +73,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param array $post Post to insert
 	 * @return int Post ID of the inserted post on success, int 0 on error
 	 */
-	public function insert( $post ) {
+	public function insert( array $post ) {
 		$default_post = array(
 			'ID' => false, // false on new insert, but existing post ID on update
 			'comment_status' => 'closed',
@@ -90,7 +90,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'to_ping' => ''
 		);
 		$post = array_merge( $default_post, $post );
-		$post = add_magic_quotes( $post ); // WP expects everything to be slashed
+		$post = wp_slash( $post ); // WP expects everything to be slashed
 
 		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
@@ -105,8 +105,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		// re-add KSES filtering, if necessary
-		if ( ! current_user_can( 'unfiltered_html' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		}
 
 		return $post_id;
 	}
@@ -120,7 +121,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param array $post Post
 	 * @return int Post ID of the updated post on success, int 0 on error
 	 */
-	public function update( $post ) {
+	public function update( array $post ) {
 		$default_post = array(
 			'ID' => false, // false on new insert, but existing post ID on update
 			'comment_status' => 'closed',
@@ -137,7 +138,7 @@ class TablePress_Post_Model extends TablePress_Model {
 			'to_ping' => ''
 		);
 		$post = array_merge( $default_post, $post );
-		$post = add_magic_quotes( $post ); // WP expects everything to be slashed
+		$post = wp_slash( $post ); // WP expects everything to be slashed
 
 		// remove balanceTags() from sanitize_post(), as it can destroy the JSON when messing with HTML
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
@@ -152,8 +153,9 @@ class TablePress_Post_Model extends TablePress_Model {
 		add_filter( 'content_save_pre', 'balanceTags', 50 );
 		add_filter( 'excerpt_save_pre', 'balanceTags', 50 );
 		// re-add KSES filtering, if necessary
-		if ( ! current_user_can( 'unfiltered_html' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			add_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		}
 
 		return $post_id;
 	}
@@ -169,8 +171,9 @@ class TablePress_Post_Model extends TablePress_Model {
 	 */
 	public function get( $post_id ) {
 		$post = get_post( $post_id );
-		if ( is_null( $post ) )
+		if ( is_null( $post ) ) {
 			return false;
+		}
 		return $post;
 	}
 
@@ -184,8 +187,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return mixed|bool Post on success, false on error
 	 */
 	public function delete( $post_id ) {
-		$post = wp_delete_post( $post_id, true ); // force delete, although for CPTs this is automatic in this function
-		return $post;
+		return wp_delete_post( $post_id, true ); // force delete, although for CPTs this is automatic in this function
 	}
 
 	/**
@@ -199,8 +201,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return mixed|bool Post on success, false on error
 	 */
 	public function trash( $post_id ) {
-		$post = wp_trash_post( $post_id );
-		return $post;
+		return wp_trash_post( $post_id );
 	}
 
 	/**
@@ -214,8 +215,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return array|bool Post on success, false on error
 	 */
 	public function untrash( $post_id ) {
-		$post = wp_untrash_post( $post_id );
-		return $post;
+		return wp_untrash_post( $post_id );
 	}
 
 	/**
@@ -226,7 +226,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 *
 	 * @param array $all_post_ids List of Post IDs
 	 */
-	public function load_posts( $all_post_ids ) {
+	public function load_posts( array $all_post_ids ) {
 		global $wpdb;
 
 		// Split post loading, to save memory
@@ -258,8 +258,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return int Number of posts
 	 */
 	public function count_posts() {
-		$count = array_sum( (array)wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
-		return $count;
+		return array_sum( (array) wp_count_posts( $this->post_type ) ); // original return value is object with the counts for each post_status
 	}
 
 	/**
@@ -274,7 +273,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error
 	 */
 	public function add_meta_field( $post_id, $field, $value ) {
-		$value = addslashes( $value ); // WP expects a slashed value...
+		$value = wp_slash( $value ); // WP expects a slashed value...
 		$success = add_post_meta( $post_id, $field, $value, true ); // true means unique
 		$success = ( false === $success ) ? false : true; // make sure that $success is a boolean, as add_post_meta() returns an ID or false
 		return $success;
@@ -290,13 +289,17 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @param int $post_id ID of the post for which the field shall be updated
 	 * @param string $field Name of the post meta field
 	 * @param string $value Value of the post meta field (not slashed)
-	 * @param string $prev_value (optional) Previous value of the post meta field
 	 * @return bool True on success, false on error
 	 */
-	public function update_meta_field( $post_id, $field, $value, $prev_value = '' ) {
-		$value = addslashes( $value ); // WP expects a slashed value...
-		$success = update_post_meta( $post_id, $field, $value, $prev_value );
-		return $success;
+	public function update_meta_field( $post_id, $field, $value ) {
+		$prev_value = get_post_meta( $post_id, $field, true );
+		// No need to update, if values are equal (also, update_post_meta() would return false for this)
+		if ( $prev_value == $value ) {
+			return true;
+		}
+
+		$value = wp_slash( $value ); // WP expects a slashed value...
+		return update_post_meta( $post_id, $field, $value, $prev_value );
 	}
 
 	/**
@@ -310,8 +313,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return string Value of the meta field
 	 */
 	public function get_meta_field( $post_id, $field ) {
-		$value = get_post_meta( $post_id, $field, true ); // true means single value
-		return $value;
+		return get_post_meta( $post_id, $field, true ); // true means single value
 	}
 
 	/**
@@ -326,8 +328,7 @@ class TablePress_Post_Model extends TablePress_Model {
 	 * @return bool True on success, false on error
 	 */
 	public function delete_meta_field( $post_id, $field ) {
-		$success = delete_post_meta( $post_id, $field, true ); // true means single value
-		return $success;
+		return delete_post_meta( $post_id, $field, true ); // true means single value
 	}
 
 } // class TablePress_Post_Model

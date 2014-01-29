@@ -1,9 +1,9 @@
 === MailPoet Newsletters (formerly Wysija) ===
-Contributors: wysija, benheu, mamaduka
+Contributors: wysija, kgjerstad, benheu, jon1op, badshark, tung-wysija, mamaduka, webord
 Tags: newsletter, newsletters, wysija, newsletter signup, newsletter widget, subscribers, post notification, email subscription, email alerts, automatic newsletter, auto newsletter, autoresponder, follow up, email, marketing, emailing, subscription
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 2.5.9
+Tested up to: 3.8
+Stable tag: 2.5.9.4
 Send newsletters, post notifications or autoresponders from WordPress easily, and beautifully.
 
 == Description ==
@@ -127,10 +127,6 @@ There are 3 ways to install this plugin:
 
 Our [support site](http://support.mailpoet.com/) has plenty of articles and a ticketing system.
 
-= Submit your feature request =
-
-We got a User Voice page where you can [add or vote for new features](http://wysija.uservoice.com/forums/150107-feature-request).
-
 == Screenshots ==
 
 1. Sample newsletters.
@@ -142,6 +138,31 @@ We got a User Voice page where you can [add or vote for new features](http://wys
 7. Importing subscribers with a CSV.
 
 == Changelog ==
+
+= 2.5.9.4 - 2013-12-26 =
+* fixed rare bug emails being re-enqueued when a partially sent newsletter was paused and edited from step3
+* fixed improved bounce emails detection to handle more case scenarios (premium only)
+* added better support for Retina displays
+* added facelift and botoxed lips much needed for our best WP 3.8 looks
+
+= 2.5.9.3 - 2013-12-03 =
+* fixed another rare case where image goes missing when dragging and dropping a WordPress' post into our visual editor
+* fixed post updates taking too long when refreshing automatic newsletters with the "automated latest content" widget
+* fixed rare case where image goes missing when dragging and dropping an uploaded image into our visual editor
+* fixed birthday cake for our two years anniversary  http://www.mailpoet.com/two-year-anniversary/
+
+= 2.5.9.2 - 2013-11-26 =
+* fixed issue automatic newsletter not going out when using Wysija's cron triggered by visitors pageview in Settings > Advanced
+* fixed issue wrong separator in export file(CSV or Excel)
+
+= 2.5.9.1 - 2013-11-18 =
+* fixed newsletters not being saved in Chrome at visual editor level
+* fixed daily/weekly post notifications missing some articles if other newsletters were being sent at the same time
+* fixed broken redirection when square brackets are present in your URLs
+* fixed rare case where image goes missing when dragging and dropping a WordPress' post into our visual editor
+* fixed "View in your Browser" and "Unsubscribe" not being translated in your language in daily/weekly post notifications
+* fixed broken links with port specified (e.g.: mysiteurl.com:8888/my-post)
+* fixed updating automatically the "automated latest content" widget in automatic newsletter on create/update/delete any post
 
 = 2.5.9 - 2013-10-02 =
 * improved multisite bounce process

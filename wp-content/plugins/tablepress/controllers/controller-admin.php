@@ -74,10 +74,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @return bool|int False to not save the changed setting, or the int value to be saved
 	 */
 	public function save_list_tables_screen_option( $false, $option, $value ) {
-		if ( 'tablepress_list_per_page' == $option )
+		if ( 'tablepress_list_per_page' == $option ) {
 			return $value;
-		else
+		} else {
 			return $false;
+		}
 	}
 
 	/**
@@ -95,7 +96,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			$this->init_view_actions(); // after init_i18n_support(), as it requires translation
 			$min_access_cap = $this->view_actions['list']['required_cap'];
 
-			$icon_url = plugins_url( 'admin/img/tablepress-icon-small.png', TABLEPRESS__FILE__ );
+			$icon_url = 'dashicons-list-view';
 			switch ( $this->parent_page ) {
 				case 'top':
 					$position = 3; // position of Dashboard + 1
@@ -109,11 +110,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			}
 			add_menu_page( 'TablePress', $admin_menu_entry_name, $min_access_cap, 'tablepress', $callback, $icon_url, $position );
 			foreach ( $this->view_actions as $action => $entry ) {
-				if ( ! $entry['show_entry'] )
+				if ( ! $entry['show_entry'] ) {
 					continue;
+				}
 				$slug = 'tablepress';
-				if ( 'list' != $action )
+				if ( 'list' != $action ) {
 					$slug .= '_' . $action;
+				}
 				$this->page_hooks[] = add_submenu_page( 'tablepress', sprintf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), $entry['page_title'], 'TablePress' ), $entry['admin_menu_title'], $entry['required_cap'], $slug, $callback );
 			}
 		} else {
@@ -149,10 +152,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			add_action( "load-{$editor_page}", array( $this, 'add_editor_buttons' ) );
 		}
 
-		if ( ! is_network_admin() && ! is_user_admin() )
+		if ( ! is_network_admin() && ! is_user_admin() ) {
 			add_action( 'admin_bar_menu', array( $this, 'add_wp_admin_bar_new_content_menu_entry' ), 71 );
-
-		add_action( 'admin_print_styles', array( $this, 'add_tablepress_hidpi_css' ), 21 );
+		}
 
 		add_action( 'load-plugins.php', array( $this, 'plugins_page' ) );
 	}
@@ -163,8 +165,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function add_editor_buttons() {
-		if ( ! current_user_can( 'tablepress_list_tables' ) )
+		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
 			return;
+		}
 
 		$this->init_i18n_support();
 		add_thickbox(); // usually already loaded by media upload functions
@@ -182,6 +185,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		if ( user_can_richedit() ) {
 			add_filter( 'mce_external_plugins', array( $this, 'add_tinymce_plugin' ) );
 			add_filter( 'mce_buttons', array( $this, 'add_tinymce_button' ) );
+			add_action( 'admin_print_styles', array( $this, 'add_tablepress_hidpi_css' ), 21 );
 		}
 	}
 
@@ -193,7 +197,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $buttons Current set of buttons in the TinyMCE toolbar
 	 * @return array Current set of buttons in the TinyMCE toolbar, including "Table" button
 	 */
-	public function add_tinymce_button( $buttons ) {
+	public function add_tinymce_button( array $buttons ) {
 		$buttons[] = 'tablepress_insert_table';
 		return $buttons;
 	}
@@ -206,7 +210,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $plugins Current set of registered TinyMCE plugins
 	 * @return array Current set of registered TinyMCE plugins, including "Table" button plugin
 	 */
-	public function add_tinymce_plugin( $plugins ) {
+	public function add_tinymce_plugin( array $plugins ) {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$js_file = "admin/js/tinymce-button{$suffix}.js";
 		$plugins['tablepress_tinymce'] = plugins_url( $js_file, TABLEPRESS__FILE__ );
@@ -214,18 +218,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	}
 
 	/**
-	 * Print TablePress HiDPI CSS to the <head>, for Admin Menu icon, and maybe for TinyMCE button
+	 * Print TablePress HiDPI CSS to the <head> for TinyMCE button
 	 *
 	 * @since 1.0.0
 	 */
 	public function add_tablepress_hidpi_css() {
 		echo '<style type="text/css">@media print,(-o-min-device-pixel-ratio:5/4),(-webkit-min-device-pixel-ratio:1.25),(min-resolution:120dpi){';
-		if ( ! empty( $GLOBALS['pagenow'] ) && in_array( $GLOBALS['pagenow'], array( 'post.php', 'post-new.php' ), true ) && user_can_richedit() ) {
-			echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
-			echo '#content_tablepress_insert_table img,'; // display:none of next selector is re-used, by combining selectors
-		}
-		echo '#toplevel_page_tablepress .wp-menu-image img{display:none}';
-		echo '#toplevel_page_tablepress .wp-menu-image{background:url(' . plugins_url( 'admin/img/tablepress-icon-small-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 7px 7px;background-size:16px 16px}';
+		echo '#content_tablepress_insert_table span{background:url(' . plugins_url( 'admin/img/tablepress-editor-button-2x.png', TABLEPRESS__FILE__ ) . ') no-repeat 0 0;background-size:20px 20px}';
+		echo '#content_tablepress_insert_table img{display:none}';
 		echo '}</style>' . "\n";
 	}
 
@@ -234,11 +234,12 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $wp_admin_bar The current WP Admin Bar object
+	 * @param WP_Admin_Bar $wp_admin_bar The current WP Admin Bar object
 	 */
-	public function add_wp_admin_bar_new_content_menu_entry( $wp_admin_bar ) {
-		if ( ! current_user_can( 'tablepress_add_tables' ) )
+	public function add_wp_admin_bar_new_content_menu_entry( WP_Admin_Bar $wp_admin_bar ) {
+		if ( ! current_user_can( 'tablepress_add_tables' ) ) {
 			return;
+		}
 		// @TODO: Translation might not work, as textdomain might not yet be loaded here (for submenu entries)
 		// Might need $this->init_i18n_support(); here
 		$wp_admin_bar->add_menu( array(
@@ -269,9 +270,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $links List of links to print in the "Plugin" column on the Plugins page
 	 * @return array Extended list of links to print in the "Plugin" column on the Plugins page
 	 */
-	public function add_plugin_action_links( $links ) {
-		if ( current_user_can( 'tablepress_list_tables' ) )
+	public function add_plugin_action_links( array $links ) {
+		if ( current_user_can( 'tablepress_list_tables' ) ) {
 			$links[] = '<a href="' . TablePress::url() . '">' . __( 'Plugin page', 'tablepress' ) . '</a>';
+		}
 		return $links;
 	}
 	/**
@@ -283,7 +285,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param string $file Name of the plugin
 	 * @return array Extended list of links to print in the "Description" column on the Plugins page
 	 */
-	public function add_plugin_row_meta( $links, $file ) {
+	public function add_plugin_row_meta( array $links, $file ) {
 		if ( TABLEPRESS_BASENAME == $file ) {
 			$links[] = '<a href="http://tablepress.org/faq/" title="' . esc_attr__( 'Frequently Asked Questions', 'tablepress' ) . '">' . __( 'FAQ', 'tablepress' ) . '</a>';
 			$links[] = '<a href="http://tablepress.org/documentation/">' . __( 'Documentation', 'tablepress' ) . '</a>';
@@ -303,9 +305,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$action = ( ! empty( $_GET['action'] ) ) ? $_GET['action'] : 'list'; // default action is list
 		if ( $this->is_top_level_page ) {
 			// or for sub-menu entry of an admin menu "TablePress" entry, get it from the "page" GET parameter
-			if ( 'tablepress' !== $_GET['page'] )
+			if ( 'tablepress' !== $_GET['page'] ) {
 				// actions that are top-level entries, but don't have an action GET parameter (action is after last _ in string)
 				$action = substr( $_GET['page'], 11 ); // $_GET['page'] has the format 'tablepress_{$action}'
+			}
 		} else {
 			// do this here in the else-part, instead of adding another if ( ! $this->is_top_level_page ) check
 			$this->init_i18n_support(); // done here, as for sub menu admin pages this is the first time translated strings are needed
@@ -313,8 +316,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// check if action is a supported action, and whether the user is allowed to access this screen
-		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['required_cap'] ) )
+		if ( ! isset( $this->view_actions[ $action ] ) || ! current_user_can( $this->view_actions[ $action ]['required_cap'] ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
 		// changes current screen ID and pagenow variable in JS, to enable automatic meta box JS handling
 		set_current_screen( "tablepress_{$action}" );
@@ -329,20 +333,21 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		switch ( $action ) {
 			case 'list':
 				$data['table_id'] = ( ! empty( $_GET['table_id'] ) ) ? $_GET['table_id'] : false;
-				$data['tables'] = $this->model_table->load_all(); // does not contain table data
-				$data['messages']['first_visit'] = $this->model_options->get( 'message_first_visit' );
-				if ( current_user_can( 'tablepress_import_tables_wptr' ) )
+				$data['tables'] = TablePress::$model_table->load_all(); // does not contain table data
+				$data['messages']['first_visit'] = TablePress::$model_options->get( 'message_first_visit' );
+				if ( current_user_can( 'tablepress_import_tables_wptr' ) ) {
 					$data['messages']['wp_table_reloaded_warning'] = is_plugin_active( 'wp-table-reloaded/wp-table-reloaded.php' ); // check if WP-Table Reloaded is activated
-				else
+				} else {
 					$data['messages']['wp_table_reloaded_warning'] = false;
-				$data['messages']['show_plugin_update'] = $this->model_options->get( 'message_plugin_update' );
-				$data['messages']['plugin_update_message'] = $this->model_options->get( 'message_plugin_update_content' );
+				}
+				$data['messages']['show_plugin_update'] = TablePress::$model_options->get( 'message_plugin_update' );
+				$data['messages']['plugin_update_message'] = TablePress::$model_options->get( 'message_plugin_update_content' );
 				$data['messages']['donation_message'] = $this->maybe_show_donation_message();
 				$data['table_count'] = count( $data['tables'] );
 				break;
 			case 'about':
 				$data['plugin_languages'] = $this->get_plugin_languages();
-				$data['first_activation'] = $this->model_options->get( 'first_activation' );
+				$data['first_activation'] = TablePress::$model_options->get( 'first_activation' );
 				$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
 				$data['zip_support_available'] = $exporter->zip_support_available;
 				break;
@@ -354,15 +359,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					$action = 'options_custom_css'; // to load a different view
 					// try saving "Custom CSS" to a file, otherwise this gets the HTML for the credentials form
 					$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
-					$result = $tablepress_css->save_custom_css_to_file_plugin_options( $this->model_options->get( 'custom_css' ), $this->model_options->get( 'custom_css_minified' ) );
+					$result = $tablepress_css->save_custom_css_to_file_plugin_options( TablePress::$model_options->get( 'custom_css' ), TablePress::$model_options->get( 'custom_css_minified' ) );
 					if ( is_string( $result ) ) {
 						$data['credentials_form'] = $result; // this will only be called if the save function doesn't do a redirect
 					} elseif ( true === $result ) {
 						// at this point, saving was successful, so enable usage of CSS in files again,
 						// and also increase the "Custom CSS" version number (for cache busting)
-						$this->model_options->update( array(
+						TablePress::$model_options->update( array(
 							'use_custom_css_file' => true,
-							'custom_css_version' => $this->model_options->get( 'custom_css_version' ) + 1
+							'custom_css_version' => TablePress::$model_options->get( 'custom_css_version' ) + 1
 						) );
 						TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 					} else { // leaves only $result = false
@@ -370,30 +375,33 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 					}
 					break;
 				}
-				$data['frontend_options']['use_custom_css'] = $this->model_options->get( 'use_custom_css' );
-				$data['frontend_options']['custom_css'] = $this->model_options->get( 'custom_css' );
+				$data['frontend_options']['use_custom_css'] = TablePress::$model_options->get( 'use_custom_css' );
+				$data['frontend_options']['custom_css'] = TablePress::$model_options->get( 'custom_css' );
 				$data['user_options']['parent_page'] = $this->parent_page;
-				$data['user_options']['plugin_language'] = $this->model_options->get( 'plugin_language' );
+				$data['user_options']['plugin_language'] = TablePress::$model_options->get( 'plugin_language' );
 				$data['user_options']['plugin_languages'] = $this->get_plugin_languages();
 				break;
 			case 'edit':
 				if ( ! empty( $_GET['table_id'] ) ) {
-					$data['table'] = $this->model_table->load( $_GET['table_id'] );
-					if ( false === $data['table'] )
+					$data['table'] = TablePress::$model_table->load( $_GET['table_id'] );
+					if ( false === $data['table'] ) {
 						TablePress::redirect( array( 'action' => 'list', 'message' => 'error_load_table' ) );
-					if ( ! current_user_can( 'tablepress_edit_table', $_GET['table_id'] ) )
+					}
+					if ( ! current_user_can( 'tablepress_edit_table', $_GET['table_id'] ) ) {
 						wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+					}
 				} else {
 					TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_table' ) );
 				}
 				break;
 			case 'export':
-				$data['tables'] = $this->model_table->load_all(); // does not contain table data
-				$data['tables_count'] = $this->model_table->count_tables();
-				if ( ! empty( $_GET['table_id'] ) )
+				$data['tables'] = TablePress::$model_table->load_all(); // does not contain table data
+				$data['tables_count'] = TablePress::$model_table->count_tables();
+				if ( ! empty( $_GET['table_id'] ) ) {
 					$data['export_ids'] = explode( ',', $_GET['table_id'] );
-				else
+				} else {
 					$data['export_ids'] = array(); // just show empty export form
+				}
 				$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
 				$data['zip_support_available'] = $exporter->zip_support_available;
 				$data['export_formats'] = $exporter->export_formats;
@@ -402,8 +410,8 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['csv_delimiter'] = ( ! empty( $_GET['csv_delimiter'] ) ) ? $_GET['csv_delimiter'] : _x( ',', 'Default CSV delimiter in the translated language (";", ",", or "tab")', 'tablepress' );
 				break;
 			case 'import':
-				$data['tables'] = $this->model_table->load_all(); // does not contain table data
-				$data['tables_count'] = $this->model_table->count_tables();
+				$data['tables'] = TablePress::$model_table->load_all(); // does not contain table data
+				$data['tables_count'] = TablePress::$model_table->count_tables();
 				$importer = TablePress::load_class( 'TablePress_Import', 'class-import.php', 'classes' );
 				$data['zip_support_available'] = $importer->zip_support_available;
 				$data['html_import_support_available'] = $importer->html_import_support_available;
@@ -412,9 +420,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$data['import_type'] = ( ! empty( $_GET['import_type'] ) ) ? $_GET['import_type'] : 'add';
 				$data['import_existing_table'] = ( ! empty( $_GET['import_existing_table'] ) ) ? $_GET['import_existing_table'] : false;
 				$data['import_source'] = ( ! empty( $_GET['import_source'] ) ) ? $_GET['import_source'] : 'file-upload';
-				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? stripslashes( $_GET['import_url'] ) : 'http://';
-				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? stripslashes( $_GET['import_server'] ) : ABSPATH;
-				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? stripslashes( $_GET['import_form_field'] ) : '';
+				$data['import_url'] = ( ! empty( $_GET['import_url'] ) ) ? wp_unslash( $_GET['import_url'] ) : 'http://';
+				$data['import_server'] = ( ! empty( $_GET['import_server'] ) ) ? wp_unslash( $_GET['import_server'] ) : ABSPATH;
+				$data['import_form_field'] = ( ! empty( $_GET['import_form_field'] ) ) ? wp_unslash( $_GET['import_form_field'] ) : '';
 				$data['wp_table_reloaded_installed'] = ( false !== get_option( 'wp_table_reloaded_options', false ) && false !== get_option( 'wp_table_reloaded_tables', false ) );
 				$data['import_wp_table_reloaded_source'] = ( ! empty( $_GET['import_wp_table_reloaded_source'] ) ) ? $_GET['import_wp_table_reloaded_source'] : ( $data['wp_table_reloaded_installed'] ? 'db' : 'dump-file' );
 				break;
@@ -441,12 +449,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	protected function init_i18n_support() {
-		if ( $this->i18n_support_loaded )
+		if ( $this->i18n_support_loaded ) {
 			return;
-		add_filter( 'locale', array( $this, 'change_plugin_locale' ) ); // allow changing the plugin language
+		}
+		add_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 ); // allow changing the plugin language
 		$language_directory = basename( dirname( TABLEPRESS__FILE__ ) ) . '/i18n';
 		load_plugin_textdomain( 'tablepress', false, $language_directory );
-		remove_filter( 'locale', array( $this, 'change_plugin_locale' ) );
+		remove_filter( 'plugin_locale', array( $this, 'change_plugin_locale' ), 10, 2 );
 		$this->i18n_support_loaded = true;
 	}
 
@@ -509,7 +518,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'translator_name' => 'Naoko Azuma',
 				'translator_url' => 'http://www.goju-on.com/profile_en/'
 			),
-			'lt_LT' => array(
+			'lv_LV' => array(
 				'name' => __( 'Latvian', 'tablepress' ),
 				'translator_name' => 'Johannes Rau',
 				'translator_url' => 'http://www.yamago.de/'
@@ -548,6 +557,11 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'name' => __( 'Chinese (Simplified)', 'tablepress' ),
 				'translator_name' => 'Haoxian Zeng',
 				'translator_url' => 'http://cnzhx.net/'
+			),
+			'zh_TW' => array(
+				'name' => __( 'Chinese (Taiwan)', 'tablepress' ),
+				'translator_name' => 'Lu Yu Xin',
+				'translator_url' => 'http://www.hdlulu.com/'
 			)
 		);
 		uasort( $languages, array( $this, '_get_plugin_languages_sort_cb' ) ); // to sort after the translation is done
@@ -564,7 +578,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $b Second language to sort
 	 * @return array -1, 0, 1, depending on sort
 	 */
-	protected function _get_plugin_languages_sort_cb( $a, $b ) {
+	protected function _get_plugin_languages_sort_cb( array $a, array $b ) {
 		return strnatcasecmp( $a['name'], $b['name'] );
 	}
 
@@ -577,14 +591,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	protected function maybe_show_donation_message() {
 		// Only show the message to plugin admins
-		if ( ! current_user_can( 'tablepress_edit_options' ) )
+		if ( ! current_user_can( 'tablepress_edit_options' ) ) {
 			return false;
+		}
 
-		if ( ! $this->model_options->get( 'message_donation_nag' ) )
+		if ( ! TablePress::$model_options->get( 'message_donation_nag' ) ) {
 			return false;
+		}
 
 		// How long has the plugin been installed?
-		$seconds_installed = time() - $this->model_options->get( 'first_activation' );
+		$seconds_installed = time() - TablePress::$model_options->get( 'first_activation' );
 		return ( $seconds_installed > 30*DAY_IN_SECONDS );
 	}
 
@@ -655,10 +671,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 *
 	 * @param string $locale Current WordPress locale
+	 * @param string $textdomain Text domain of the currently filtered plugin
 	 * @return string TablePress locale
 	 */
-	public function change_plugin_locale( $locale ) {
-		$new_locale = $this->model_options->get( 'plugin_language' );
+	public function change_plugin_locale( $locale, $textdomain ) {
+		if ( 'tablepress' != $textdomain ) {
+			return $locale;
+		}
+		$new_locale = TablePress::$model_options->get( 'plugin_language' );
 		$locale = ( ! empty( $new_locale ) && 'auto' != $new_locale ) ? $new_locale : $locale;
 		return $locale;
 	}
@@ -675,32 +695,38 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_list() {
 		TablePress::check_nonce( 'list' );
 
-		if ( isset( $_POST['bulk-action-top'] ) && '-1' != $_POST['bulk-action-top'] )
+		if ( isset( $_POST['bulk-action-top'] ) && '-1' != $_POST['bulk-action-top'] ) {
 			$bulk_action = $_POST['bulk-action-top'];
-		elseif ( isset( $_POST['bulk-action-bottom'] ) && '-1' != $_POST['bulk-action-bottom'] )
+		} elseif ( isset( $_POST['bulk-action-bottom'] ) && '-1' != $_POST['bulk-action-bottom'] ) {
 			$bulk_action = $_POST['bulk-action-bottom'];
-		else
+		} else {
 			$bulk_action = false;
+		}
 
-		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ), true ) )
+		if ( ! in_array( $bulk_action, array( 'copy', 'export', 'delete' ), true ) ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_bulk_action_invalid' ) );
+		}
 
-		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
+		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_no_selection' ) );
-		else
-			$tables = stripslashes_deep( $_POST['table'] );
+		} else {
+			$tables = wp_unslash( $_POST['table'] );
+		}
 
 		$no_success = array(); // to store table IDs that failed
 
 		switch ( $bulk_action ) {
 			case 'copy':
+				$this->init_i18n_support(); // for the translation of "Copy of"
 				foreach ( $tables as $table_id ) {
-					if ( current_user_can( 'tablepress_copy_table', $table_id ) )
-						$copy_table_id = $this->model_table->copy( $table_id );
-					else
+					if ( current_user_can( 'tablepress_copy_table', $table_id ) ) {
+						$copy_table_id = TablePress::$model_table->copy( $table_id );
+					} else {
 						$copy_table_id = false;
-					if ( false === $copy_table_id )
+					}
+					if ( false === $copy_table_id ) {
 						$no_success[] = $table_id;
+					}
 				}
 				break;
 			case 'export':
@@ -711,12 +737,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				break;
 			case 'delete':
 				foreach ( $tables as $table_id ) {
-					if ( current_user_can( 'tablepress_delete_table', $table_id ) )
-						$deleted = $this->model_table->delete( $table_id );
-					else
+					if ( current_user_can( 'tablepress_delete_table', $table_id ) ) {
+						$deleted = TablePress::$model_table->delete( $table_id );
+					} else {
 						$deleted = false;
-					if ( false === $deleted )
+					}
+					if ( false === $deleted ) {
 						$no_success[] = $table_id;
+					}
 				}
 				break;
 		}
@@ -747,19 +775,22 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 */
 	public function handle_post_action_edit() {
-		if ( empty( $_POST['table'] ) || empty( $_POST['table']['id'] ) )
+		if ( empty( $_POST['table'] ) || empty( $_POST['table']['id'] ) ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'error_save' ) );
-		else
-			$edit_table = stripslashes_deep( $_POST['table'] );
+		} else {
+			$edit_table = wp_unslash( $_POST['table'] );
+		}
 
 		TablePress::check_nonce( 'edit', $edit_table['id'], 'nonce-edit-table' );
 
-		if ( ! current_user_can( 'tablepress_edit_table', $edit_table['id'] ) )
+		if ( ! current_user_can( 'tablepress_edit_table', $edit_table['id'] ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
 		// Options array must exist, so that checkboxes can be evaluated
-		if ( empty( $edit_table['options'] ) )
+		if ( empty( $edit_table['options'] ) ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
+		}
 
 		// Evaluate options that have a checkbox (only necessary in Admin Controller, where they might not be set (if unchecked))
 		$checkbox_options = array(
@@ -767,41 +798,48 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'use_datatables', 'datatables_sort', 'datatables_filter', 'datatables_paginate', 'datatables_lengthchange', 'datatables_info', 'datatables_scrollx' // DataTables JS Features
 		);
 		foreach ( $checkbox_options as $option ) {
-			$edit_table['options'][$option] = ( isset( $edit_table['options'][$option] ) && 'true' === $edit_table['options'][$option] );
+			$edit_table['options'][ $option ] = ( isset( $edit_table['options'][ $option ] ) && 'true' === $edit_table['options'][ $option ] );
 		}
 
 		// Load existing table from DB
-		$existing_table = $this->model_table->load( $edit_table['id'] );
-		if ( false === $existing_table ) // @TODO: Maybe somehow load a new table here? ($this->model_table->get_table_template())?
+		$existing_table = TablePress::$model_table->load( $edit_table['id'] );
+		if ( false === $existing_table ) { // @TODO: Maybe somehow load a new table here? (TablePress::$model_table->get_table_template())?
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
+		}
 
 		// Check consistency of new table, and then merge with existing table
-		$table = $this->model_table->prepare_table( $existing_table, $edit_table );
-		if ( false === $table )
+		$table = TablePress::$model_table->prepare_table( $existing_table, $edit_table );
+		if ( false === $table ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $edit_table['id'], 'message' => 'error_save' ) );
+		}
 
 		// DataTables Custom Commands can only be edit by trusted users
-		if ( ! current_user_can( 'unfiltered_html' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
+		}
 
 		// Save updated table
-		$saved = $this->model_table->save( $table );
-		if ( false === $saved )
+		$saved = TablePress::$model_table->save( $table );
+		if ( false === $saved ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'error_save' ) );
+		}
 
 		// Check if ID change is desired
-		if ( $table['id'] === $table['new_id'] ) // if not, we are done
+		if ( $table['id'] === $table['new_id'] ) { // if not, we are done
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save' ) );
+		}
 
 		// Change table ID
-		if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) )
-			$id_changed = $this->model_table->change_table_id( $table['id'], $table['new_id'] );
-		else
+		if ( current_user_can( 'tablepress_edit_table_id', $table['id'] ) ) {
+			$id_changed = TablePress::$model_table->change_table_id( $table['id'], $table['new_id'] );
+		} else {
 			$id_changed = false;
-		if ( $id_changed )
+		}
+		if ( $id_changed ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['new_id'], 'message' => 'success_save_success_id_change' ) );
-		else
+		} else {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table['id'], 'message' => 'success_save_error_id_change' ) );
+		}
 	}
 
 	/**
@@ -812,24 +850,28 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_add() {
 		TablePress::check_nonce( 'add' );
 
-		if ( ! current_user_can( 'tablepress_add_tables' ) )
+		if ( ! current_user_can( 'tablepress_add_tables' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
-		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) )
+		if ( empty( $_POST['table'] ) || ! is_array( $_POST['table'] ) ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
-		else
-			$add_table = stripslashes_deep( $_POST['table'] );
+		} else {
+			$add_table = wp_unslash( $_POST['table'] );
+		}
 
 		// Perform sanity checks of posted data
 		$name = ( isset( $add_table['name'] ) ) ? $add_table['name'] : '';
 		$description = ( isset( $add_table['description'] ) ) ? $add_table['description'] : '';
-		if ( ! isset( $add_table['rows'] ) || ! isset( $add_table['columns'] ) )
+		if ( ! isset( $add_table['rows'] ) || ! isset( $add_table['columns'] ) ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
+		}
 
 		$num_rows = absint( $add_table['rows'] );
 		$num_columns = absint( $add_table['columns'] );
-		if ( 0 == $num_rows || 0 == $num_columns )
+		if ( 0 == $num_rows || 0 == $num_columns ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
+		}
 
 		// Create a new table array with information from the posted data
 		$new_table = array(
@@ -842,14 +884,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			)
 		);
 		// Merge this data into an empty table template
-		$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $new_table, false );
-		if ( false === $table )
+		$table = TablePress::$model_table->prepare_table( TablePress::$model_table->get_table_template(), $new_table, false );
+		if ( false === $table ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
+		}
 
 		// Add the new table (and get its first ID)
-		$table_id = $this->model_table->add( $table );
-		if ( false === $table_id )
+		$table_id = TablePress::$model_table->add( $table );
+		if ( false === $table_id ) {
 			TablePress::redirect( array( 'action' => 'add', 'message' => 'error_add' ) );
+		}
 
 		TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_add' ) );
 	}
@@ -862,13 +906,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_options() {
 		TablePress::check_nonce( 'options' );
 
-		if ( ! current_user_can( 'tablepress_access_options_screen' ) )
+		if ( ! current_user_can( 'tablepress_access_options_screen' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
-		if ( empty( $_POST['options'] ) || ! is_array( $_POST['options'] ) )
+		if ( empty( $_POST['options'] ) || ! is_array( $_POST['options'] ) ) {
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'error_save' ) );
-		else
-			$posted_options = stripslashes_deep( $_POST['options'] );
+		} else {
+			$posted_options = wp_unslash( $_POST['options'] );
+		}
 
 		// Valid new options that will be merged into existing ones
 		$new_options = array();
@@ -882,15 +928,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 		if ( ! empty( $posted_options['plugin_language'] ) && '-' != $posted_options['plugin_language'] ) {
 			// only allow "auto" language and all values that have a translation
-			if ( 'auto' == $posted_options['plugin_language'] || array_key_exists( $posted_options['plugin_language'], $this->get_plugin_languages() ) )
+			if ( 'auto' == $posted_options['plugin_language'] || array_key_exists( $posted_options['plugin_language'], $this->get_plugin_languages() ) ) {
 				$new_options['plugin_language'] = $posted_options['plugin_language'];
+			}
 		}
 
 		// Custom CSS can only be saved if the user is allowed to do so
 		$update_custom_css_files = false;
 		if ( current_user_can( 'tablepress_edit_options' ) ) {
 			// Checkbox
-			$new_options[ 'use_custom_css' ] = ( isset( $posted_options[ 'use_custom_css' ] ) && 'true' === $posted_options[ 'use_custom_css' ] );
+			$new_options['use_custom_css'] = ( isset( $posted_options['use_custom_css'] ) && 'true' === $posted_options['use_custom_css'] );
 
 			if ( isset( $posted_options['custom_css'] ) ) {
 				$new_options['custom_css'] = $posted_options['custom_css'];
@@ -901,8 +948,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 				// Maybe update CSS files as well
 				$custom_css_file_contents = $tablepress_css->load_custom_css_from_file( 'normal' );
-				if ( false === $custom_css_file_contents )
+				if ( false === $custom_css_file_contents ) {
 					$custom_css_file_contents = '';
+				}
 				if ( $new_options['custom_css'] !== $custom_css_file_contents ) { // don't write to file if it already has the desired content
 					$update_custom_css_files = true;
 					// Set to false again. As it was set here, it will be set true again, if file saving succeeds
@@ -913,12 +961,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// save gathered new options (will be merged into existing ones), and flush caches of caching plugins, to make sure that the new Custom CSS is used
 		if ( ! empty( $new_options ) ) {
-			$this->model_options->update( $new_options );
-			$this->model_table->_flush_caching_plugins_caches();
+			TablePress::$model_options->update( $new_options );
+			TablePress::$model_table->_flush_caching_plugins_caches();
 		}
 
-		if ( $update_custom_css_files ) // capability check is performed above
+		if ( $update_custom_css_files ) { // capability check is performed above
 			TablePress::redirect( array( 'action' => 'options', 'item' => 'save_custom_css' ), true );
+		}
 
 		TablePress::redirect( array( 'action' => 'options', 'message' => 'success_save' ) );
 	}
@@ -931,42 +980,52 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_export() {
 		TablePress::check_nonce( 'export' );
 
-		if ( ! current_user_can( 'tablepress_export_tables' ) )
+		if ( ! current_user_can( 'tablepress_export_tables' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
-		if ( empty( $_POST['export'] ) || ! is_array( $_POST['export'] ) )
+		if ( empty( $_POST['export'] ) || ! is_array( $_POST['export'] ) ) {
 			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
-		else
-			$export = stripslashes_deep( $_POST['export'] );
+		} else {
+			$export = wp_unslash( $_POST['export'] );
+		}
 
 		$exporter = TablePress::load_class( 'TablePress_Export', 'class-export.php', 'classes' );
 
-		if ( empty( $export['tables'] ) )
+		if ( empty( $export['tables'] ) ) {
 			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
-		if ( empty( $export['format'] ) || ! isset( $exporter->export_formats[ $export['format'] ] ) )
+		}
+		if ( empty( $export['format'] ) || ! isset( $exporter->export_formats[ $export['format'] ] ) ) {
 			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
-		if ( empty( $export['csv_delimiter'] ) )
+		}
+		if ( empty( $export['csv_delimiter'] ) ) {
 			$export['csv_delimiter'] = ''; // set a value, so that the variable exists
-		if ( 'csv' == $export['format'] && ! isset( $exporter->csv_delimiters[ $export['csv_delimiter'] ] ) )
+		}
+		if ( 'csv' == $export['format'] && ! isset( $exporter->csv_delimiters[ $export['csv_delimiter'] ] ) ) {
 			TablePress::redirect( array( 'action' => 'export', 'message' => 'error_export' ) );
+		}
 
 		// use list of tables from concatenated field if available (as that's hopefully not truncated by Suhosin, which is possible for $export['tables'])
 		$tables = ( ! empty( $export['tables_list'] ) ) ? explode( ',', $export['tables_list'] ) : $export['tables'];
 
 		if ( $exporter->zip_support_available // determine if ZIP file support is available
-		&& ( ( isset( $export['zip_file'] ) && 'true' == $export['zip_file'] ) || count( $tables ) > 1 ) ) // only if ZIP desired or more than one table selected (mandatory)
+		&& ( ( isset( $export['zip_file'] ) && 'true' == $export['zip_file'] ) || count( $tables ) > 1 ) ) { // only if ZIP desired or more than one table selected (mandatory)
 			$export_to_zip = true;
-		else
+		} else {
 			$export_to_zip = false;
+		}
 
 		if ( ! $export_to_zip ) {
 			// this is only possible for one table, so take the first
-			if ( ! current_user_can( 'tablepress_export_table', $tables[0] ) )
+			if ( ! current_user_can( 'tablepress_export_table', $tables[0] ) ) {
 				wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
-			$table = $this->model_table->load( $tables[0] );
-			if ( false === $table )
+			}
+			$table = TablePress::$model_table->load( $tables[0] );
+			if ( false === $table ) {
 				TablePress::redirect( array( 'action' => 'export', 'message' => 'error_load_table', 'export_format' => $export['format'], 'csv_delimiter' => $export['csv_delimiter'] ) );
+			}
 			$download_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+			$download_filename = sanitize_file_name( $download_filename );
 			// export table
 			$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 			$download_data = $export_data;
@@ -977,6 +1036,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 			$zip_file = new ZipArchive();
 			$download_filename = sprintf( 'tablepress-export-%1$s-%2$s.zip', date_i18n( 'Y-m-d-H-i-s' ), $export['format'] );
+			$download_filename = sanitize_file_name( $download_filename );
 			$full_filename = wp_tempnam( $download_filename );
 			if ( true !== $zip_file->open( $full_filename, ZIPARCHIVE::OVERWRITE ) ) {
 				@unlink( $full_filename );
@@ -985,14 +1045,17 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 			foreach ( $tables as $table_id ) {
 				// don't export tables for which the user doesn't have the necessary export rights
-				if ( current_user_can( 'tablepress_export_table', $table_id ) )
-					$table = $this->model_table->load( $table_id );
-				else
+				if ( current_user_can( 'tablepress_export_table', $table_id ) ) {
+					$table = TablePress::$model_table->load( $table_id );
+				} else {
 					$table = false;
-				if ( false === $table )
+				}
+				if ( false === $table ) {
 					continue; // no export if table could not be loaded
+				}
 				$export_data = $exporter->export_table( $table, $export['format'], $export['csv_delimiter'] );
 				$export_filename = sprintf( '%1$s-%2$s-%3$s.%4$s', $table['id'], $table['name'], date( 'Y-m-d' ), $export['format'] );
+				$export_filename = sanitize_file_name( $export_filename );
 				$zip_file->addFromString( $export_filename, $export_data );
 			}
 
@@ -1034,29 +1097,34 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_post_action_import() {
 		TablePress::check_nonce( 'import' );
 
-		if ( ! current_user_can( 'tablepress_import_tables' ) )
+		if ( ! current_user_can( 'tablepress_import_tables' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
-		if ( empty( $_POST['import'] ) || ! is_array( $_POST['import'] ) )
+		if ( empty( $_POST['import'] ) || ! is_array( $_POST['import'] ) ) {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
-		else
-			$import = stripslashes_deep( $_POST['import'] );
+		} else {
+			$import = wp_unslash( $_POST['import'] );
+		}
 
 		// Determine if this is a regular import or an import from WP-Table Reloaded
 		if ( isset( $_POST['submit_wp_table_reloaded_import'] ) && isset( $import['wp_table_reloaded'] ) && isset( $import['wp_table_reloaded']['source'] ) ) {
-			if ( ! current_user_can( 'tablepress_import_tables_wptr' ) )
+			if ( ! current_user_can( 'tablepress_import_tables_wptr' ) ) {
 				wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+			}
 
 			// Handle checkbox selections
 			$import_tables = ( isset( $import['wp_table_reloaded']['tables'] ) && 'true' === $import['wp_table_reloaded']['tables'] );
 			$import_css = ( isset( $import['wp_table_reloaded']['css'] ) && 'true' === $import['wp_table_reloaded']['css'] );
-			if ( ! $import_tables && ! $import_css )
+			if ( ! $import_tables && ! $import_css ) {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_nothing_selected' ) );
+			}
 
-			if ( 'db' == $import['wp_table_reloaded']['source'] )
+			if ( 'db' == $import['wp_table_reloaded']['source'] ) {
 				$this->_import_from_wp_table_reloaded_db( $import_tables, $import_css );
-			else
+			} else {
 				$this->_import_from_wp_table_reloaded_dump_file( $import_tables, $import_css );
+			}
 		} else {
 			$this->_import_tablepress_regular( $import );
 		}
@@ -1069,17 +1137,21 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 *
 	 * @param array $import Submitted form data
 	 */
-	protected function _import_tablepress_regular( $import ) {
-		if ( ! isset( $import['type'] ) )
+	protected function _import_tablepress_regular( array $import ) {
+		if ( ! isset( $import['type'] ) ) {
 			$import['type'] = 'add';
-		if ( ! isset( $import['existing_table'] ) )
+		}
+		if ( ! isset( $import['existing_table'] ) ) {
 			$import['existing_table'] = '';
-		if ( ! isset( $import['source'] ) )
+		}
+		if ( ! isset( $import['source'] ) ) {
 			$import['source'] = '';
+		}
 
 		// Check if a table to replace or append to was selected
-		if ( in_array( $import['type'], array( 'replace', 'append' ), true ) && empty( $import['existing_table'] ) )
+		if ( in_array( $import['type'], array( 'replace', 'append' ), true ) && empty( $import['existing_table'] ) ) {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_no_existing_id', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_source' => $import['source'] ) );
+		}
 
 		$import_error = true;
 		$unlink_file = false;
@@ -1099,8 +1171,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( ! empty( $import['url'] ) && 'http://' != $import['url'] ) {
 					$import_data['file_location'] = download_url( $import['url'] ); // download URL to local file
 					$import_data['file_name'] = $import['url'];
-					if ( ! is_wp_error( $import_data['file_location'] ) )
+					if ( ! is_wp_error( $import_data['file_location'] ) ) {
 						$import_error = false;
+					}
 					$unlink_file = true;
 				}
 				break;
@@ -1108,8 +1181,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				if ( ! empty( $import['server'] ) && ABSPATH != $import['server'] ) {
 					$import_data['file_location'] = $import['server'];
 					$import_data['file_name'] = pathinfo( $import['server'], PATHINFO_BASENAME );
-					if ( is_readable( $import['server'] ) )
+					if ( is_readable( $import['server'] ) ) {
 						$import_error = false;
+					}
 				}
 				break;
 			case 'form-field':
@@ -1123,8 +1197,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( $import_error ) {
-			if ( $unlink_file )
+			if ( $unlink_file ) {
 				@unlink( $import_data['file_location'] );
+			}
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_source_invalid', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_existing_table' => $import['existing_table'], 'import_source' => $import['source'] ) );
 		}
 
@@ -1132,8 +1207,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		if ( 'zip' == pathinfo( $import_data['file_name'], PATHINFO_EXTENSION ) ) {
 			if ( ! $this->importer->zip_support_available ) { // determine if ZIP file support is available
-				if ( $unlink_file )
+				if ( $unlink_file ) {
 					@unlink( $import_data['file_location'] );
+				}
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_no_zip_import', 'import_format' => $import['format'], 'import_type' => $import['type'], 'import_existing_table' => $import['existing_table'], 'import_source' => $import['source'] ) );
 			}
 			$import_zip = true;
@@ -1142,23 +1218,27 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		if ( ! $import_zip ) {
-			if ( ! isset( $import_data['data'] ) )
+			if ( ! isset( $import_data['data'] ) ) {
 				$import_data['data'] = file_get_contents( $import_data['file_location'] );
-			if ( false === $import_data['data'] )
+			}
+			if ( false === $import_data['data'] ) {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import' ) );
+			}
 
 			$name = $import_data['file_name'];
 			$description = $import_data['file_name'];
 			$existing_table_id = ( in_array( $import['type'], array( 'replace', 'append' ), true ) && ! empty( $import['existing_table'] ) ) ? $import['existing_table'] : false;
 			$table_id = $this->_import_tablepress_table( $import['format'], $import_data['data'], $name, $description, $existing_table_id, $import['type'] );
 
-			if ( $unlink_file )
+			if ( $unlink_file ) {
 				@unlink( $import_data['file_location'] );
+			}
 
-			if ( false === $table_id )
+			if ( false === $table_id ) {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_data' ) );
-			else
+			} else {
 				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $table_id, 'message' => 'success_import' ) );
+			}
 		} else {
 			// Zipping can use a lot of memory and execution time, but not this much hopefully
 			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
@@ -1166,42 +1246,49 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 			$zip = new ZipArchive();
 			if ( true !== $zip->open( $import_data['file_location'], ZIPARCHIVE::CHECKCONS ) ) {
-				if ( $unlink_file )
+				if ( $unlink_file ) {
 					@unlink( $import_data['file_location'] );
+				}
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_open' ) );
 			}
 
 			$imported_files = array();
 			for ( $file_idx = 0; $file_idx < $zip->numFiles; $file_idx++ ) {
 				$file_name = $zip->getNameIndex( $file_idx );
-				if ( '/' == substr( $file_name, -1 ) ) // directory
+				if ( '/' == substr( $file_name, -1 ) ) { // directory
 					continue;
-				if ( '__MACOSX/' == substr( $file_name, 0, 9 ) ) // Skip the __MACOSX directory that Mac OSX adds to archives
+				}
+				if ( '__MACOSX/' == substr( $file_name, 0, 9 ) ) { // Skip the __MACOSX directory that Mac OSX adds to archives
 					continue;
+				}
 				$data = $zip->getFromIndex( $file_idx );
-				if ( false === $data )
+				if ( false === $data ) {
 					continue;
+				}
 
 				$name = $file_name;
 				$description = $file_name;
 				$existing_table_id = ( in_array( $import['type'], array( 'replace', 'append' ), true ) ) ? false : false; // @TODO: Find a way to extract the replace/append ID from the filename, maybe?
 				$table_id = $this->_import_tablepress_table( $import['format'], $data, $name, $description, $existing_table_id, 'add' );
-				if ( false === $table_id )
+				if ( false === $table_id ) {
 					continue;
-				else
+				} else {
 					$imported_files[] = $table_id;
+				}
 			};
 			$zip->close();
 
-			if ( $unlink_file )
+			if ( $unlink_file ) {
 				@unlink( $import_data['file_location'] );
+			}
 
-			if ( count( $imported_files ) > 1 )
+			if ( count( $imported_files ) > 1 ) {
 				TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import' ) );
-			elseif ( 1 == count( $imported_files ) )
+			} elseif ( 1 == count( $imported_files ) ) {
 				TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_files[0], 'message' => 'success_import' ) );
-			else
+			} else {
 				TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_zip_content' ) );
+			}
 		}
 
 	}
@@ -1212,7 +1299,7 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @since 1.0.0
 	 *
 	 * @param string $format Import format
-	 * @param array $data Data to import
+	 * @param string $data Data to import
 	 * @param string $name Name of the table
 	 * @param string $description Description of the table
 	 * @param bool|string $existing_table_id False if table shall be added new, ID of the table to be replaced or appended to otherwise
@@ -1221,50 +1308,74 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 */
 	protected function _import_tablepress_table( $format, $data, $name, $description, $existing_table_id, $import_type ) {
 		$imported_table = $this->importer->import_table( $format, $data );
-		if ( false === $imported_table )
+		if ( false === $imported_table ) {
 			return false;
+		}
 
-		if ( false === $existing_table_id )
+		if ( false === $existing_table_id ) {
 			$import_type = 'add';
+		}
 
 		// to be able to replace or append to a table, editing that table must be allowed
-		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! current_user_can( 'tablepress_edit_table', $existing_table_id ) )
+		if ( in_array( $import_type, array( 'replace', 'append' ), true ) && ! current_user_can( 'tablepress_edit_table', $existing_table_id ) ) {
 			return false;
+		}
 
 		// Full JSON format table can contain a table ID, try to keep that
 		$table_id_in_import = false;
 
 		switch ( $import_type ) {
 			case 'add':
-				$existing_table = $this->model_table->get_table_template();
+				$existing_table = TablePress::$model_table->get_table_template();
 				// if name and description are imported from a new table, use those
-				if ( isset( $imported_table['id'] ) )
+				if ( isset( $imported_table['id'] ) ) {
 					$table_id_in_import = $imported_table['id'];
-				if ( ! isset( $imported_table['name'] ) )
+				}
+				if ( ! isset( $imported_table['name'] ) ) {
 					$imported_table['name'] = $name;
-				if ( ! isset( $imported_table['description'] ) )
+				}
+				if ( ! isset( $imported_table['description'] ) ) {
 					$imported_table['description'] = $description;
+				}
+				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) && isset( $imported_table['visibility']['columns'] ) ) {
+					$existing_table['visibility']['rows'] = $imported_table['visibility']['rows'];
+					$existing_table['visibility']['columns'] = $imported_table['visibility']['columns'];
+				}
 				break;
 			case 'replace':
 				// Load existing table from DB
-				$existing_table = $this->model_table->load( $existing_table_id );
-				if ( false === $existing_table )
+				$existing_table = TablePress::$model_table->load( $existing_table_id );
+				if ( false === $existing_table ) {
 					return false;
+				}
 				// don't change name and description when a table is replaced
 				$imported_table['name'] = $existing_table['name'];
 				$imported_table['description'] = $existing_table['description'];
+				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) && isset( $imported_table['visibility']['columns'] ) ) {
+					$existing_table['visibility']['rows'] = $imported_table['visibility']['rows'];
+					$existing_table['visibility']['columns'] = $imported_table['visibility']['columns'];
+				}
 				break;
 			case 'append':
 				// Load existing table from DB
-				$existing_table = $this->model_table->load( $existing_table_id );
-				if ( false === $existing_table )
+				$existing_table = TablePress::$model_table->load( $existing_table_id );
+				if ( false === $existing_table ) {
 					return false;
+				}
 				// don't change name and description when a table is appended to
 				$imported_table['name'] = $existing_table['name'];
 				$imported_table['description'] = $existing_table['description'];
 				// Actual appending:
 				$imported_table['data'] = array_merge( $existing_table['data'], $imported_table['data'] );
 				$imported_table['data'] = $this->importer->pad_array_to_max_cols( $imported_table['data'] );
+				// Append visibility information for rows
+				if ( isset( $imported_table['visibility'] ) && isset( $imported_table['visibility']['rows'] ) ) {
+					$existing_table['visibility']['rows'] = array_merge( $existing_table['visibility']['rows'], $imported_table['visibility']['rows'] );
+				}
+				// When appending, do not overwrite options
+				if ( isset( $imported_table['options'] ) ) {
+					unset( $imported_table['options'] );
+				}
 				break;
 			default:
 				return false;
@@ -1281,28 +1392,33 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		);
 
 		// Check if new data is ok
-		$table = $this->model_table->prepare_table( $existing_table, $imported_table, false );
-		if ( false === $table )
+		$table = TablePress::$model_table->prepare_table( $existing_table, $imported_table, false );
+		if ( false === $table ) {
 			return false;
+		}
 
 		// DataTables Custom Commands can only be edit by trusted users
-		if ( ! current_user_can( 'unfiltered_html' ) )
+		if ( ! current_user_can( 'unfiltered_html' ) ) {
 			$table['options']['datatables_custom_commands'] = $existing_table['options']['datatables_custom_commands'];
+		}
 
 		// Replace existing table or add new table
-		if ( in_array( $import_type, array( 'replace', 'append' ), true ) )
-			$table_id = $this->model_table->save( $table ); // Replace existing table with imported/appended table
-		else
-			$table_id = $this->model_table->add( $table ); // Add the imported table (and get its first ID)
+		if ( in_array( $import_type, array( 'replace', 'append' ), true ) ) {
+			$table_id = TablePress::$model_table->save( $table ); // Replace existing table with imported/appended table
+		} else {
+			$table_id = TablePress::$model_table->add( $table ); // Add the imported table (and get its first ID)
+		}
 
-		if ( false === $table_id )
+		if ( false === $table_id ) {
 			return false;
+		}
 
 		// Try to use ID from imported file (e.g. in full JSON format table)
 		if ( false !== $table_id_in_import && $table_id != $table_id_in_import && current_user_can( 'tablepress_edit_table_id', $table_id ) ) {
-			$id_changed = $this->model_table->change_table_id( $table_id, $table_id_in_import );
-			if ( $id_changed )
+			$id_changed = TablePress::$model_table->change_table_id( $table_id, $table_id_in_import );
+			if ( $id_changed ) {
 				$table_id = $table_id_in_import;
+			}
 		}
 
 		return $table_id;
@@ -1317,19 +1433,21 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param bool $import_css Whether Plugin Options (only CSS related right now) shall be imported
 	 */
 	protected function _import_from_wp_table_reloaded_db( $import_tables, $import_css ) {
-		if ( false === get_option( 'wp_table_reloaded_options', false ) || false === get_option( 'wp_table_reloaded_tables', false ) )
+		if ( false === get_option( 'wp_table_reloaded_options', false ) || false === get_option( 'wp_table_reloaded_tables', false ) ) {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_not_installed' ) );
+		}
 
 		$wp_table_reloaded_options = get_option( 'wp_table_reloaded_options', false );
-		if ( empty( $wp_table_reloaded_options ) )
+		if ( empty( $wp_table_reloaded_options ) ) {
 			$wp_table_reloaded_options = array();
+		}
 
 		// Import WP-Table Reloaded tables
 		$not_imported_tables = $imported_tables = $imported_other_id_tables = array();
 		if ( $import_tables ) {
 			$wp_table_reloaded_tables_list = get_option( 'wp_table_reloaded_tables', array() );
 			foreach ( $wp_table_reloaded_tables_list as $wptr_table_id => $table_option_name ) {
-				$wptr_table = get_option( $table_option_name, false );
+				$wptr_table = get_option( $table_option_name, array() );
 				$import_status = $this->_import_wp_table_reloaded_table( $wptr_table, $wp_table_reloaded_options );
 				switch ( $import_status ) {
 					case 0:
@@ -1347,20 +1465,23 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Import WP-Table Reloaded Plugin Options (currently only CSS related options)
 		$imported_css = false;
-		if ( $import_css )
+		if ( $import_css ) {
 			$imported_css = $this->_import_wp_table_reloaded_plugin_options( $wp_table_reloaded_options );
+		}
 
 		// @TODO: Better handling of the different cases of imported/imported-without-ID-change/not-imported tables
-		if ( count( $imported_tables ) > 1 )
+		if ( count( $imported_tables ) > 1 ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
-		elseif ( 1 == count( $imported_tables ) )
+		} elseif ( 1 == count( $imported_tables ) ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_tables[0], 'message' => 'success_import_wp_table_reloaded' ) );
-		if ( count( $imported_other_id_tables ) > 0 )
+		}
+		if ( count( $imported_other_id_tables ) > 0 ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
-		elseif ( $imported_css )
+		} elseif ( $imported_css ) {
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
-		else
+		} else {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_wp_table_reloaded' ) );
+		}
 	}
 
 	/**
@@ -1372,8 +1493,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param bool $import_css Whether Plugin Options (only CSS related right now) shall be imported
 	 */
 	protected function _import_from_wp_table_reloaded_dump_file( $import_tables, $import_css ) {
-		if ( empty( $_FILES['import_wp_table_reloaded_file_upload'] ) || empty( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] ) || UPLOAD_ERR_OK !== $_FILES['import_wp_table_reloaded_file_upload']['error'] )
+		if ( empty( $_FILES['import_wp_table_reloaded_file_upload'] ) || empty( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] ) || UPLOAD_ERR_OK !== $_FILES['import_wp_table_reloaded_file_upload']['error'] ) {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_dump_file' ) );
+		}
 
 		$dump_file = file_get_contents( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
 		$dump_file = unserialize( $dump_file );
@@ -1381,8 +1503,9 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			@unlink( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_wp_table_reloaded_dump_file' ) );
 		}
-		if ( empty( $dump_file['options'] ) )
+		if ( empty( $dump_file['options'] ) || ! is_array( $dump_file['options'] ) ) {
 			$dump_file['options'] = array();
+		}
 
 		// Import WP-Table Reloaded tables
 		$not_imported_tables = $imported_tables = $imported_other_id_tables = array();
@@ -1405,21 +1528,24 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		// Import WP-Table Reloaded Plugin Options (currently only CSS related options)
 		$imported_css = false;
-		if ( $import_css )
+		if ( $import_css ) {
 			$imported_css = $this->_import_wp_table_reloaded_plugin_options( $dump_file['options'] );
+		}
 
 		@unlink( $_FILES['import_wp_table_reloaded_file_upload']['tmp_name'] );
 		// @TODO: Better handling of the different cases of imported/imported-without-ID-change/not-imported tables
-		if ( count( $imported_tables ) > 1 )
+		if ( count( $imported_tables ) > 1 ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
-		elseif ( 1 == count( $imported_tables ) )
+		} elseif ( 1 == count( $imported_tables ) ) {
 			TablePress::redirect( array( 'action' => 'edit', 'table_id' => $imported_tables[0], 'message' => 'success_import_wp_table_reloaded' ) );
-		if ( count( $imported_other_id_tables ) > 0 )
+		}
+		if ( count( $imported_other_id_tables ) > 0 ) {
 			TablePress::redirect( array( 'action' => 'list', 'message' => 'success_import_wp_table_reloaded' ) );
-		elseif ( $imported_css )
+		} elseif ( $imported_css ) {
 			TablePress::redirect( array( 'action' => 'options', 'message' => 'success_import_wp_table_reloaded' ) );
-		else
+		} else {
 			TablePress::redirect( array( 'action' => 'import', 'message' => 'error_import_wp_table_reloaded' ) );
+		}
 	}
 
 	/**
@@ -1431,18 +1557,20 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $wp_table_reloaded_options WP-Table Reloaded Plugin Options
 	 * @return int Import status: 0=Import failed; 1=Imported with ID change; 2=Imported without ID change
 	 */
-	protected function _import_wp_table_reloaded_table( $wptr_table, $wp_table_reloaded_options ) {
-		if ( empty( $wptr_table ) )
+	protected function _import_wp_table_reloaded_table( array $wptr_table, array $wp_table_reloaded_options ) {
+		if ( empty( $wptr_table ) ) {
 			return 0; // Import failed
+		}
 
 		// Perform sanity checks of imported table
 		if ( ! isset( $wptr_table['name'] )
 			|| ! isset( $wptr_table['description'] )
 			|| empty( $wptr_table['data'] )
-			|| empty( $wptr_table['options'] ) )
+			|| empty( $wptr_table['options'] ) ) {
 			return 0; // Import failed
+		}
 
-		$wptr_table = stripslashes_deep( $wptr_table ); // slashed in WP-Table Reloaded
+		$wptr_table = wp_unslash( $wptr_table ); // slashed in WP-Table Reloaded
 
 		// Table was loaded, import the data, table options, and visibility
 		// Create a new table array with information from the imported table
@@ -1456,23 +1584,30 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				'columns' => array_fill( 0, count( $wptr_table['data'][0] ), 1 )
 			)
 		);
-		if ( isset( $wptr_table['last_modified'] ) )
+		if ( isset( $wptr_table['last_modified'] ) ) {
 			$new_table['last_modified'] = $wptr_table['last_modified'];
-		if ( isset( $wptr_table['last_editor_id'] ) )
+		}
+		if ( isset( $wptr_table['last_editor_id'] ) ) {
 			$new_table['author'] = $wptr_table['last_editor_id'];
-		if ( isset( $wptr_table['options']['last_editor_id'] ) )
+		}
+		if ( isset( $wptr_table['options']['last_editor_id'] ) ) {
 			$new_table['options']['last_editor'] = $wptr_table['last_editor_id'];
-		if ( isset( $wptr_table['options']['first_row_th'] ) )
+		}
+		if ( isset( $wptr_table['options']['first_row_th'] ) ) {
 			$new_table['options']['table_head'] = $wptr_table['options']['first_row_th'];
-		if ( isset( $wptr_table['options']['table_footer'] ) )
+		}
+		if ( isset( $wptr_table['options']['table_footer'] ) ) {
 			$new_table['options']['table_foot'] = $wptr_table['options']['table_footer'];
-		if ( isset( $wptr_table['options']['custom_css_class'] ) )
+		}
+		if ( isset( $wptr_table['options']['custom_css_class'] ) ) {
 			$new_table['options']['extra_css_classes'] = $wptr_table['options']['custom_css_class'];
+		}
 		if ( isset( $wptr_table['options']['use_tablesorter'] ) && isset( $wp_table_reloaded_options['enable_tablesorter'] ) ) {
-			if ( $wp_table_reloaded_options['enable_tablesorter'] )
+			if ( $wp_table_reloaded_options['enable_tablesorter'] ) {
 				$new_table['options']['use_datatables'] = $wptr_table['options']['use_tablesorter'];
-			else
+			} else {
 				$new_table['options']['use_datatables'] = false;
+			}
 		}
 		// array key is the same in both plugins for the following options
 		foreach ( array( 'alternating_row_colors', 'row_hover',
@@ -1480,11 +1615,13 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'datatables_sort', 'datatables_filter', 'datatables_paginate',
 			'datatables_lengthchange', 'datatables_paginate_entries', 'datatables_info'
 		) as $_option ) {
-			if ( isset( $wptr_table['options'][ $_option ] ) )
+			if ( isset( $wptr_table['options'][ $_option ] ) ) {
 				$new_table['options'][ $_option ] = $wptr_table['options'][ $_option ];
+			}
 		}
-		if ( isset( $wptr_table['options']['datatables_customcommands'] ) && current_user_can( 'unfiltered_html' ) )
+		if ( isset( $wptr_table['options']['datatables_customcommands'] ) && current_user_can( 'unfiltered_html' ) ) {
 			$new_table['options']['datatables_custom_commands'] = $wptr_table['options']['datatables_customcommands'];
+		}
 		// not imported: $wptr_table['options']['cache_table_output']
 		// not imported: $wptr_table['custom_fields']
 
@@ -1497,19 +1634,22 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		}
 
 		// Merge this data into an empty table template
-		$table = $this->model_table->prepare_table( $this->model_table->get_table_template(), $new_table, false );
-		if ( false === $table )
+		$table = TablePress::$model_table->prepare_table( TablePress::$model_table->get_table_template(), $new_table, false );
+		if ( false === $table ) {
 			return 0; // Import failed
+		}
 
 		// Add the new table (and get its first ID)
-		$tp_table_id = $this->model_table->add( $table );
-		if ( false === $tp_table_id )
+		$tp_table_id = TablePress::$model_table->add( $table );
+		if ( false === $tp_table_id ) {
 			return 0; // Import failed
+		}
 
 		// Change table ID to the ID the table had in WP-Table Reloaded (except if that ID is already taken)
-		$id_changed = $this->model_table->change_table_id( $tp_table_id, $wptr_table['id'] );
-		if ( ! $id_changed )
+		$id_changed = TablePress::$model_table->change_table_id( $tp_table_id, $wptr_table['id'] );
+		if ( ! $id_changed ) {
 			return 2; // Imported without ID change
+		}
 
 		return 1; // Imported with ID change
 	}
@@ -1522,18 +1662,16 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	 * @param array $wp_table_reloaded_options Plugin Options of WP-Table Reloaded that shall be imported
 	 * @return bool Whether the import was successful or not (on at least on option)
 	 */
-	protected function _import_wp_table_reloaded_plugin_options( $wp_table_reloaded_options ) {
-		if ( ! is_array( $wp_table_reloaded_options ) )
+	protected function _import_wp_table_reloaded_plugin_options( array $wp_table_reloaded_options ) {
+		if ( ! current_user_can( 'tablepress_edit_options' ) ) {
 			return false;
-
-		if ( ! current_user_can( 'tablepress_edit_options' ) )
-			return false;
+		}
 
 		$imported_options = array();
-		$imported_options['use_custom_css'] = ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) ? (bool)$wp_table_reloaded_options['use_custom_css'] : false;
+		$imported_options['use_custom_css'] = ( isset( $wp_table_reloaded_options['use_custom_css'] ) ) ? (bool) $wp_table_reloaded_options['use_custom_css'] : false;
 		if ( isset( $wp_table_reloaded_options['custom_css'] ) ) {
 			// Automatically convert WP-Table Reloaded Custom CSS to TablePress Custom CSS by search/replacing classes and IDs
-			$imported_options['custom_css'] = stripslashes( $wp_table_reloaded_options['custom_css'] );
+			$imported_options['custom_css'] = wp_unslash( $wp_table_reloaded_options['custom_css'] ); // Be careful when removing this, as it might break CSS comments from old Dump Files
 			$imported_options['custom_css'] = str_replace( '#wp-table-reloaded-id-', '#tablepress-', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '-no-1', '', $imported_options['custom_css'] );
 			$imported_options['custom_css'] = str_replace( '.wp-table-reloaded-id-', '.tablepress-id-', $imported_options['custom_css'] );
@@ -1548,16 +1686,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 				$result = $tablepress_css->save_custom_css_to_file( $imported_options['custom_css'], $imported_options['custom_css_minified'] );
 				$imported_options['use_custom_css_file'] = $result; // if saving was successful, use "Custom CSS" file
 				// if saving was successful, increase the "Custom CSS" version number for cache busting
-				if ( $result )
-					$imported_options['custom_css_version'] = $this->model_options->get( 'custom_css_version' ) + 1;
+				if ( $result ) {
+					$imported_options['custom_css_version'] = TablePress::$model_options->get( 'custom_css_version' ) + 1;
+				}
 			}
 		}
 
 		// Save gathered imported options
-		if ( empty( $imported_options ) )
+		if ( empty( $imported_options ) ) {
 			return false;
+		}
 
-		$this->model_options->update( $imported_options );
+		TablePress::$model_options->update( $imported_options );
 
 		return true;
 	}
@@ -1575,13 +1715,15 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$message_item = ! empty( $_GET['item'] ) ? $_GET['item'] : '';
 		TablePress::check_nonce( 'hide_message', $message_item );
 
-		if ( ! current_user_can( 'tablepress_list_tables' ) )
+		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
 		$updated_options = array( "message_{$message_item}" => false );
-		if ( 'plugin_update' == $message_item )
+		if ( 'plugin_update' == $message_item ) {
 			$updated_options['message_plugin_update_content'] = '';
-		$this->model_options->update( $updated_options );
+		}
+		TablePress::$model_options->update( $updated_options );
 
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		TablePress::redirect( array( 'action' => $return ) );
@@ -1599,15 +1741,18 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		$return_item = ! empty( $_GET['return_item'] ) ? $_GET['return_item'] : false;
 
-		if ( false === $table_id ) // nonce check should actually catch this already
+		if ( false === $table_id ) { // nonce check should actually catch this already
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
+		}
 
-		if ( ! current_user_can( 'tablepress_delete_table', $table_id ) )
+		if ( ! current_user_can( 'tablepress_delete_table', $table_id ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
-		$deleted = $this->model_table->delete( $table_id );
-		if ( false === $deleted )
+		$deleted = TablePress::$model_table->delete( $table_id );
+		if ( false === $deleted ) {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_delete', 'table_id' => $return_item ) );
+		}
 
 		// slightly more complex redirect method, to account for sort, search, and pagination in the WP_List_Table on the List View
 		// but only if this action succeeds, to have everything fresh in the event of an error
@@ -1634,17 +1779,22 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 		$return = ! empty( $_GET['return'] ) ? $_GET['return'] : 'list';
 		$return_item = ! empty( $_GET['return_item'] ) ? $_GET['return_item'] : false;
 
-		if ( false === $table_id ) // nonce check should actually catch this already
+		if ( false === $table_id ) { // nonce check should actually catch this already
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
+		}
 
-		if ( ! current_user_can( 'tablepress_copy_table', $table_id ) )
+		if ( ! current_user_can( 'tablepress_copy_table', $table_id ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
-		$copy_table_id = $this->model_table->copy( $table_id );
-		if ( false === $copy_table_id )
+		$this->init_i18n_support(); // for the translation of "Copy of"
+
+		$copy_table_id = TablePress::$model_table->copy( $table_id );
+		if ( false === $copy_table_id ) {
 			TablePress::redirect( array( 'action' => $return, 'message' => 'error_copy', 'table_id' => $return_item ) );
-		else
+		} else {
 			$return_item = $copy_table_id;
+		}
 
 		// slightly more complex redirect method, to account for sort, search, and pagination in the WP_List_Table on the List View
 		// but only if this action succeeds, to have everything fresh in the event of an error
@@ -1670,16 +1820,19 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$this->init_i18n_support();
 
-		if ( false === $table_id ) // nonce check should actually catch this already
+		if ( false === $table_id ) { // nonce check should actually catch this already
 			wp_die( __( 'The preview could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
+		}
 
-		if ( ! current_user_can( 'tablepress_preview_table', $table_id ) )
+		if ( ! current_user_can( 'tablepress_preview_table', $table_id ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
 		// Load existing table from DB
-		$table = $this->model_table->load( $table_id );
-		if ( false === $table )
+		$table = TablePress::$model_table->load( $table_id );
+		if ( false === $table ) {
 			wp_die( __( 'The table could not be loaded.', 'tablepress' ), __( 'Preview', 'tablepress' ) );
+		}
 
 		// Create a render class instance
 		$_render = TablePress::load_class( 'TablePress_Render', 'class-render.php', 'classes' );
@@ -1695,9 +1848,10 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 			'body_html' => $_render->get_output()
 		);
 
-		$custom_css = $this->model_options->get( 'custom_css' );
-		if ( ! empty( $custom_css ) )
+		$custom_css = TablePress::$model_options->get( 'custom_css' );
+		if ( ! empty( $custom_css ) ) {
 			$view_data['head_html'] .= "<style type=\"text/css\">\n{$custom_css}\n</style>\n";
+		}
 
 		// Prepare, initialize, and render the view
 		$this->view = TablePress::load_view( 'preview_table', $view_data );
@@ -1712,13 +1866,14 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 	public function handle_get_action_editor_button_thickbox() {
 		TablePress::check_nonce( 'editor_button_thickbox' );
 
-		if ( ! current_user_can( 'tablepress_list_tables' ) )
+		if ( ! current_user_can( 'tablepress_list_tables' ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
 		$this->init_i18n_support();
 
 		$view_data = array(
-			'tables' => $this->model_table->load_all() // does not contain table data
+			'tables' => TablePress::$model_table->load_all() // does not contain table data
 		);
 
 		set_current_screen( 'tablepress_editor_button_thickbox' );
@@ -1739,41 +1894,45 @@ class TablePress_Admin_Controller extends TablePress_Controller {
 
 		$plugin = TABLEPRESS_BASENAME;
 
-		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) || is_plugin_active_for_network( $plugin ) )
+		if ( ! current_user_can( 'activate_plugins' ) || ! current_user_can( 'tablepress_edit_options' ) || ! current_user_can( 'tablepress_delete_tables' ) || is_plugin_active_for_network( $plugin ) ) {
 			wp_die( __( 'You do not have sufficient permissions to access this page.', 'default' ) );
+		}
 
 		// Deactivate TablePress for the site (but not for the network)
 		deactivate_plugins( $plugin, false, false );
 		update_option( 'recently_activated', array( $plugin => time() ) + (array) get_option( 'recently_activated', array() ) );
 
 		// Delete all tables, "Custom CSS" files, and options
-		$this->model_table->delete_all();
+		TablePress::$model_table->delete_all();
 		$tablepress_css = TablePress::load_class( 'TablePress_CSS', 'class-css.php', 'classes' );
 		$css_files_deleted = $tablepress_css->delete_custom_css_files();
-		$this->model_options->remove_access_capabilities();
+		TablePress::$model_options->remove_access_capabilities();
 
-		$this->model_table->destroy();
-		$this->model_options->destroy();
+		TablePress::$model_table->destroy();
+		TablePress::$model_options->destroy();
 
 		$this->init_i18n_support();
 
 		$output = '<strong>' . __( 'TablePress was uninstalled successfully.', 'tablepress' ) . '</strong><br /><br />';
 		$output .= __( 'All tables, data, and options were deleted.', 'tablepress' );
-		if ( is_multisite() )
+		if ( is_multisite() ) {
 			$output .= ' ' . __( 'You may now ask the network admin to delete the plugin&#8217;s folder <code>tablepress</code> from the server, if no other site in the network uses it.', 'tablepress' );
-		else
+		} else {
 			$output .= ' ' . __( 'You may now manually delete the plugin&#8217;s folder <code>tablepress</code> from the <code>plugins</code> directory on your server or use the &#8220;Delete&#8221; link for TablePress on the WordPress &#8220;Plugins&#8221; page.', 'tablepress' );
+		}
 		if ( $css_files_deleted ) {
 			$output .= ' ' . __( 'Your TablePress &#8220;Custom CSS&#8221; files have been deleted automatically.', 'tablepress' );
 		} else {
-			if ( is_multisite() )
+			if ( is_multisite() ) {
 				$output .= ' ' . __( 'Please also ask him to delete your TablePress &#8220;Custom CSS&#8221; files from the server.', 'tablepress' );
-			else
+			} else {
 				$output .= ' ' . __( 'You may now also delete your TablePress &#8220;Custom CSS&#8221; files in the <code>wp-content</code> folder.', 'tablepress' );
+			}
 		}
 		$output .= "</p>\n<p>";
-		if ( ! is_multisite() || is_super_admin() )
+		if ( ! is_multisite() || is_super_admin() ) {
 			$output .= '<a class="button" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . __( 'Go to &#8220;Plugins&#8221; page', 'tablepress' ) . '</a> ';
+		}
 		$output .= '<a class="button" href="' . esc_url( admin_url( 'index.php' ) ) . '">' . __( 'Go to Dashboard', 'tablepress' ) . '</a>';
 
 		wp_die( $output, __( 'Uninstall TablePress', 'tablepress' ), array( 'response' => 200, 'back_link' => false ) );

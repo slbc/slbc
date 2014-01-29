@@ -3,8 +3,8 @@ Contributors: wpforchurch
 Donate link: http://wpforchurch.com/
 Tags: church, sermon, sermons, preaching, podcasting
 Requires at least: 3.4
-Tested up to: 3.6
-Stable tag: 1.7.4
+Tested up to: 3.7
+Stable tag: 1.8.2
 
 Add audio and video sermons, manage speakers, series, and more to your church website
 
@@ -29,14 +29,16 @@ iTunes podcasting support is available!
 Would you like to help develop Sermon Manager? Fork it on [Bit Bucket](https://bitbucket.org/wpforchurch/sermon-manager-for-wordpress)
 
 = Available Addons =
-* [Import MP3 to Sermon Manager](http://www.wpforchurch.com/products/import-mp3-to-sermon-manager/)
-* Import from Sermon Browser to Sermon Manager is coming soon! Sign up for the [newsletter](http://www.wpforchurch.com/newsletter/) to make sure you don't miss the announcement!
+* [Import MP3 to Sermon Manager](http://www.wpforchurch.com/15603/beta-test-sermon-browser-import/) from @khornberg
+* [Import from Sermon Browser to Sermon Manager](http://www.wpforchurch.com/15603/beta-test-sermon-browser-import/) 
 
 [DEMO](http://demo.wpforchurch.com/sermon-manager/)
 
 You can visit the [plugin's homepage](http://www.wpforchurch.com/products/sermon-manager-for-wordpress/ "Sermon Manager homepage") to get support.
 
-[WP for Church](http://wpforchurch.com/ "WP for Church") provides plugins, themes, and training for churches using WordPress.
+[WP for Church](http://wpforchurch.com/ "WP for Church") provides plugins and responsive themes for churches using WordPress.
+
+Sign up for the [newsletter](http://www.wpforchurch.com/newsletter/)!
 
 
 == Installation ==
@@ -70,6 +72,14 @@ Visit the [plugin homepage](http://wpforchurch.com/plugins/sermon-manager/ "Serm
 2. Sermon Files
 
 == Changelog ==
+= 1.8.1 =
+* fixed errors with saving settings for some users (remove dependency on CURL)
+
+= 1.8 =
+* improved podcasting performance - props @livingos
+* cleaned up options page with tabs, added hooks for other plugins to hook into the option page.
+* fixed bug causing sermons to display 2x
+
 = 1.7.4 = 
 * updated the way attachments are displayed. Now they will be available for download even if not attached to the sermon.
 * fix sermon-images shortcode

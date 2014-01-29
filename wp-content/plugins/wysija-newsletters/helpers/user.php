@@ -756,10 +756,10 @@ class WYSIJA_help_user extends WYSIJA_object{
         }
         if($subscribed){
             $title=sprintf(__('New subscriber to %1$s',WYSIJA),implode(',',$list_names));
-            $body=sprintf(__('Howdy,'."\n\n".'The subscriber %1$s has just subscribed to your list "%2$s".'."\n\n".'Cheers,'."\n\n".'The Wysija Plugin',WYSIJA),"<strong>".$email."</strong>","<strong>".implode(',',$list_names)."</strong>");
+            $body=sprintf(__('Howdy,'."\n\n".'The subscriber %1$s has just subscribed to your list "%2$s".'."\n\n".'Cheers,'."\n\n".'The MailPoet Plugin',WYSIJA),"<strong>".$email."</strong>","<strong>".implode(',',$list_names)."</strong>");
         }else{
             $title=sprintf(__('One less subscriber to %1$s',WYSIJA),implode(',',$list_names));
-            $body=sprintf(__('Howdy,'."\n\n".'The subscriber : %1$s has just unsubscribed to your list "%2$s".'."\n\n".'Cheers,'."\n\n".'The Wysija Plugin',WYSIJA),"<strong>".$email."</strong>","<strong>".implode(',',$list_names)."</strong>");
+            $body=sprintf(__('Howdy,'."\n\n".'The subscriber : %1$s has just unsubscribed to your list "%2$s".'."\n\n".'Cheers,'."\n\n".'The MailPoet Plugin',WYSIJA),"<strong>".$email."</strong>","<strong>".implode(',',$list_names)."</strong>");
         }
 
         $model_config=WYSIJA::get('config','model');
@@ -977,7 +977,9 @@ class WYSIJA_help_user extends WYSIJA_object{
      */
     function checkUserKey($user_id=false){
 
-        if(isset($_REQUEST['wysija-key']) || $user_id !==false){
+        // the !is numeric condition is here because if we input wysija-key=3 in the url
+        // our model will search keyuser=3 which will return the result of the user with key user 3b61ac508456ab6ee7594c47cddb86a5
+        if((!empty($_REQUEST['wysija-key']) && !is_numeric($_REQUEST['wysija-key'])) || $user_id !==false){
             $modelUser=WYSIJA::get('user','model');
 
             if($user_id===false){

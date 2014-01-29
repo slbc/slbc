@@ -77,6 +77,7 @@ function wpfc_sermon_admin_styles() {
 	wp_enqueue_script('media-upload');
 	wp_enqueue_script('thickbox');
 	wp_enqueue_style('thickbox');
+	wp_enqueue_script('jquery-ui-tabs');
 }
 
 // Render the Plugin options form
@@ -88,6 +89,7 @@ function wpfc_sermon_options_render_form() {
 		
 		<script type="text/javascript">
 		jQuery(document).ready(function() {
+			jQuery( '.sermon-option-tabs' ).tabs();
 			jQuery('#upload_cover_image').click(function() {
 				uploadID = jQuery(this).prev('input');
 				tb_show('', 'media-upload.php?type=image&amp;TB_iframe=true');
@@ -100,15 +102,31 @@ function wpfc_sermon_options_render_form() {
 			};
 		});
 		</script>
+		<style type="text/css">
+		.sermon-option-tabs .ui-tabs-nav li {display: inline;}
+		.sermon-option-tabs .ui-tabs-nav {margin-top: 0; margin-bottom: 0;}
+		</style>
 		<?php $sermon_settings = get_option('wpfc_options');
 		$sermon_version = $sermon_settings['version'];
-		if(empty($sermon_version)):
+		//echo '<pre>'.$sermon_version.'</pre>';
+		if( $sermon_version < '1.8' ):
 			wpfc_sermon_update();
 		endif; ?>
 		<!-- Display Plugin Icon, Header, and Description -->
+		<div class="sermon-option-tabs">
 		<div class="icon32" id="icon-options-general"><br></div>
 		<h2><?php _e('Sermon Manager Options', 'sermon-manager'); ?></h2>
-
+		<?php //echo '<pre>'; print_r($sermon_settings); echo '</pre>'; ?>
+	
+			<h2 class="nav-tab-wrapper">
+				<ul class="ui-tabs-nav">
+					<li><a id="sermon-general" class="nav-tab" href="#sermon-options-general"><?php _e('General', 'sermon-manager'); ?></a></li>
+					<li><a id="sermon-verse" class="nav-tab" href="#sermon-options-verse"><?php _e('Verse', 'sermon-manager'); ?></a></li>
+					<li><a id="sermon-podcast" class="nav-tab" href="#sermon-options-podcast"><?php _e('Podcast', 'sermon-manager'); ?></a></li>
+					<?php do_action('wpfc_settings_form_tabs'); ?>
+				</ul>
+			</h2>
+		
 		<?php if ( false !== $_REQUEST['settings-updated'] ) : ?>
 			<div class="updated fade"><p><strong><?php _e( 'Options saved', 'sermon-manager' ); ?></strong></p></div>
 		<?php endif; ?>
@@ -131,8 +149,8 @@ function wpfc_sermon_options_render_form() {
 			<form method="post" action="options.php">
 			<?php settings_fields('wpfc_plugin_options'); ?>
 			<?php $options = get_option('wpfc_options'); ?>
-
-			<div class="postbox">
+			
+			<div class="postbox tab-content" id="sermon-options-general">
 				<h3><span><?php _e('General Settings', 'sermon-manager'); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
@@ -188,7 +206,7 @@ function wpfc_sermon_options_render_form() {
 			</div> <!-- .inside -->
 			</div>
 
-			<div class="postbox">
+			<div class="postbox" id="sermon-options-verse" class="tab-content">
 				<h3><span><?php _e('Verse Settings', 'sermon-manager'); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
@@ -217,7 +235,7 @@ function wpfc_sermon_options_render_form() {
 			</div> <!-- .inside -->
 			</div>
 
-			<div class="postbox">
+			<div class="postbox tab-content" id="sermon-options-podcast">
 				<h3><span><?php _e('Podcast Settings', 'sermon-manager'); ?></span></h3>
 			<div class="inside">
 				<table class="form-table">
@@ -358,46 +376,37 @@ function wpfc_sermon_options_render_form() {
 					</td>
 				</tr>
 
-				</table>
+			</table>
+			
+			<br />
+<tr>
+			<p><strong><?php _e('Feed URL to Submit to iTunes', 'sermon-manager'); ?></strong><br/>
+			<input type="text" class="regular-text" readonly="readonly" value="<?php echo home_url(); ?>/feed/podcast" /></p>
+			
+			<p><?php _e( 'Use the ', 'sermon-manager' ); ?><a href="http://www.feedvalidator.org/check.cgi?url=<?php echo home_url(); ?>/feed/podcast" target="_blank"><?php _e( 'Feed Validator', 'sermon-manager' ); ?></a><?php _e( ' to diagnose and fix any problems before submitting your Podcast to iTunes.', 'sermon-manager' ); ?></p>
+						
+			<p><?php _e( 'Once your Podcast Settings are complete and your Sermons are ready, it\'s time to ', 'sermon-manager' ); ?><a href="http://www.apple.com/itunes/podcasts/specs.html#submitting" target="_blank"><?php _e( 'Submit Your Podcast', 'sermon-manager' ); ?></a><?php _e( ' to the iTunes Store!', 'sermon-manager' ); ?></p>
+			
+			<p><?php _e( 'Alternatively, if you want to track your Podcast subscribers, simply pass the Podcast Feed URL above through ', 'sermon-manager' ); ?><a href="http://feedburner.google.com/" target="_blank"><?php _e( 'FeedBurner', 'sermon-manager' ); ?></a><?php _e( '. FeedBurner will then give you a new URL to submit to iTunes instead.', 'sermon-manager' ); ?></p>
+			
+			<p><?php _e( 'Please read the ', 'sermon-manager' ); ?><a href="http://www.apple.com/itunes/podcasts/creatorfaq.html" target="_blank"><?php _e( 'iTunes FAQ for Podcast Makers', 'sermon-manager' ); ?></a><?php _e( ' for more information.', 'sermon-manager' ); ?></p>
+			
 			</div> <!-- .inside -->
 			</div>
 
+			
 			<?php do_action('wpfc_settings_form'); ?>
 			<p class="submit">
 			<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'sermon-manager') ?>" />
 			</p>
 			</form>
 			
-			<div class="postbox">
-				<h3><span><?php _e('Submit to iTunes', 'sermon-manager'); ?></span></h3>
-			<div class="inside">
-			
-			<table class="form-table">
-				<tr>
-					<th scope="row"><?php _e( 'Podcast Feed URL', 'sermon-manager' ); ?></th>
-					<td class="option">
-						<input type="text" class="regular-text" readonly="readonly" value="<?php echo home_url(); ?>/feed/podcast" />
-					</td>
-					<td class="info">
-						<p><?php _e( 'Use the ', 'sermon-manager' ); ?><a href="http://www.feedvalidator.org/check.cgi?url=<?php echo home_url(); ?>/feed/podcast" target="_blank"><?php _e( 'Feed Validator', 'sermon-manager' ); ?></a><?php _e( ' to diagnose and fix any problems before submitting your Podcast to iTunes.', 'sermon-manager' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			
-			<br />
-			<p><?php _e( 'Once your Podcast Settings are complete and your Sermons are ready, it\'s time to ', 'sermon-manager' ); ?><a href="https://phobos.apple.com/WebObjects/MZFinance.woa/wa/publishPodcast" target="_blank"><?php _e( 'Submit Your Podcast', 'sermon-manager' ); ?></a><?php _e( ' to the iTunes Store!', 'sermon-manager' ); ?></p>
-			
-			<p><?php _e( 'Alternatively, if you want to track your Podcast subscribers, simply pass the Podcast Feed URL above through ', 'sermon-manager' ); ?><a href="http://feedburner.google.com/" target="_blank"><?php _e( 'FeedBurner', 'sermon-manager' ); ?></a><?php _e( '. FeedBurner will then give you a new URL to submit to iTunes instead.', 'sermon-manager' ); ?></p>
-			
-			<p><?php _e( 'Please read the ', 'sermon-manager' ); ?><a href="http://www.apple.com/itunes/podcasts/creatorfaq.html" target="_blank"><?php _e( 'iTunes FAQ for Podcast Makers', 'sermon-manager' ); ?></a><?php _e( ' for more information.', 'sermon-manager' ); ?></p>
-			</div> <!-- .inside -->
-			</div>
-
-			
 		</div> <!-- #post-body-content -->
 		</div> <!-- #post-body -->
 
 		</div> <!-- .metabox-holder -->
+		</div> <!-- .sermon-option-tabs -->
+			
 	</div> <!-- .wrap -->
 	<?php	
 }

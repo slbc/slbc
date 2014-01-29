@@ -37,7 +37,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		parent::setup( $action, $data );
 
 		$action_messages = array(
@@ -155,10 +155,10 @@ class TablePress_Edit_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
- 	 * @param array $strings Current set of Media View strings
+	 * @param array $strings Current set of Media View strings
 	 * @return array Changed Media View strings
 	 */
-	public function change_media_view_strings( $strings ) {
+	public function change_media_view_strings( array $strings ) {
 		$strings['insertIntoPost'] = __( 'Insert into Table', 'tablepress' );
 		return $strings;
 	}
@@ -172,7 +172,7 @@ class TablePress_Edit_View extends TablePress_View {
 	 * @param array $data Data for this screen
 	 * @param array $box Information about the text box
 	 */
-	protected function action_nonce_field( $data, $box ) {
+	protected function action_nonce_field( array $data, array $box ) {
 		// use custom nonce field here, that includes the table ID
 		wp_nonce_field( TablePress::nonce( $this->action, $data['table']['id'] ), 'nonce-edit-table' ); echo "\n";
 		wp_nonce_field( TablePress::nonce( 'preview_table', $data['table']['id'] ), 'nonce-preview-table', false, true );
@@ -229,7 +229,7 @@ class TablePress_Edit_View extends TablePress_View {
 		// determine row index of the table head row, by excluding all hidden rows from the beginning
 		if ( $options['table_head'] ) {
 			for ( $row_idx = 0; $row_idx < $rows; $row_idx++ ) {
-				if ( 1 === $visibility['rows'][$row_idx] ) {
+				if ( 1 === $visibility['rows'][ $row_idx ] ) {
 					$head_row_idx = $row_idx;
 					break;
 				}
@@ -238,7 +238,7 @@ class TablePress_Edit_View extends TablePress_View {
 		// determine row index of the table foot row, by excluding all hidden rows from the end
 		if ( $options['table_foot'] ) {
 			for ( $row_idx = $rows - 1; $row_idx > -1; $row_idx-- ) {
-				if ( 1 === $visibility['rows'][$row_idx] ) {
+				if ( 1 === $visibility['rows'][ $row_idx ] ) {
 					$foot_row_idx = $row_idx;
 					break;
 				}
@@ -253,8 +253,9 @@ class TablePress_Edit_View extends TablePress_View {
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
-		if ( 0 === $visibility['columns'][$col_idx] )
+		if ( 0 === $visibility['columns'][ $col_idx ] ) {
 			$column_class = ' column-hidden';
+		}
 		$column = TablePress::number_to_letter( $col_idx + 1 );
 		echo "\t\t\t<th class=\"head{$column_class}\"><span class=\"sort-control sort-desc hide-if-no-js\" title=\"" . esc_attr__( 'Sort descending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"sort-control sort-asc hide-if-no-js\" title=\"" . esc_attr__( 'Sort ascending', 'tablepress' ) . "\"><span class=\"sorting-indicator\"></span></span><span class=\"move-handle\">{$column}</span></th>\n";
 	}
@@ -269,10 +270,11 @@ class TablePress_Edit_View extends TablePress_View {
 <?php
 	for ( $col_idx = 0; $col_idx < $columns; $col_idx++ ) {
 		$column_class = '';
-		if ( 0 === $visibility['columns'][$col_idx] )
+		if ( 0 === $visibility['columns'][ $col_idx ] ) {
 			$column_class = ' class="column-hidden"';
+		}
 		echo "\t\t\t<th{$column_class}><input type=\"checkbox\" class=\"hide-if-no-js\" />";
-		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][$col_idx]}\" /></th>\n";
+		echo "<input type=\"hidden\" class=\"visibility\" name=\"table[visibility][columns][]\" value=\"{$visibility['columns'][ $col_idx ]}\" /></th>\n";
 	}
 ?>
 			<th></th>
@@ -283,23 +285,27 @@ class TablePress_Edit_View extends TablePress_View {
 	foreach ( $table as $row_idx => $row_data ) {
 		$row = $row_idx + 1;
 		$classes = array();
-		if ( $row_idx % 2 == 0 )
+		if ( $row_idx % 2 == 0 ) {
 			$classes[] = 'odd';
-		if ( $head_row_idx == $row_idx )
+		}
+		if ( $head_row_idx == $row_idx ) {
 			$classes[] = 'head-row';
-		elseif ( $foot_row_idx == $row_idx )
+		} elseif ( $foot_row_idx == $row_idx ) {
 			$classes[] = 'foot-row';
-		if ( 0 === $visibility['rows'][$row_idx] )
+		}
+		if ( 0 === $visibility['rows'][ $row_idx ] ) {
 			$classes[] = 'row-hidden';
+		}
 		$row_class = ( ! empty( $classes ) ) ? ' class="' . implode( ' ', $classes ) . '"' : '';
 		echo "\t\t<tr{$row_class}>\n";
 		echo "\t\t\t<td><span class=\"move-handle\">{$row}</span></td>";
-		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][$row_idx]}\" /></td>";
+		echo "<td><input type=\"checkbox\" class=\"hide-if-no-js\" /><input type=\"hidden\" class=\"visibility\" name=\"table[visibility][rows][]\" value=\"{$visibility['rows'][ $row_idx ]}\" /></td>";
 		foreach ( $row_data as $col_idx => $cell ) {
 			$column = TablePress::number_to_letter( $col_idx + 1 );
 			$column_class = '';
-			if ( 0 === $visibility['columns'][$col_idx] )
+			if ( 0 === $visibility['columns'][ $col_idx ] ) {
 				$column_class = ' class="column-hidden"';
+			}
 			$cell = esc_textarea( $cell ); // sanitize, so that HTML is possible in table cells
 			echo "<td{$column_class}><textarea name=\"table[data][{$row_idx}][{$col_idx}]\" id=\"cell-{$column}{$row}\" rows=\"1\">{$cell}</textarea></td>";
 		}
@@ -394,8 +400,9 @@ class TablePress_Edit_View extends TablePress_View {
 		$preview_url = TablePress::url( array( 'action' => 'preview_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' );
 
 		echo '<p class="submit">';
-		if ( current_user_can( 'tablepress_preview_table', $data['table']['id'] ) )
+		if ( current_user_can( 'tablepress_preview_table', $data['table']['id'] ) ) {
 			echo '<a href="' . $preview_url . '" class="button button-large show-preview-button" target="_blank">' . __( 'Preview', 'tablepress' ) . '</a>';
+		}
 		?>
 			<input type="button" class="button button-primary button-large save-changes-button hide-if-no-js" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" />
 			<input type="submit" class="button button-primary button-large hide-if-js" value="<?php esc_attr_e( 'Save Changes', 'tablepress' ); ?>" />
@@ -413,17 +420,21 @@ class TablePress_Edit_View extends TablePress_View {
 		$user_can_export_table = current_user_can( 'tablepress_export_table', $data['table']['id'] );
 		$user_can_delete_table = current_user_can( 'tablepress_delete_table', $data['table']['id'] );
 
-		if ( ! $user_can_copy_table && ! $user_can_export_table && ! $user_can_delete_table )
+		if ( ! $user_can_copy_table && ! $user_can_export_table && ! $user_can_delete_table ) {
 			return;
+		}
 
 		echo '<p class="submit">';
 		echo __( 'Other Actions', 'tablepress' ) . ':&nbsp; ';
-		if ( $user_can_copy_table )
+		if ( $user_can_copy_table ) {
 			echo '<a href="' . TablePress::url( array( 'action' => 'copy_table', 'item' => $data['table']['id'], 'return' => 'edit' ), true, 'admin-post.php' ) . '" class="button">' . __( 'Copy Table', 'tablepress' ) . '</a> ';
-		if ( $user_can_export_table )
+		}
+		if ( $user_can_export_table ) {
 			echo '<a href="' . TablePress::url( array( 'action' => 'export', 'table_id' => $data['table']['id'] ) ) . '" class="button">' . __( 'Export Table', 'tablepress' ) . '</a> ';
-		if ( $user_can_delete_table )
+		}
+		if ( $user_can_delete_table ) {
 			echo '<a href="' . TablePress::url( array( 'action' => 'delete_table', 'item' => $data['table']['id'], 'return' => 'edit', 'return_item' => $data['table']['id'] ), true, 'admin-post.php' ) . '" class="button delete-link">' . __( 'Delete Table', 'tablepress' ) . '</a>';
+		}
 		echo '</p>';
 	}
 
@@ -532,24 +543,24 @@ class TablePress_Edit_View extends TablePress_View {
 		<th class="column-1" scope="row"><?php _e( 'Sorting', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-sort"><input type="checkbox" id="option-datatables-sort" name="table[options][datatables_sort]" value="true"<?php checked( $options['datatables_sort'] ); ?> /> <?php _e( 'Enable sorting of the table by the visitor.', 'tablepress' ); ?></label></td>
 	</tr>
-	<tr class="no-border">
+	<tr>
 		<th class="column-1" scope="row"><?php _e( 'Search/Filtering', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-filter"><input type="checkbox" id="option-datatables-filter" name="table[options][datatables_filter]" value="true"<?php checked( $options['datatables_filter'] ); ?> /> <?php _e( 'Enable the visitor to filter or search the table. Only rows with the search word in them are shown.', 'tablepress' ); ?></label></td>
 	</tr>
-	<tr class="no-border">
+	<tr>
 		<th class="column-1" scope="row" style="vertical-align: top;"><?php _e( 'Pagination', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-paginate"><input type="checkbox" id="option-datatables-paginate" name="table[options][datatables_paginate]" value="true"<?php checked( $options['datatables_paginate'] ); ?> /> <?php _e( 'Enable pagination of the table (viewing only a certain number of rows at a time) by the visitor.', 'tablepress' ); ?></label><br />
 		<label for="option-datatables-paginate_entries"><input type="checkbox" style="visibility: hidden;" <?php // Dummy checkbox for space alignment ?>/> <?php printf( __( 'Show %s rows per page.', 'tablepress' ), '<input type="number" id="option-datatables-paginate_entries" name="table[options][datatables_paginate_entries]" value="' . intval( $options['datatables_paginate_entries'] ) . '" min="1" max="99999" maxlength="5" required />' ); ?></label></td>
 	</tr>
-	<tr class="no-border">
+	<tr>
 		<th class="column-1" scope="row"><?php _e( 'Pagination Length Change', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-lengthchange"><input type="checkbox" id="option-datatables-lengthchange" name="table[options][datatables_lengthchange]" value="true"<?php checked( $options['datatables_lengthchange'] ); ?> /> <?php _e( 'Allow the visitor to change the number of rows shown when using pagination.', 'tablepress' ); ?></label></td>
 	</tr>
-	<tr class="no-border">
+	<tr>
 		<th class="column-1" scope="row"><?php _e( 'Info', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-info"><input type="checkbox" id="option-datatables-info" name="table[options][datatables_info]" value="true"<?php checked( $options['datatables_info'] ); ?> /> <?php _e( 'Enable the table information display, with information about the currently visible data, like the number of rows.', 'tablepress' ); ?></label></td>
 	</tr>
-	<tr class="<?php echo current_user_can( 'unfiltered_html' ) ? 'bottom-border' : 'no-border'; ?>">
+	<tr<?php echo current_user_can( 'unfiltered_html' ) ? ' class="bottom-border"' : ''; ?>>
 		<th class="column-1" scope="row"><?php _e( 'Horizontal Scrolling', 'tablepress' ); ?>:</th>
 		<td class="column-2"><label for="option-datatables-scrollx"><input type="checkbox" id="option-datatables-scrollx" name="table[options][datatables_scrollx]" value="true"<?php checked( $options['datatables_scrollx'] ); ?> /> <?php _e( 'Enable horizontal scrolling, to make viewing tables with many columns easier.', 'tablepress' ); ?></label></td>
 	</tr>

@@ -7,7 +7,11 @@
  * @since 1.0.0
  */
 
-jQuery(document).ready( function($) {
+/* global confirm, CodeMirror, tablepress_strings */
+
+jQuery( document ).ready( function( $ ) {
+
+	'use strict';
 
 	/**
 	 * Invoke CodeMirror on the "Custom CSS" textarea
@@ -60,11 +64,12 @@ jQuery(document).ready( function($) {
 	 *
 	 * @since 1.0.0
 	 */
-    $( '#uninstall-tablepress' ).on( 'click', function() {
-        if ( confirm( tablepress_strings.uninstall_warning_1 ) )
-            return confirm( tablepress_strings.uninstall_warning_2 );
-        else
-            return false;
-    } );
+	$( '#uninstall-tablepress' ).on( 'click', function() {
+		if ( confirm( tablepress_strings.uninstall_warning_1 ) ) {
+			return confirm( tablepress_strings.uninstall_warning_2 );
+		} else {
+			return false;
+		}
+	} );
 
 } );

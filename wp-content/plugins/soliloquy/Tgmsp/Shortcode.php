@@ -202,6 +202,9 @@ class Tgmsp_Shortcode {
 			$height	= $ratio_height = apply_filters( 'tgmsp_slider_height', $height, $id );
 			$height	= preg_match( '|%$|', trim( $height ) ) ? trim( $height ) . ';' : absint( $height ) . 'px;';
 
+			// Ensure height is set properly on outer viewport.
+			add_action( 'tgmsp_callback_start_' . $id, array( $this, 'height_check' ) );
+
 			// If the user wants a preloader image, store the aspect ratio for dynamic height calculation.
 			if ( isset( $soliloquy_data[absint( $soliloquy_count )]['meta']['preloader'] ) && $soliloquy_data[absint( $soliloquy_count )]['meta']['preloader'] ) {
 				$preloader = true;
@@ -308,6 +311,9 @@ class Tgmsp_Shortcode {
 			// If we are adding a preloading icon, do it now.
 			if ( $preloader ) {
 				$slider .= '<style type="text/css">.soliloquy-container.soliloquy-preloader{background: url("' . plugins_url( "css/images/preloader.gif", dirname( __FILE__ ) ) . '") no-repeat scroll 50% 50%;}@media only screen and (-webkit-min-device-pixel-ratio: 1.5),only screen and (-o-min-device-pixel-ratio: 3/2),only screen and (min--moz-device-pixel-ratio: 1.5),only screen and (min-device-pixel-ratio: 1.5){.soliloquy-container.soliloquy-preloader{background-image: url("' . plugins_url( "css/images/preloader@2x.gif", dirname( __FILE__ ) ) . '");background-size: 16px 16px;}}</style>';
+
+				// Remove the filter so that it doesn't apply to extra sliders on the page.
+				remove_filter( 'tgmsp_slider_classes', array( $this, 'preloader_class' ) );
 			}
 		}
 
@@ -436,7 +442,7 @@ class Tgmsp_Shortcode {
 					$preload_script = 'jQuery(document).ready(function($){$("#soliloquy-container-' . absint( $slider['id'] ) . '").css({"height":(Math.round($("#soliloquy-container-' . absint( $slider['id'] ) . '").width() / ' . $slider['ratio'] . '))});});';
 
 				?>
-				<script type="text/javascript"><?php echo 'var soliloquySlider' . absint( $slider['id'] ) . ';'; if ( $preload_script ) echo $preload_script; ?>jQuery(window).load(function(){var $ = jQuery;<?php echo apply_filters( 'tgmsp_slider_preload', $script, $slider['id'] ); ?>$('<?php echo apply_filters( 'tgmsp_slider_selector', '#soliloquy-' . absint( $slider['id'] ), $slider['id'], $slider ); ?>').<?php echo $fitvids; ?>soliloquy({animation:'<?php echo $animation; ?>',<?php echo $slide; ?>slideshow:<?php echo $slideshow; ?>,slideshowSpeed:<?php echo isset( $slider['meta']['speed'] ) ? absint( $slider['meta']['speed'] ) : '7000'; ?>,animationSpeed:<?php echo isset( $slider['meta']['duration'] ) ? absint( $slider['meta']['duration'] ) : '600'; ?>,directionNav:<?php echo $navigation; ?>,controlNav:<?php echo apply_filters( 'tgmsp_control_nav', $control, absint( $slider['id'] ) ); ?>,keyboard:<?php echo $keyboard; ?>,multipleKeyboard:<?php echo $multi; ?>,mousewheel:<?php echo $mouse; ?>,pausePlay:<?php echo $pauseplay; ?>,randomize:<?php echo $random; ?>,startAt:<?php echo isset( $slider['meta']['number'] ) ? absint( $slider['meta']['number'] ) : '0'; ?>,animationLoop:<?php echo $loop; ?>,pauseOnAction:<?php echo $action; ?>,pauseOnHover:<?php echo $hover; ?>,controlsContainer:'<?php echo apply_filters( 'tgmsp_slider_controls', '#soliloquy-container-' . absint( $slider['id'] ), $slider['id'] ); ?>',manualControls:'<?php echo apply_filters( 'tgmsp_manual_controls', '', $slider['id'] ); ?>',video:<?php echo $video; ?>,useCSS:<?php echo $css; ?>,reverse:<?php echo $reverse; ?>,smoothHeight:<?php echo $smooth; ?>,touch:<?php echo $touch; ?>,initDelay:<?php echo isset( $slider['meta']['delay'] ) ? absint( $slider['meta']['delay'] ) : '0'; ?>,namespace:'soliloquy-',selector:'.soliloquy-slides > li',<?php do_action( 'tgmsp_slider_script', $slider, absint( $slider['id'] ) ); ?>start:function(slider){<?php echo 'soliloquySlider' . absint( $slider['id'] ) . ' = slider;'; do_action( 'tgmsp_callback_start', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_start_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},before:function(slider){<?php do_action( 'tgmsp_callback_before', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_before_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},after:function(slider){<?php do_action( 'tgmsp_callback_after', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_after_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},end:function(slider){<?php do_action( 'tgmsp_callback_end', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_end_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},added:function(slider){<?php do_action( 'tgmsp_callback_added', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_added_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},removed:function(slider){<?php do_action( 'tgmsp_callback_removed', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_removed_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>}});});</script>
+				<script type="text/javascript"><?php echo 'var soliloquySlider' . absint( $slider['id'] ) . ';'; if ( $preload_script ) echo $preload_script; ?>jQuery(document).ready(function($){<?php echo apply_filters( 'tgmsp_slider_preload', $script, $slider['id'] ); ?>$('<?php echo apply_filters( 'tgmsp_slider_selector', '#soliloquy-' . absint( $slider['id'] ), $slider['id'], $slider ); ?>').<?php echo $fitvids; ?>soliloquy({animation:'<?php echo $animation; ?>',<?php echo $slide; ?>slideshow:<?php echo $slideshow; ?>,slideshowSpeed:<?php echo isset( $slider['meta']['speed'] ) ? absint( $slider['meta']['speed'] ) : '7000'; ?>,animationSpeed:<?php echo isset( $slider['meta']['duration'] ) ? absint( $slider['meta']['duration'] ) : '600'; ?>,directionNav:<?php echo $navigation; ?>,controlNav:<?php echo apply_filters( 'tgmsp_control_nav', $control, absint( $slider['id'] ) ); ?>,keyboard:<?php echo $keyboard; ?>,multipleKeyboard:<?php echo $multi; ?>,mousewheel:<?php echo $mouse; ?>,pausePlay:<?php echo $pauseplay; ?>,randomize:<?php echo $random; ?>,startAt:<?php echo isset( $slider['meta']['number'] ) ? absint( $slider['meta']['number'] ) : '0'; ?>,animationLoop:<?php echo $loop; ?>,pauseOnAction:<?php echo $action; ?>,pauseOnHover:<?php echo $hover; ?>,controlsContainer:'<?php echo apply_filters( 'tgmsp_slider_controls', '#soliloquy-container-' . absint( $slider['id'] ), $slider['id'] ); ?>',manualControls:'<?php echo apply_filters( 'tgmsp_manual_controls', '', $slider['id'] ); ?>',video:<?php echo $video; ?>,useCSS:<?php echo $css; ?>,reverse:<?php echo $reverse; ?>,smoothHeight:<?php echo $smooth; ?>,touch:<?php echo $touch; ?>,initDelay:<?php echo isset( $slider['meta']['delay'] ) ? absint( $slider['meta']['delay'] ) : '0'; ?>,namespace:'soliloquy-',selector:'.soliloquy-slides > li',<?php do_action( 'tgmsp_slider_script', $slider, absint( $slider['id'] ) ); ?>start:function(slider){<?php echo 'soliloquySlider' . absint( $slider['id'] ) . ' = slider;'; do_action( 'tgmsp_callback_start', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_start_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},before:function(slider){<?php do_action( 'tgmsp_callback_before', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_before_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},after:function(slider){<?php do_action( 'tgmsp_callback_after', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_after_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},end:function(slider){<?php do_action( 'tgmsp_callback_end', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_end_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},added:function(slider){<?php do_action( 'tgmsp_callback_added', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_added_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>},removed:function(slider){<?php do_action( 'tgmsp_callback_removed', absint( $slider['id'] ) ); do_action( 'tgmsp_callback_removed_' . absint( $slider['id'] ), absint( $slider['id'] ) ); ?>}});});</script>
 				<?php
 
 				/** Provide a hook for users after the init script */
@@ -570,20 +576,21 @@ class Tgmsp_Shortcode {
 
 							$script .= 'function soliloquyCreateYTEvent(playerID) {';
 								$script .= 'return function(event) {';
+								    $script .= 'var slider = jQuery("#soliloquy-' . absint( $slider['id'] ) . '").data("soliloquy");';
 									/** If the video is being played or is buffering, pause the slider */
-									$script .= 'if ( 1 == event.data || 3 == event.data ) {';
-									    $script .= 'jQuery(soliloquySlider' . absint( $slider['id'] ) . ').find(".soliloquy-video-slide .soliloquy-caption").fadeOut(300);';
+									$script .= 'if ( 1 == event.data ) {';
+									    $script .= 'jQuery(slider).find(".soliloquy-video-slide .soliloquy-caption").fadeOut(300);';
 										if ( isset( $slider['meta']['action'] ) && $slider['meta']['action'] ) {
-    										$script .= 'if ( ! soliloquySlider' . absint( $slider['id'] ) . '.animating ) {';
-    											$script .= 'if ( typeof soliloquySlider' . absint( $slider['id'] ) . '.pause() == "function" ) soliloquySlider' . absint( $slider['id'] ) . '.pause();';
+    										$script .= 'if ( ! slider.animating ) {';
+    											$script .= 'slider.pause();';
                                             $script .= '}';
     									} else {
-    										$script .= 'if ( typeof soliloquySlider' . absint( $slider['id'] ) . '.pause() == "function" ) soliloquySlider' . absint( $slider['id'] ) . '.pause();';
+    										$script .= 'slider.pause();';
     									}
                                     $script .= '}';
 									$script .= 'if ( 0 == event.data || 2 == event.data ) {';
-									    $script .= 'jQuery(soliloquySlider' . absint( $slider['id'] ) . ').find(".soliloquy-video-slide .soliloquy-caption").fadeIn(300);';
-									    $script .= 'if ( typeof soliloquySlider' . absint( $slider['id'] ) . '.play() == "function" ) soliloquySlider' . absint( $slider['id'] ) . '.play();';
+									    $script .= 'jQuery(slider).find(".soliloquy-video-slide .soliloquy-caption").fadeIn(300);';
+									    $script .= 'slider.play();';
                                     $script .= '}';
 								$script .= '}';
 							$script .= '}';
@@ -608,20 +615,22 @@ class Tgmsp_Shortcode {
 							$script .= '}';
 
 							$script .= 'function soliloquyVimeoPausePlay(playerID) {';
+							    $script .= 'var slider = jQuery("#soliloquy-' . absint( $slider['id'] ) . '").data("soliloquy");';
 								$script .= 'soliloquy_vimeo_players[playerID].addEvent("play", function(data){';
-								    $script .= 'jQuery(soliloquySlider' . absint( $slider['id'] ) . ').find(".soliloquy-video-slide .soliloquy-caption").fadeOut(300);';
+								    $script .= 'jQuery(slider).find(".soliloquy-video-slide .soliloquy-caption").fadeOut(300);';
 									if ( isset( $slider['meta']['action'] ) && $slider['meta']['action'] ) {
-										$script .= 'if ( ! soliloquySlider' . absint( $slider['id'] ) . '.animating ) {';
-											$script .= 'if ( typeof soliloquySlider' . absint( $slider['id'] ) . '.pause() == "function" ) soliloquySlider' . absint( $slider['id'] ) . '.pause();';
+										$script .= 'if ( ! slider.animating ) {';
+											$script .= 'slider.pause();';
                                         $script .= '}';
 									} else {
-										$script .= 'if ( typeof soliloquySlider' . absint( $slider['id'] ) . '.pause() == "function" ) soliloquySlider' . absint( $slider['id'] ) . '.pause();';
+										$script .= 'slider.pause();';
 									}
 								$script .= '});';
 								$script .= 'soliloquy_vimeo_players[playerID].addEvent("pause", function(data){';
-									$script .= 'jQuery(soliloquySlider' . absint( $slider['id'] ) . ').find(".soliloquy-video-slide .soliloquy-caption").fadeIn(300);';
+									$script .= 'jQuery(slider).find(".soliloquy-video-slide .soliloquy-caption").fadeIn(300);';
+									$script .= 'slider.play();';
 								$script .= '});';
-								$script .= 'jQuery(soliloquySlider' . absint( $slider['id'] ) . ').trigger("soliloquyVimeoReady", { id: playerID });';
+								$script .= 'jQuery(slider).trigger("soliloquyVimeoReady", { id: playerID });';
 							$script .= '}';
 
 							$vimeo_init = true;
@@ -822,6 +831,22 @@ class Tgmsp_Shortcode {
 
 		// Return the randomized image array.
 		return $random;
+
+	}
+
+	/**
+	 * Ensure that the height is set properly with the dynamic image loading.
+	 *
+	 * @since 1.5.6.2
+	 */
+	public function height_check( $id ) {
+
+		echo 'var soliloquyPoll' . absint( $id ) . ' = (function(){var timer = 0;return function(callback, ms){clearInterval(timer);timer = setInterval(callback, ms);};})(), soliloquyFlag' . absint( $id ) . ' = false;';
+        echo 'soliloquyPoll' . absint( $id ) . '(function(){ if ( ! soliloquyFlag' . absint( $id ) . ' ) { if ( 0 === $("#soliloquy-container-' . absint( $id ) . ' .soliloquy").height() ) {';
+		        echo 'if ( 0 === $("#soliloquy-container-' . absint( $id ) . ' .soliloquy-item:first").height() ) return;';
+                echo '$("#soliloquy-container-' . absint( $id ) . ' .soliloquy").height($("#soliloquy-container-' . absint( $id ) . ' .soliloquy-item:first").height()); soliloquyFlag' . absint( $id ) . ' = true;';
+            echo '}}';
+        echo '}, 100);';
 
 	}
 

@@ -28,7 +28,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		$this->action = 'options'; // set this manually here, to get correct page title and nav bar entries
 		$this->data = $data;
 
@@ -56,7 +56,6 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	public function render() {
 		?>
 		<div id="tablepress-page" class="wrap">
-		<?php screen_icon( 'tablepress' ); ?>
 		<?php
 			$this->print_nav_tab_menu();
 			// print all header messages
@@ -124,7 +123,7 @@ class TablePress_Options_Custom_CSS_View extends TablePress_View {
 	 */
 	public function textbox_proceed_no_file_saving( $data, $box ) {
 		?>
-		<h2><?php _e( 'Proceed without saving a file', 'tablepress' ) ?></h2>
+		<h3><?php _e( 'Proceed without saving a file', 'tablepress' ) ?></h3>
 		<p>
 			<?php _e( 'To proceed without trying to save the &#8220;Custom CSS&#8221; to a file, click the button below.', 'tablepress' ); ?>
 			<?php _e( 'Your &#8220;Custom CSS&#8221; will then be loaded inline.', 'tablepress' ); ?>

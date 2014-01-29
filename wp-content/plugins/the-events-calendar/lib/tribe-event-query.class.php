@@ -16,15 +16,8 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		public static $is_event_venue;
 		public static $is_event_organizer;
 		public static $is_event_query;
+		public static $src_query;
 
-        /**
-         *  Class Constructor
-         *
-         * @return void
-         */
-        function __construct() {
-			add_action( 'tribe_events_init_pre_get_posts', array( __CLASS__, 'init' ) );
-		}
 
 		/**
 		 * Initialize The Events Calendar query filters and post processing.
@@ -34,7 +27,6 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		public static function init() {
 
 			// if tribe event query add filters
-			add_action( 'parse_request', array( __CLASS__, 'parse_request' ), 50 );
 			add_action( 'parse_query', array( __CLASS__, 'parse_query' ), 50 );
 			add_action( 'pre_get_posts', array( __CLASS__, 'pre_get_posts' ), 50 );
 
@@ -47,26 +39,6 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		}
 
 		/**
-		 * Add args to the main wordpress request
-		 *
-		 * @param $query_vars Array of args parsed from the main wp query
-		 * @return array
-		 * @author Jessica Yazbek
-		 **/
-		public static function parse_request( $wpobj ) {
-			$request_vars = $wpobj->query_vars;
-			unset($request_vars['paged']);
-			if ( empty( $request_vars ) ) { // this is the home page
-				// check option for including events in the main wordpress loop, if true, add events post type
-				if ( tribe_get_option( 'showEventsInMainLoop', false ) ) {
-					$wpobj->query_vars['post_type'] = isset( $wpobj->query_vars['post_type'] ) ? (array) $wpobj->query_vars['post_type'] : array( 'post' );
-					$wpobj->query_vars['post_type'][] = TribeEvents::POSTTYPE;
-				}
-			}
-			// do_action( 'log', 'wpobj', 'default', $wpobj );
-		}
-
-		/**
 		 * Set any query flags
 		 *
 		 * @return $query WP_Query
@@ -75,16 +47,31 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		 **/
 		public static function parse_query( $query ) {
 
+			self::$src_query = $query->query;
+
+			// make sure is_home doesn't get set to true on subqueries
+			if ( ! $query->is_main_query() ) {
+				$query->is_home = false;
+			}
+
+			// include events in search results
 			if ( $query->is_search && $query->get( 'post_type' ) == '' ) {
 				$query->set( 'post_type', 'any' );
 			}
 
 			// Add tribe events post type to tag queries
-			if ( $query->is_tag ) {
+			if ( $query->is_tag && (array) $query->get( 'post_type' ) != array( TribeEvents::POSTTYPE ) ) {
 				$types = $query->get( 'post_type' );
+				if ( empty( $types ) ) {
+					$types = array( 'post' );
+				}
 				if ( is_array( $types ) ) {
 					$types[] = TribeEvents::POSTTYPE;
-				} else if ( $types != 'any' ) {
+				} 
+				else if ( is_string ( $types ) ) {
+					$types = array( $types, TribeEvents::POSTTYPE );
+				}
+				else if ( $types != 'any' ) {
 					$types = array( 'post', TribeEvents::POSTTYPE );
 				}
 				$query->set( 'post_type', $types );
@@ -95,11 +82,14 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 			// check if any possiblity of this being an event query
 			$query->tribe_is_event = ( in_array( TribeEvents::POSTTYPE, $types ) && count( $types ) < 2 )
 				? true // it was an event query
-			: false;
+				: false;
 
 			$query->tribe_is_multi_posttype = ( in_array( TribeEvents::POSTTYPE, $types ) && count( $types ) >= 2 || in_array( 'any', $types ) )
 				? true // it's a query for multiple post types, events post type included
-			: false;
+				: false;
+
+			if ( 'default' === $query->get( 'eventDisplay' ) )
+				$query->set( 'eventDisplay', TribeEvents::instance()->default_view() );
 			
 			do_action( 'log', 'multi_posttype', 'default', var_export($query->tribe_is_multi_posttype, true) );
 			do_action( 'log', 'types', 'default', $types );
@@ -108,27 +98,27 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 			// check if any possiblity of this being an event category
 			$query->tribe_is_event_category = ( isset( $query->query_vars[TribeEvents::TAXONOMY] ) && $query->query_vars[TribeEvents::TAXONOMY] != '' )
 				? true // it was an event category
-			: false;
+				: false;
 
 			$query->tribe_is_event_venue = ( in_array( TribeEvents::VENUE_POST_TYPE, $types ) )
 				? true // it was an event venue
-			: false;
+				: false;
 
 			$query->tribe_is_event_organizer = ( in_array( TribeEvents::ORGANIZER_POST_TYPE, $types ) )
 				? true // it was an event organizer
-			: false;
+				: false;
 
 			$query->tribe_is_event_query = ( $query->tribe_is_event
 				|| $query->tribe_is_event_category
 				|| $query->tribe_is_event_venue
 				|| $query->tribe_is_event_organizer )
-				? true // this is an event query of some type
-			: false; // move along, this is not the query you are looking for
+					? true // this is an event query of some type
+					: false; // move along, this is not the query you are looking for
 
 			// is the query pulling posts from the past
 			$query->tribe_is_past = ( ! empty( $query->query_vars['eventDisplay'] ) && $query->query_vars['eventDisplay'] == 'past' ) 
 				? true // query is requesting past posts
-			: false;
+				: false;
 			if ( ! empty( $_REQUEST['tribe_event_display'] ) && $_REQUEST['tribe_event_display'] == 'past' ) {
 				$query->tribe_is_past = true;
 			}
@@ -154,7 +144,7 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		 * @param object  $query WP_Query object args supplied or default
 		 * @return object $query (modified)
 		 */
-		public function pre_get_posts( $query ) {
+		public static function pre_get_posts( $query ) {
 
 			// setup static const to preserve query type through hooks
 			self::$is_event = $query->tribe_is_event;
@@ -162,6 +152,15 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 			self::$is_event_venue = $query->tribe_is_event_venue;
 			self::$is_event_organizer = $query->tribe_is_event_organizer;
 			self::$is_event_query = $query->tribe_is_event_query;
+
+			if ( $query->is_main_query() && is_home() ) {
+				// check option for including events in the main wordpress loop, if true, add events post type
+				if ( tribe_get_option( 'showEventsInMainLoop', false ) ) {
+					$query->query_vars['post_type'] = isset( $query->query_vars['post_type'] ) ? ( array ) $query->query_vars['post_type'] : array( 'post' );
+					$query->query_vars['post_type'][] = TribeEvents::POSTTYPE;
+					$query->tribe_is_multi_posttype = true;
+				}
+			}
 
 			if ( $query->tribe_is_multi_posttype ) {
 				do_action( 'log', 'multi_posttype', 'default', $query->tribe_is_multi_posttype );
@@ -193,6 +192,12 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 					$query->set( 'cache_results', false );
 					$query->set( 'update_post_meta_cache', false );
 					$query->set( 'update_post_term_cache', false );
+					$query->set( 'meta_query', array(
+						array(
+							'key' => '_EventStartDate',
+							'type' => 'DATETIME'
+						)
+					));
 					do_action( 'tribe_events_pre_get_posts', $query );
 					return $query;
 				}
@@ -256,6 +261,7 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 					$query->set( 'order', self::set_order() );
 					self::$start_date = $query->get( 'start_date' );
 				}
+
 				// eventCat becomes a standard taxonomy query - will need to deprecate and update views eventually
 				if ( ! in_array( $query->get( TribeEvents::TAXONOMY ), array( '', '-1' ) ) ) {
 					$tax_query[] = array(
@@ -266,11 +272,18 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 					);
 				}
 
-				$meta_query[] = array(
-					'key' => '_EventStartDate',
-					'type' => 'DATETIME'
-				);
+				// Only add the postmeta hack if it's not the main admin events list
+				// Because this method filters out drafts without EventStartDate.
+				// For this screen we're doing the JOIN manually in TribeEventsAdminList
 
+				$screen = ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ? null : get_current_screen();
+
+				if ( empty( $screen ) || $screen->id != 'edit-tribe_events' ) {
+					$meta_query[] = array(
+						'key'  => '_EventStartDate',
+						'type' => 'DATETIME'
+					);
+				}
 			}
 
 			// filter by Venue ID
@@ -391,12 +404,13 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
          * @return string The modified FIELDS statement.
          */
         public static function posts_fields( $field_sql, $query ) {
-			if ( self::$is_event ) {
+			if ( isset( $query->tribe_is_event ) && $query->tribe_is_event ) {
 				global $wpdb;
+				$postmeta_table = self::postmeta_table( $query );
 				$fields = array();
-				$fields['event_start_date'] = "{$wpdb->postmeta}.meta_value as EventStartDate";
+				$fields['event_start_date'] = "{$postmeta_table}.meta_value as EventStartDate";
 				$fields['event_end_date'] ="tribe_event_end_date.meta_value as EventEndDate";
-				$fields = apply_filters( 'tribe_events_query_posts_fields', $fields );
+				$fields = apply_filters( 'tribe_events_query_posts_fields', $fields, $query );
 				return $field_sql . ', '.implode(', ', $fields);
 			} else {
 				return $field_sql;
@@ -412,11 +426,12 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		 * @return string The modified FIELDS statement.
 		 */
 		public static function multi_type_posts_fields( $field_sql, $query ) {
-			if ( !empty($query->tribe_is_multi_posttype) ) {
+			if ( ! empty($query->tribe_is_multi_posttype) ) {
 				global $wpdb;
+				$postmeta_table = self::postmeta_table( $query );
 				$fields = array();
-				$fields[] = "IF ({$wpdb->posts}.post_type = 'tribe_events', {$wpdb->postmeta}.meta_value, {$wpdb->posts}.post_date) AS post_date";
-				$fields = apply_filters( 'tribe_events_query_posts_fields', $fields );
+				$fields[] = "IF ({$wpdb->posts}.post_type = 'tribe_events', $postmeta_table.meta_value, {$wpdb->posts}.post_date) AS post_date";
+				$fields = apply_filters( 'tribe_events_query_posts_fields', $fields, $query );
 				return $field_sql . ', '.implode(', ', $fields);
 			} else {
 				return $field_sql;
@@ -434,15 +449,20 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 			global $wpdb;
 			$joins = array();
 
+			$postmeta_table = self::postmeta_table( $query );
+			
 			// if it's a true event query then we want create a join for where conditions
 			if ( $query->tribe_is_event || $query->tribe_is_event_category || $query->tribe_is_multi_posttype ) {
 				if ( $query->tribe_is_multi_posttype ) {
-					$joins['event_start_date'] = " LEFT JOIN {$wpdb->postmeta} on {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id AND {$wpdb->postmeta}.meta_key = '_EventStartDate'";
+					// if we're getting multiple post types, we don't need the end date, just get the start date
+					// for events-only post type queries, the start date postmeta join is already added by the main query args
+					$joins['event_start_date'] = " LEFT JOIN {$wpdb->postmeta} as {$postmeta_table} on {$wpdb->posts}.ID = {$postmeta_table}.post_id AND {$postmeta_table}.meta_key = '_EventStartDate'";
 				} else {
+					// for events-only post type queries, we should also get the end date for display
 					$joins['event_end_date'] = " LEFT JOIN {$wpdb->postmeta} as tribe_event_end_date ON ( {$wpdb->posts}.ID = tribe_event_end_date.post_id AND tribe_event_end_date.meta_key = '_EventEndDate' ) ";
 				}
-				$joins = apply_filters( 'tribe_events_query_posts_joins', $joins );
-				return $join_sql . implode('', $joins);
+				$joins = apply_filters( 'tribe_events_query_posts_joins', $joins, $query );
+				return $join_sql . implode( '', $joins );
 			}
 			return $join_sql;
 		}
@@ -482,6 +502,8 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 			// if it's a true event query then we to setup where conditions
 			if ( $query->tribe_is_event || $query->tribe_is_event_category ) {
 
+				$postmeta_table = self::postmeta_table( $query );
+
 				$start_date = !empty( $query->start_date ) ? $query->start_date : $query->get( 'start_date' );
 				$end_date = !empty( $query->end_date ) ? $query->end_date : $query->get( 'end_date' );
 
@@ -489,7 +511,7 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 				$event_end_date = apply_filters('tribe_events_query_end_date_column', 'tribe_event_end_date.meta_value');
 
 				// event start date
-				$event_start_date = "{$wpdb->postmeta}.meta_value";
+				$event_start_date = "{$postmeta_table}.meta_value";
 
 				// build where conditionals for events if date range params are set
 				if ( $start_date != '' && $end_date != '' ) {
@@ -498,12 +520,12 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 					$within_clause = $wpdb->prepare( "($event_start_date < %s AND $event_end_date >= %s )", $start_date, $end_date );
 					$where_sql .= " AND ($start_clause OR $end_clause OR $within_clause)";
 				} else if ( $start_date != '' ) {
-					$start_clause = $wpdb->prepare( "{$wpdb->postmeta}.meta_value >= %s", $start_date );
-					$within_clause = $wpdb->prepare( "({$wpdb->postmeta}.meta_value <= %s AND $event_end_date >= %s )", $start_date, $start_date );
+					$start_clause = $wpdb->prepare( "{$postmeta_table}.meta_value >= %s", $start_date );
+					$within_clause = $wpdb->prepare( "({$postmeta_table}.meta_value <= %s AND $event_end_date >= %s )", $start_date, $start_date );
 					$where_sql .= " AND ($start_clause OR $within_clause)";
 					if ( $query->is_singular() && $query->get( 'eventDate' ) ) {
 						$tomorrow = date( 'Y-m-d', strtotime( $query->get( 'eventDate' ).' +1 day' ) );
-						$tomorrow_clause = $wpdb->prepare( "{$wpdb->postmeta}.meta_value < %s", $tomorrow );
+						$tomorrow_clause = $wpdb->prepare( "{$postmeta_table}.meta_value < %s", $tomorrow );
 						$where_sql .= " AND $tomorrow_clause";
 					}
 				} else if ( $end_date != '' ) {
@@ -515,14 +537,24 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		}
 
 		/**
-		 * Internal method for properly setting a currated orderby value to $wp_query
+		 * Internal method for properly setting a currated orderby value to $wp_query.
+		 *
+		 * If optional param $default is not provided it will default to 'event_date' - unless a custom
+		 * orderby param was specified (via tribe_get_events() for example) - in which case that value
+		 * will be used.
+		 *
 		 * @param string $default
 		 * @return string
 		 */
-		function set_orderby( $default = 'event_date' ) {
+		public static function set_orderby( $default = null ) {
+			// What should $default be?
+			if ( null === $default && isset( self::$src_query['orderby'] ) ) $default = self::$src_query['orderby'];
+			elseif ( null === $default ) $default = 'event_date';
+
 			$url_param = !empty( $_GET['orderby'] ) ? $_GET['orderby'] : null;
 			$url_param = !empty( $_GET['tribe-orderby'] ) ? $_GET['tribe-orderby'] : $url_param;
 			$url_param = strtolower( $url_param );
+
 			switch ( $url_param ) {
 			case 'tribe_sort_ecp_venue_filter':
 				$orderby = 'venue';
@@ -541,14 +573,23 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		}
 
 		/**
-		 * Internal method for properly setting a currated order value to $wp_query
+		 * Internal method for properly setting a currated order value to $wp_query.
+		 *
+		 * If optional param $default is not provided it will default to 'ASC' - unless a custom order
+		 * was specified (via tribe_get_events() for example) - in which case that value will be used.
+		 *
 		 * @param string $default
 		 * @return string
 		 */
-		function set_order( $default = 'ASC' ) {
+		public static function set_order( $default = null ) {
+			// What should $default be?
+			if ( null === $default && isset( self::$src_query['order'] ) ) $default = self::$src_query['order'];
+			elseif ( null === $default ) $default = 'ASC';
+
 			$url_param = !empty( $_GET['order'] ) ? $_GET['order'] : null;
 			$url_param = !empty( $_GET['tribe-order'] ) ? $_GET['tribe-order'] : $url_param;
 			$url_param = strtoupper( $url_param );
+
 			$order = in_array( $url_param, array( 'ASC', 'DESC' ) ) ? $url_param : $default;
 			return $order;
 		}
@@ -562,11 +603,13 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		 */
 		public static function posts_orderby( $order_sql, $query ) {
 			global $wpdb;
-			if ( $query->tribe_is_event || $query->tribe_is_event_category ) {
-				$order = !empty( $query->order ) ? $query->order : $query->get( 'order' );
-				$orderby = !empty( $query->orderby ) ? $query->orderby : $query->get( 'orderby' );
+			$postmeta_table = self::postmeta_table( $query );
 
-				$order_sql = "DATE({$wpdb->postmeta}.meta_value) {$order}, TIME({$wpdb->postmeta}.meta_value) {$order}";
+			if ( $query->tribe_is_event || $query->tribe_is_event_category ) {
+				$order = ( isset( $query->order) && ! empty( $query->order ) ) ? $query->order : $query->get( 'order' );
+				$orderby = ( isset( $query->orderby) && ! empty( $query->orderby ) ) ? $query->orderby : $query->get( 'orderby' );
+
+				$order_sql = "DATE({$postmeta_table}.meta_value) {$order}, TIME({$postmeta_table}.meta_value) {$order}";
 
 				do_action('log', 'orderby', 'default', $orderby);
 
@@ -593,6 +636,7 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 				}
 			}
 
+			$order_sql = apply_filters( 'tribe_events_query_posts_orderby', $order_sql, $query );
 			return $order_sql;
 		}
 
@@ -673,32 +717,30 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 					case 'daily':
 					default :
 						global $wp_query;
-
 						$output_date_format = '%Y-%m-%d %H:%i:%s';
-						$raw_counts = $wpdb->get_results( sprintf( "
-								SELECT 	tribe_event_start.post_id as ID, 
-										tribe_event_start.meta_value as EventStartDate, 
-										IF (tribe_event_duration.meta_value IS NULL, DATE_FORMAT( tribe_event_end_date.meta_value, '%1\$s'), DATE_FORMAT(DATE_ADD(CAST(tribe_event_start.meta_value AS DATETIME), INTERVAL tribe_event_duration.meta_value SECOND), '%1\$s')) as EventEndDate,
-										{$wpdb->posts}.menu_order as menu_order
-								FROM $wpdb->postmeta AS tribe_event_start
-										LEFT JOIN $wpdb->posts ON (tribe_event_start.post_id = {$wpdb->posts}.ID)
-								LEFT JOIN $wpdb->postmeta as tribe_event_duration ON ( tribe_event_start.post_id = tribe_event_duration.post_id AND tribe_event_duration.meta_key = '_EventDuration' )
-								LEFT JOIN $wpdb->postmeta as tribe_event_end_date ON ( tribe_event_start.post_id = tribe_event_end_date.post_id AND tribe_event_end_date.meta_key = '_EventEndDate' )
-								WHERE tribe_event_start.meta_key = '_EventStartDate'
-								AND tribe_event_start.post_id IN ( %5\$s )
-								AND ( (tribe_event_start.meta_value >= '%3\$s' AND  tribe_event_start.meta_value <= '%4\$s')
-									OR (tribe_event_start.meta_value <= '%3\$s' AND DATE_ADD(CAST( tribe_event_start.meta_value AS DATETIME), INTERVAL tribe_event_duration.meta_value SECOND) >= '%3\$s')
-									OR (tribe_event_start.meta_value <= '%3\$s' AND tribe_event_end_date.meta_value >= '%3\$s')
-									OR ( tribe_event_start.meta_value >= '%3\$s' AND  tribe_event_start.meta_value <= '%4\$s')
-								)
-								ORDER BY menu_order ASC, DATE(tribe_event_start.meta_value) ASC, TIME(tribe_event_start.meta_value) ASC;",
-								$output_date_format,
-								$output_date_format,
-								$args['start_date'],
-								$args['end_date'],
-								implode( ',', array_map( 'intval', $post_ids ) )
-							) );
-						// echo $wpdb->last_query;
+						$raw_counts = $wpdb->get_results( $wpdb->prepare( "
+							SELECT 	tribe_event_start.post_id as ID, 
+									tribe_event_start.meta_value as EventStartDate, 
+									IF (tribe_event_duration.meta_value IS NULL, DATE_FORMAT( tribe_event_end_date.meta_value, '%1\$s'), DATE_FORMAT(DATE_ADD(CAST(tribe_event_start.meta_value AS DATETIME), INTERVAL tribe_event_duration.meta_value SECOND), '%1\$s')) as EventEndDate,
+									{$wpdb->posts}.menu_order as menu_order
+							FROM $wpdb->postmeta AS tribe_event_start
+									LEFT JOIN $wpdb->posts ON (tribe_event_start.post_id = {$wpdb->posts}.ID)
+							LEFT JOIN $wpdb->postmeta as tribe_event_duration ON ( tribe_event_start.post_id = tribe_event_duration.post_id AND tribe_event_duration.meta_key = '_EventDuration' )
+							LEFT JOIN $wpdb->postmeta as tribe_event_end_date ON ( tribe_event_start.post_id = tribe_event_end_date.post_id AND tribe_event_end_date.meta_key = '_EventEndDate' )
+							WHERE tribe_event_start.meta_key = '_EventStartDate'
+							AND tribe_event_start.post_id IN ( %5\$s )
+							AND ( (tribe_event_start.meta_value >= '%3\$s' AND  tribe_event_start.meta_value <= '%4\$s')
+								OR (tribe_event_start.meta_value <= '%3\$s' AND DATE_ADD(CAST( tribe_event_start.meta_value AS DATETIME), INTERVAL tribe_event_duration.meta_value SECOND) >= '%3\$s')
+								OR (tribe_event_start.meta_value <= '%3\$s' AND tribe_event_end_date.meta_value >= '%3\$s')
+								OR ( tribe_event_start.meta_value >= '%3\$s' AND  tribe_event_start.meta_value <= '%4\$s')
+							)
+							ORDER BY menu_order ASC, DATE(tribe_event_start.meta_value) ASC, TIME(tribe_event_start.meta_value) ASC;",
+							$output_date_format,
+							$output_date_format,
+							$args['start_date'],
+							$args['end_date'],
+							implode( ',', array_map( 'intval', $post_ids ) )
+						) );
 						$start_date = new DateTime( $args['start_date'] );
 						$end_date = new DateTime( $args['end_date'] );
 						$days = self::dateDiff( $start_date->format( 'Y-m-d' ), $end_date->format( 'Y-m-d' ) );
@@ -721,15 +763,17 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 									// event starts on this day (event start time is between start and end of day)
 									// event ends on this day (event end time is between start and end of day)
 									// event starts before start of day and ends after end of day (spans across this day)
-								if ( 
-									( $record_start >= $start_of_day && $record_start < $end_of_day ) 
-									|| ( $record_end <= $end_of_day && $record_start >= $start_of_day ) 
+								if (
+									// event starts today
+									( $record_start >= $start_of_day && $record_start <= $end_of_day ) 
+									   // event ends today
+									|| ( $record_end >= $start_of_day && $record_end <= $end_of_day )
+									   // event spans across today
 									|| ( $record_start <= $start_of_day && $record_end >= $end_of_day )
+
 									) {
 									if ( isset( $term->term_id ) ) {
-										$record_terms = get_the_terms( $record->ID, TribeEvents::TAXONOMY );
-										if ( !$record_terms || ( $record_terms && !in_array( $term, $record_terms ) ) ) {
-											$count--;
+										if ( ! has_term( $term, TribeEvents::TAXONOMY, $record->ID ) ) {
 											continue;
 										}
 									}
@@ -784,6 +828,7 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 		 * Customized WP_Query wrapper to setup event queries with default arguments.
 		 *
 		 * @param array $args
+		 * @param bool $full
 		 * @return array|WP_Query
 		 */
 		public static function getEvents( $args = array(), $full = false ) {
@@ -802,14 +847,14 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 			$cache = new TribeEventsCache();
 			$cache_key = 'get_events_'.serialize($args);
 
-			$result = $cache->get($cache_key, 'save_post');
+			$result = $cache->get( $cache_key, 'save_post' );
 			if ( $result && is_a($result, 'WP_Query') ) {
 				do_action( 'log', 'cache hit', 'tribe-events-cache', $args );
 			} else {
 				do_action( 'log', 'no cache hit', 'tribe-events-cache', $args );
 				// do_action( 'log', 'uncached query', 'tribe-events-query', $wpdb->last_query);
 				$result = new WP_Query( $args );
-				$cache->set($cache_key, $result, 0, 'save_post');
+				$cache->set( $cache_key, $result, 0, 'save_post' );
 			}
 
 			if ( ! empty( $result->posts ) ) {
@@ -826,6 +871,40 @@ if ( !class_exists( 'TribeEventsQuery' ) ) {
 					return array();
 				}
 			}
+		}
+
+		/**
+		 * Determine what postmeta table should be used,  
+		 * to avoid conflicts with previous postmeta joins
+		 *
+		 * @return string
+		 * @author Jessica Yazbek
+		 **/
+		private static function postmeta_table( $query ) {
+
+			global $wpdb;
+
+			if ( ! $query->tribe_is_multi_posttype )
+				return $wpdb->postmeta;
+
+
+			$qv = $query->query_vars;
+
+			// check if are any meta queries
+			if ( ! empty( $qv['meta_key'] ) ) {
+				$postmeta_table = 'tribe_event_postmeta';
+			} else if ( isset( $qv['meta_query'] ) ) {
+				if (
+					( is_array( $qv['meta_query'] ) && ! empty( $qv['meta_query'] ) ) ||
+					( is_a( $qv['meta_query'], 'WP_Meta_Query' ) && ! empty( $qv['meta_query']->queries ) ) ) {
+						$postmeta_table = 'tribe_event_postmeta';
+				}
+			} else {
+				$postmeta_table = $wpdb->postmeta;
+			}
+
+			return $postmeta_table;
+
 		}
 
 		/**

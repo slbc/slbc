@@ -25,7 +25,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Post_Model
 	 */
 	protected $model_post;
 
@@ -68,7 +68,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_WP_Option
 	 */
 	protected $tables;
 
@@ -106,7 +106,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param array $tables New set of tables
 	 */
-	public function _debug_update_tables( $tables ) {
+	public function _debug_update_tables( array $tables ) {
 		$this->tables->update( $tables );
 	}
 
@@ -119,7 +119,7 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param int $post_id Post ID
 	 * @return array Post
 	 */
-	protected function _table_to_post( $table, $post_id ) {
+	protected function _table_to_post( array $table, $post_id ) {
 		// Sanitize each cell, if the user is not allowed to work with unfiltered HTML
 		// table name and description are sanitized by WordPress directly, but the JSON would break if we don't do it ourselves
 		if ( ! current_user_can( 'unfiltered_html' ) ) {
@@ -172,8 +172,9 @@ class TablePress_Table_Model extends TablePress_Model {
 			$json_error = '';
 			if ( function_exists( 'json_last_error' ) ) {
 				// Constant JSON_ERROR_UTF8 is only available as of PHP 5.3.3
-				if ( ! defined( 'JSON_ERROR_UTF8' ) )
+				if ( ! defined( 'JSON_ERROR_UTF8' ) ) {
 					define( 'JSON_ERROR_UTF8', 5 );
+				}
 
 				switch ( json_last_error() ) {
 					case JSON_ERROR_NONE:
@@ -216,16 +217,19 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return array|bool Table as an array on success, false on error
 	 */
 	public function load( $table_id ) {
-		if ( empty( $table_id ) )
+		if ( empty( $table_id ) ) {
 			return false;
+		}
 
 		$post_id = $this->_get_post_id( $table_id );
-		if ( false === $post_id )
+		if ( false === $post_id ) {
 			return false;
+		}
 
 		$post = $this->model_post->get( $post_id );
-		if ( false === $post )
+		if ( false === $post ) {
 			return false;
+		}
 
 		$table = $this->_post_to_table( $post, $table_id );
 		$table['options'] = $this->_get_table_options( $post_id );
@@ -243,16 +247,22 @@ class TablePress_Table_Model extends TablePress_Model {
 	public function load_all() {
 		$tables = array();
 		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) )
+		if ( empty( $table_post ) ) {
 			return array();
+		}
 
 		// load all table posts with one query, to prime the cache
 		$this->model_post->load_posts( array_values( $table_post ) );
 
 		// this loop now uses the WP cache
 		foreach ( $table_post as $table_id => $post_id ) {
-			$table_id = (string)$table_id;
-			$tables[ $table_id ] = $this->load( $table_id );
+			$table_id = (string) $table_id;
+			$table = $this->load( $table_id );
+			// Skip tables that could not be read properly
+			if ( false === $table ) {
+				continue;
+			}
+			$tables[ $table_id ] = $table;
 			unset( $tables[ $table_id ]['data'] ); // remove table data, to save memory
 		}
 		return $tables;
@@ -264,29 +274,34 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param array $table Table (needs to have $table['id']!)
-	 * @return mixed False on error, string table ID on success
+	 * @return string|bool False on error, string table ID on success
 	 */
-	public function save( $table ) {
-		if ( empty( $table['id'] ) )
+	public function save( array $table ) {
+		if ( empty( $table['id'] ) ) {
 			return false;
+		}
 
 		$post_id = $this->_get_post_id( $table['id'] );
-		if ( false === $post_id )
+		if ( false === $post_id ) {
 			return false;
+		}
 
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->update( $post );
 
-		if ( 0 === $new_post_id || $post_id !== $new_post_id )
+		if ( 0 === $new_post_id || $post_id !== $new_post_id ) {
 			return false;
+		}
 
 		$options_saved = $this->_update_table_options( $new_post_id, $table['options'] );
-		if ( ! $options_saved )
+		if ( ! $options_saved ) {
 			return false;
+		}
 
 		$visibility_saved = $this->_update_table_visibility( $new_post_id, $table['visibility'] );
-		if ( ! $visibility_saved )
+		if ( ! $visibility_saved ) {
 			return false;
+		}
 
 		// at this point, post was successfully added
 
@@ -305,32 +320,36 @@ class TablePress_Table_Model extends TablePress_Model {
 	 *
 	 * @param array $table Table ($table['id'] is not necessary)
 	 * @param string|bool $copied_table_id ID of the copied table, if table is a copy, false otherwise
-	 * @return mixed False on error, string table ID of the new table on success
+	 * @return string|bool False on error, string table ID of the new table on success
 	 */
-	public function add( $table, $copied_table_id = false ) {
+	public function add( array $table, $copied_table_id = false ) {
 		$post_id = false; // to insert table
 		$post = $this->_table_to_post( $table, $post_id );
 		$new_post_id = $this->model_post->insert( $post );
 
-		if ( 0 === $new_post_id )
+		if ( 0 === $new_post_id ) {
 			return false;
+		}
 
 		$options_saved = $this->_add_table_options( $new_post_id, $table['options'] );
-		if ( ! $options_saved )
+		if ( ! $options_saved ) {
 			return false;
+		}
 
 		$visibility_saved = $this->_add_table_visibility( $new_post_id, $table['visibility'] );
-		if ( ! $visibility_saved )
+		if ( ! $visibility_saved ) {
 			return false;
+		}
 
 		// at this point, post was successfully added, now get an unused table ID
 		$table_id = $this->_get_new_table_id();
 		$this->_update_post_id( $table_id, $new_post_id );
 
-		if ( false !== $copied_table_id )
+		if ( false !== $copied_table_id ) {
 			do_action( 'tablepress_event_copied_table', $table_id, $copied_table_id );
-		else
+		} else {
 			do_action( 'tablepress_event_added_table', $table_id );
+		}
 
 		return $table_id;
 	}
@@ -341,25 +360,25 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 *
 	 * @param string $table_id ID of the table to be copied
-	 * @return mixed False on error, string table ID of the new table on success
+	 * @return string|bool False on error, string table ID of the new table on success
 	 */
 	public function copy( $table_id ) {
 		$table = $this->load( $table_id );
-		if ( false === $table )
+		if ( false === $table ) {
 			return false;
+		}
 
 		// Adjust name of copied table
-		if ( '' == trim( $table['name'] ) )
+		if ( '' == trim( $table['name'] ) ) {
 			$table['name'] = __( '(no name)', 'tablepress' );
+		}
 		$table['name'] = sprintf( __( 'Copy of %s', 'tablepress' ), $table['name'] );
-
-		// Set Last Editor to user who copied
-		$table['options']['last_editor'] = get_current_user_id();
 
 		// Merge this data into an empty table template
 		$table = $this->prepare_table( $this->get_table_template(), $table, false );
-		if ( false === $table )
+		if ( false === $table ) {
 			return false;
+		}
 
 		// Add the copied table
 		return $this->add( $table, $table_id );
@@ -374,14 +393,16 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @return bool False on error, true on success
 	 */
 	public function delete( $table_id ) {
-		if ( ! $this->table_exists( $table_id ) )
+		if ( ! $this->table_exists( $table_id ) ) {
 			return false;
+		}
 
 		$post_id = $this->_get_post_id( $table_id ); // no !false check necessary, as this is covered by table_exists() check above
 		$deleted = $this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
 
-		if ( false === $deleted )
+		if ( false === $deleted ) {
 			return false;
+		}
 
 		// if post was deleted successfully, remove the table ID from the list of tables
 		$this->_remove_post_id( $table_id );
@@ -403,11 +424,12 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function delete_all() {
 		$tables = $this->tables->get();
-		if ( empty( $tables['table_post'] ) )
+		if ( empty( $tables['table_post'] ) ) {
 			return;
+		}
 
 		foreach ( $tables['table_post'] as $table_id => $post_id ) {
-			$table_id = (string)$table_id;
+			$table_id = (string) $table_id;
 			$this->model_post->delete( $post_id ); // Post Meta fields will be deleted automatically by that function
 			unset( $tables['table_post'][ $table_id ] );
 			$this->_invalidate_table_output_cache( $table_id ); // invalidate table output caches that belong to this table
@@ -442,8 +464,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function count_tables( $single_value = true ) {
 		$count_list = count( $this->tables->get( 'table_post' ) );
-		if ( $single_value )
+		if ( $single_value ) {
 			return $count_list;
+		}
 
 		$count_db = $this->model_post->count_posts();
 		return array( 'list' => $count_list, 'db' => $count_db );
@@ -474,15 +497,18 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @since 1.0.0
 	 */
 	public function _flush_caching_plugins_caches() {
-		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) )
+		if ( ! apply_filters( 'tablepress_flush_caching_plugins_caches', true ) ) {
 			return;
+		}
 
 		// W3 Total Cache
-		if ( function_exists( 'w3tc_pgcache_flush' ) )
+		if ( function_exists( 'w3tc_pgcache_flush' ) ) {
 			w3tc_pgcache_flush();
+		}
 		// WP Super Cache
-		if ( function_exists( 'wp_cache_clear_cache' ) )
+		if ( function_exists( 'wp_cache_clear_cache' ) ) {
 			wp_cache_clear_cache();
+		}
 		// Cachify
 		do_action( 'cachify_flush_cache' );
 	}
@@ -497,10 +523,11 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _get_post_id( $table_id ) {
 		$table_post = $this->tables->get( 'table_post' );
-		if ( isset( $table_post[ $table_id ] ) )
+		if ( isset( $table_post[ $table_id ] ) ) {
 			return $table_post[ $table_id ];
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -542,15 +569,18 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function change_table_id( $old_id, $new_id ) {
 		$post_id = $this->_get_post_id( $old_id );
-		if ( false === $post_id )
+		if ( false === $post_id ) {
 			return false;
+		}
 
 		// Check new ID for correct format (string from letters, numbers, -, and _ only, except the '0' string)
-		if ( empty( $new_id ) || 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) )
+		if ( empty( $new_id ) || 0 !== preg_match( '/[^a-zA-Z0-9_-]/', $new_id ) ) {
 			return false;
+		}
 
-		if ( $this->table_exists( $new_id ) )
+		if ( $this->table_exists( $new_id ) ) {
 			return false;
+		}
 
 		$this->_update_post_id( $new_id, $post_id );
 		$this->_remove_post_id( $old_id );
@@ -638,25 +668,28 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param bool $extended_visibility_check (optional) Whether to check the counts of hidden rows and columns (only possible for Admin_AJAX controller as of now)
 	 * @return array|bool Merged table on success, false on error
 	 */
-	public function prepare_table( $table, $new_table, $table_size_check = true, $extended_visibility_check = false ) {
+	public function prepare_table( array $table, array $new_table, $table_size_check = true, $extended_visibility_check = false ) {
 		// Table ID must be the same (if there was an ID already)
 		if ( false !== $table['id'] ) {
-			if ( $table['id'] !== $new_table['id'] )
+			if ( $table['id'] !== $new_table['id'] ) {
 				return false;
+			}
 		}
 
 		// Name, description, and data array need to exist, data must not be empty, the others could be ''
 		if ( ! isset( $new_table['name'] )
 		|| ! isset( $new_table['description'] )
 		|| empty( $new_table['data'] )
-		|| empty( $new_table['data'][0] ) )
+		|| empty( $new_table['data'][0] ) ) {
 			return false;
+		}
 
 		// Visibility needs to exist
 		if ( ! isset( $new_table['visibility'] )
 		|| ! isset( $new_table['visibility']['rows'] )
-		|| ! isset( $new_table['visibility']['columns'] ) )
+		|| ! isset( $new_table['visibility']['columns'] ) ){
 			return false;
+		}
 		$new_table['visibility']['rows'] = array_map( 'intval', $new_table['visibility']['rows'] );
 		$new_table['visibility']['columns'] = array_map( 'intval', $new_table['visibility']['columns'] );
 
@@ -664,25 +697,29 @@ class TablePress_Table_Model extends TablePress_Model {
 		if ( $table_size_check ) {
 			if ( empty( $new_table['number'] )
 			|| ! isset( $new_table['number']['rows'] )
-			|| ! isset( $new_table['number']['columns'] ) )
+			|| ! isset( $new_table['number']['columns'] ) ) {
 				return false;
+			}
 			// Table data needs to be ok, and have the correct number of rows and columns
 			$new_table['number']['rows'] = intval( $new_table['number']['rows'] );
 			$new_table['number']['columns'] = intval( $new_table['number']['columns'] );
 			if ( 0 === $new_table['number']['rows']
 			|| 0 === $new_table['number']['columns']
 			|| $new_table['number']['rows'] !== count( $new_table['data'] )
-			|| $new_table['number']['columns'] !== count( $new_table['data'][0] ) )
+			|| $new_table['number']['columns'] !== count( $new_table['data'][0] ) ) {
 				return false;
+			}
 			// Visibility also needs to have correct dimensions
 			if ( $new_table['number']['rows'] !== count( $new_table['visibility']['rows'] )
-			|| $new_table['number']['columns'] !== count( $new_table['visibility']['columns'] ) )
+			|| $new_table['number']['columns'] !== count( $new_table['visibility']['columns'] ) ) {
 				return false;
+			}
 
 			if ( $extended_visibility_check ) { // only for Admin_AJAX controller
 				if ( ! isset( $new_table['number']['hidden_rows'] )
-				|| ! isset( $new_table['number']['hidden_columns'] ) )
+				|| ! isset( $new_table['number']['hidden_columns'] ) ) {
 					return false;
+				}
 				$new_table['number']['hidden_rows'] = intval( $new_table['number']['hidden_rows'] );
 				$new_table['number']['hidden_columns'] = intval( $new_table['number']['hidden_columns'] );
 				// count hidden and visible rows
@@ -690,15 +727,17 @@ class TablePress_Table_Model extends TablePress_Model {
 				$num_hidden_rows = count( array_keys( $new_table['visibility']['rows'], 0 ) );
 				// Check number of hidden and visible rows
 				if ( $new_table['number']['hidden_rows'] !== $num_hidden_rows
-				|| ( $new_table['number']['rows'] - $new_table['number']['hidden_rows'] ) !== $num_visible_rows )
+				|| ( $new_table['number']['rows'] - $new_table['number']['hidden_rows'] ) !== $num_visible_rows ) {
 					return false;
+				}
 				// count hidden and visible columns
 				$num_visible_columns = count( array_keys( $new_table['visibility']['columns'], 1 ) );
 				$num_hidden_columns = count( array_keys( $new_table['visibility']['columns'], 0 ) );
 				// Check number of hidden and visible columns
 				if ( $new_table['number']['hidden_columns'] !== $num_hidden_columns
-				|| ( $new_table['number']['columns'] - $new_table['number']['hidden_columns'] ) !== $num_visible_columns )
+				|| ( $new_table['number']['columns'] - $new_table['number']['hidden_columns'] ) !== $num_visible_columns ) {
 					return false;
+				}
 			}
 		}
 
@@ -723,8 +762,9 @@ class TablePress_Table_Model extends TablePress_Model {
 			}
 			if ( isset( $new_table['options']['datatables_paginate_entries'] ) ) {
 				$new_table['options']['datatables_paginate_entries'] = intval( $new_table['options']['datatables_paginate_entries'] );
-				if ( $new_table['options']['datatables_paginate_entries'] < 1 )
+				if ( $new_table['options']['datatables_paginate_entries'] < 1 ) {
 					$new_table['options']['datatables_paginate_entries'] = 10; // default value
+				}
 			}
 			// merge new options
 			$default_table = $this->get_table_template();
@@ -748,10 +788,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param array $options Table options
 	 * @return bool True on success, false on error
 	 */
-	protected function _add_table_options( $post_id, $options ) {
+	protected function _add_table_options( $post_id, array $options ) {
 		$options = json_encode( $options );
-		$success = $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
-		return $success;
+		return $this->model_post->add_meta_field( $post_id, $this->table_options_field_name, $options );
 	}
 
 	/**
@@ -763,12 +802,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param array $options Table options
 	 * @return bool True on success, false on error
 	 */
-	protected function _update_table_options( $post_id, $options ) {
+	protected function _update_table_options( $post_id, array $options ) {
 		$options = json_encode( $options );
-		// we need to pass the previous value to make sure that an update takes place, to really get a successful (true) return result from the WP API
-		$prev_options = json_encode( $this->_get_table_options( $post_id ) );
-		$success = $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options, $prev_options );
-		return $success;
+		return $this->model_post->update_meta_field( $post_id, $this->table_options_field_name, $options );
 	}
 
 	/**
@@ -781,10 +817,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _get_table_options( $post_id ) {
 		$options = $this->model_post->get_meta_field( $post_id, $this->table_options_field_name );
-		if ( empty( $options ) )
+		if ( empty( $options ) ) {
 			return array();
-		$options = json_decode( $options, true );
-		return $options;
+		}
+		return json_decode( $options, true );
 	}
 
 	/**
@@ -796,10 +832,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param array $visibility Table visibility
 	 * @return bool True on success, false on error
 	 */
-	protected function _add_table_visibility( $post_id, $visibility ) {
+	protected function _add_table_visibility( $post_id, array $visibility ) {
 		$visibility = json_encode( $visibility );
-		$success = $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
-		return $success;
+		return $this->model_post->add_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
 	}
 
 	/**
@@ -811,12 +846,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 * @param array $visibility Table visibility
 	 * @return bool True on success, false on error
 	 */
-	protected function _update_table_visibility( $post_id, $visibility ) {
+	protected function _update_table_visibility( $post_id, array $visibility ) {
 		$visibility = json_encode( $visibility );
-		// we need to pass the previous value to make sure that an update takes place, to really get a successful (true) return result from the WP API
-		$prev_visibility = json_encode( $this->_get_table_visibility( $post_id ) );
-		$success = $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility, $prev_visibility );
-		return $success;
+		return $this->model_post->update_meta_field( $post_id, $this->table_visibility_field_name, $visibility );
 	}
 
 	/**
@@ -829,10 +861,10 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	protected function _get_table_visibility( $post_id ) {
 		$visibility = $this->model_post->get_meta_field( $post_id, $this->table_visibility_field_name );
-		if ( empty( $visibility ) )
+		if ( empty( $visibility ) ) {
 			return array();
-		$visibility = json_decode( $visibility, true );
-		return $visibility;
+		}
+		return json_decode( $visibility, true );
 	}
 
 	/**
@@ -844,8 +876,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function merge_table_options_defaults() {
 		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) )
+		if ( empty( $table_post ) ) {
 			return;
+		}
 
 		// load all table posts with one query, to prime the cache
 		$this->model_post->load_posts( array_values( $table_post ) );
@@ -872,8 +905,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function merge_table_options_tp06() {
 		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) )
+		if ( empty( $table_post ) ) {
 			return;
+		}
 
 		// go through all tables
 		foreach ( $table_post as $table_id => $post_id ) {
@@ -881,13 +915,15 @@ class TablePress_Table_Model extends TablePress_Model {
 
 			// Move "Print Name" to new format
 			$print_name = in_array( $table_options['print_name'], array( 'above', 'below' ), true );
-			if ( $print_name )
+			if ( $print_name ) {
 				$table_options['print_name_position'] = $table_options['print_name'];
+			}
 			$table_options['print_name'] = $print_name;
 			// Move "Print Description" to new format
 			$print_description = in_array( $table_options['print_description'], array( 'above', 'below' ), true );
-			if ( $print_description )
+			if ( $print_description ) {
 				$table_options['print_description_position'] = $table_options['print_description'];
+			}
 			$table_options['print_description'] = $print_description;
 
 			$this->_update_table_options( $post_id, $table_options );
@@ -903,16 +939,18 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function merge_table_options_tp08() {
 		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) )
+		if ( empty( $table_post ) ) {
 			return;
+		}
 
 		// go through all tables
 		foreach ( $table_post as $table_id => $post_id ) {
 			$table_options = $this->_get_table_options( $post_id );
 
 			// Convert parameter "datatables_scrollX" to "datatables_scrollx"
-			if ( isset( $table_options['datatables_scrollX'] ) && ! isset( $table_options['datatables_scrollx'] ) )
+			if ( isset( $table_options['datatables_scrollX'] ) && ! isset( $table_options['datatables_scrollx'] ) ) {
 				$table_options['datatables_scrollx'] = $table_options['datatables_scrollX'];
+			}
 
 			$this->_update_table_options( $post_id, $table_options );
 		}
@@ -926,8 +964,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function invalidate_table_output_caches() {
 		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) )
+		if ( empty( $table_post ) ) {
 			return;
+		}
 
 		// go through all tables
 		foreach ( $table_post as $table_id => $post_id ) {
@@ -943,8 +982,9 @@ class TablePress_Table_Model extends TablePress_Model {
 	 */
 	public function invalidate_table_output_caches_tp09() {
 		$table_post = $this->tables->get( 'table_post' );
-		if ( empty( $table_post ) )
+		if ( empty( $table_post ) ) {
 			return;
+		}
 
 		// go through all tables
 		foreach ( $table_post as $table_id => $post_id ) {

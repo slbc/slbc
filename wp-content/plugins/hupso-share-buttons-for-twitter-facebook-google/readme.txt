@@ -1,14 +1,14 @@
 === Hupso Share Buttons for Twitter, Facebook & Google+ ===
 Contributors: kasal
 Donate link: http://www.hupso.com/
-Tags: twitter, facebook, google, social sharing, share buttons, social share buttons, share icons, stumbleupon, addthis, sharethis, sexybookmarks, addtoany, multisite, pinterest, print, tumblr
+Tags: twitter, facebook, google, social sharing, share buttons, social share buttons, share icons, stumbleupon, addthis, sharethis, sexybookmarks, addtoany, multisite, pinterest, print, tumblr, bebo
 Requires at least: 2.8
-Tested up to: 3.6.1
-Stable tag: 3.9.20
+Tested up to: 3.7.1
+Stable tag: 3.9.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Help visitors share your posts on popular social networks: Twitter, Facebook, Google+, Linkedin, Pinterest, StumbleUpon, Tumblr, Reddit and others.
+Help share your posts on popular social networks: Twitter, Facebook, Google+, Linkedin, Pinterest, StumbleUpon, Tumblr, Reddit, Bebo and others.
 
 == Description ==
 
@@ -20,7 +20,7 @@ These services are used by millions of people every day, so sharing your content
 
 * Slick, minimalistic design.
 * Very small and fast. The code for sharing button is very small (only a few KB), so share buttons will not slow down your website - even on devices with slow network connections.
-* All major social networks are supported: Twitter, Facebook (Facebook Share / Facebook Like / Facebook Send), Google Plus, Linkedin, Tumblr, Pinterest, StumbleUpon, Digg, Reddit, Bebo, Delicious, VKontakte, Odnoklassniki.
+* All major social networks are supported: Twitter, Facebook (Facebook Share / Facebook Like / Facebook Send), Google Plus, Linkedin, Tumblr, Pinterest, StumbleUpon, Digg, Reddit, Bebo, Delicious, VKontakte, Odnoklassniki, Sina Weibo, QZone, Renren.
 * Social media counters: Twitter Tweet, Facebook Like, Google +1, Linkedin Share, Pinterest - Pin it 
 * Compatible with all major web browsers: Firefox, Chrome, Internet Explorer, Safari, Opera.
 * Share toolbar works with desktop and mobile devices (mobile phones and tablets). Tested with PC, Apple iOS / iPhone / iPad and Google Android devices.
@@ -60,7 +60,7 @@ You can configure share buttons in plugin settings.
 
 **Translations**
 
-Plugin is currently translated into: Czech, Traditional Chinese, Simplified Chinese.
+Plugin is currently translated into: Czech, Traditional Chinese, Simplified Chinese and Dutch (Nederlands / Belgium).
 If you would like to translate into your language, send message [here](http://www.hupso.com/share/feedback/).
 
 
@@ -285,6 +285,19 @@ Please send bug reports and suggestion using [this feedback form](http://www.hup
 
 
 == Changelog ==
+
+= 3.9.24 =
+* Added Dutch (Nederlands / Belgium) translation
+
+= 3.9.23 =
+* Fix for using echo do_shortcode('[hupso]') inside the loop
+
+= 3.9.22 =
+* Renren button
+
+= 3.9.21 =
+* Sina Weibo button
+* QZone button
 
 = 3.9.20 =
 * Odnoklassniki button

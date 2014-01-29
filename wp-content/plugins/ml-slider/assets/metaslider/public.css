@@ -1,6 +1,6 @@
 /**
  * The files in /assets are unmodified.
- * This file contains 
+ * This file contains
  *    - resets, in an attempt to ensure sliders display properly in all themes
  *    - modifications to the default sliders CSS
  */
@@ -8,6 +8,12 @@
  /* general resets */
 .metaslider {
     position: relative;
+}
+.metaslider.nav-hidden .flexslider {
+    margin-bottom: 0;
+}
+.metaslider.nav-hidden.add-margin .flexslider {
+    margin-bottom: 40px;
 }
 
 .metaslider .caption {
@@ -19,9 +25,18 @@
     padding: 0;
 }
 
+.metaslider .theme-default .nivoSlider {
+   -webkit-box-shadow: 0 0 0;
+   -moz-box-shadow: 0 0 0;
+   box-shadow: 0 0 0;
+}
+
 .metaslider li:before,
 .metaslider li:after {
     content: "" !important;
+    display: block !important;
+    bottom: auto !important;
+    margin: 0 !important;
 }
 
 .metaslider .caption-wrap {
@@ -42,15 +57,25 @@
 }
 
 /** quick resets **/
-#widgets .metaslider ul, 
+.article .metaslider ol,
+.art-article .metaslider img,
+#widgets .metaslider ul,
 #widgets .metaslider ol,
-#content .metaslider unmodifiedl,
+#content .metaslider ul,
+#content .metaslider ol,
+#content .metaslider li,
+.entry .metaslider ul,
+.entry .metaslider ol,
+.entry-content .metaslider ul,
+.entry-content .metaslider ol,
+.entry-content .metaslider img
 .metaslider .flexslider ul,
 .metaslider .flexslider .slides li,
 .metaslider .flexslider .slides ul,
 .metaslider .flexslider .slides ol,
 .metaslider .flexslider .flex-direction-nav,
-.metaslider .flexslider .flex-direction-nav li
+.metaslider .flexslider .flex-direction-nav li,
+.entry-content .metaslider .flexslider ol.flex-control-nav
  {
     border: 0;
     border-top: 0;
@@ -65,4 +90,9 @@
     list-style-type: none;
     list-style: none;
     padding: 0;
+    line-height: normal;
+}
+.metaslider .slides img {
+	width: 100%;
+	display: block;
 }

@@ -12,7 +12,7 @@ $args = array(
 	'orderby' => 'meta_value',
 	'order' => 'DESC'
 );
-$sermon_podcast_query = new WP_Query($args);	
+$sermon_podcast_query = new WP_Query($args);
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' ?>
 
@@ -39,6 +39,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' ?>
 <?php if ( $sermon_podcast_query->have_posts() ) : while ( $sermon_podcast_query->have_posts() ) : $sermon_podcast_query->the_post(); ?>
 <?php
 global $post;
+
 $speaker = strip_tags( get_the_term_list( $post->ID, 'wpfc_preacher', '', ' &amp; ', '' ) );
 $series = strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_series', '', ', ', '' ) );
 $topic = strip_tags( get_the_term_list( $post->ID, 'wpfc_sermon_topics', '', ', ', '' ) );
@@ -48,16 +49,17 @@ $post_image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), '
 $post_image = ( $post_image ) ? $post_image['0'] : null;
 
 $audio_file = get_post_meta($post->ID, 'sermon_audio', 'true');
-$audio_file_size = wpfc_get_filesize( esc_url( $audio_file ) );
-$audio_duration = wpfc_mp3_duration( $audio_file );
+$audio_file_size = get_post_meta($post->ID, '_wpfc_sermon_size', 'true'); //now using custom field T Hyde 9 Oct 2013
+if ($audio_file_size < 0 ) $audio_file_size = 0; //itunes needs this to be zero if undefined
+$audio_duration = get_post_meta($post->ID, '_wpfc_sermon_duration', 'true'); // now using custom field T Hyde 9 Oct 2013
 ?>
-<?php if ( $audio_file && $audio_file_size && $audio_duration ) : ?>
+<?php if ( $audio_file && $audio_duration ) : ?>
 		<item>
 			<title><?php the_title() ?></title>
 			<link><?php the_permalink() ?></link>
 			<description><?php strip_tags( wpfc_sermon_meta('sermon_description') ); ?></description>
 			<itunes:author><?php echo $series ?></itunes:author>
-			<itunes:subtitle><?php echo $subtitle ?></itunes:subtitle>
+			<itunes:subtitle><?php  strip_tags( wpfc_sermon_meta('sermon_description') ); ?></itunes:subtitle>
 			<itunes:summary><?php strip_tags( wpfc_sermon_meta('sermon_description') ); ?></itunes:summary>
 			<?php if ( $post_image ) : ?>
 			<itunes:image href="<?php echo $post_image; ?>" />

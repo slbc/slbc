@@ -1,12 +1,12 @@
 /*
- * jQuery FlexSlider v2.2.0
+ * jQuery soliloquy v2.2.0
  * Copyright 2012 WooThemes
  * Contributing Author: Tyler Smith
  */
 ;
 (function ($) {
 
-  //FlexSlider: Object Instance
+  //soliloquy: Object Instance
   $.soliloquy = function(el, options) {
     var slider = $(el);
 
@@ -36,7 +36,9 @@
     methods = {
       init: function() {
         slider.animating = false;
-        slider.currentSlide = slider.vars.startAt;
+        // Get current slide and make sure it is a number
+        slider.currentSlide = parseInt( ( slider.vars.startAt ? slider.vars.startAt : 0) );
+        if ( isNaN( slider.currentSlide ) ) slider.currentSlide = 0;
         slider.animatingTo = slider.currentSlide;
         slider.atEnd = (slider.currentSlide === 0 || slider.currentSlide === slider.last);
         slider.containerSelector = slider.vars.selector.substr(0,slider.vars.selector.search(' '));
@@ -52,6 +54,9 @@
         // SLIDESHOW:
         slider.manualPause = false;
         slider.stopped = false;
+        //PAUSE WHEN INVISIBLE
+        slider.started = false;
+        slider.startTimeout = null;
         // TOUCH/USECSS:
         slider.transitions = !slider.vars.video && !fade && slider.vars.useCSS && (function() {
           var obj = document.createElement('div'),
@@ -110,6 +115,9 @@
         // PAUSEPLAY
         if (slider.vars.pausePlay) methods.pausePlay.setup();
 
+        //PAUSE WHEN INVISIBLE
+        if (slider.vars.slideshow && slider.vars.pauseInvisible) methods.pauseInvisible.init();
+
         // SLIDSESHOW
         if (slider.vars.slideshow) {
           if (slider.vars.pauseOnHover) {
@@ -120,7 +128,10 @@
             });
           }
           // initialize animation
-          (slider.vars.initDelay > 0) ? setTimeout(slider.play, slider.vars.initDelay) : slider.play();
+          //If we're visible, or we don't use PageVisibility API
+          if(!slider.vars.pauseInvisible || !methods.pauseInvisible.isHidden()) {
+            (slider.vars.initDelay > 0) ? slider.startTimeout = setTimeout(slider.play, slider.vars.initDelay) : slider.play();
+          }
         }
 
         // ASNAV:
@@ -146,7 +157,7 @@
           slider.currentItem = slider.currentSlide;
           slider.slides.removeClass(namespace + "active-slide").eq(slider.currentItem).addClass(namespace + "active-slide");
           if(!msGesture){
-              slider.delegate(slider.vars.selector, eventType, function(e){
+              slider.slides.on(eventType, function(e){
                 e.preventDefault();
                 var $slide = $(this),
                     target = $slide.index();
@@ -219,6 +230,7 @@
 
           slider.controlNavScaffold.delegate('a, img', eventType, function(event) {
             event.preventDefault();
+
             if (watchedEvent === "" || watchedEvent === event.type) {
               var $this = $(this),
                   target = slider.controlNav.index($this);
@@ -298,7 +310,7 @@
           slider.directionNav.bind(eventType, function(event) {
             event.preventDefault();
             var target,
-            	$this = $(this);
+                $this = $(this);
 
             if ( $this.hasClass(namespace + 'disabled')) return;
 
@@ -369,7 +381,7 @@
           });
         },
         update: function(state) {
-          (state === "play") ? slider.pausePlay.removeClass(namespace + 'pause').addClass(namespace + 'play').text(slider.vars.playText) : slider.pausePlay.removeClass(namespace + 'play').addClass(namespace + 'pause').text(slider.vars.pauseText);
+          (state === "play") ? slider.pausePlay.removeClass(namespace + 'pause').addClass(namespace + 'play').html(slider.vars.playText) : slider.pausePlay.removeClass(namespace + 'play').addClass(namespace + 'pause').html(slider.vars.pauseText);
         }
       },
       touch: function() {
@@ -501,7 +513,11 @@
                 scrolling = (vertical) ? (Math.abs(accDx) < Math.abs(-transX)) : (Math.abs(accDx) < Math.abs(-transY));
 
                 if(e.detail === e.MSGESTURE_FLAG_INERTIA){
-                    el._gesture.stop();
+                    setImmediate(function (){
+                        el._gesture.stop();
+                    });
+
+                    return;
                 }
 
                 if (!scrolling || Number(new Date()) - startT > 500) {
@@ -579,6 +595,34 @@
           case "pause": $obj.pause(); break;
         }
       },
+      pauseInvisible: {
+        visProp: null,
+        init: function() {
+          var prefixes = ['webkit','moz','ms','o'];
+
+          if ('hidden' in document) return 'hidden';
+          for (var i = 0; i < prefixes.length; i++) {
+            if ((prefixes[i] + 'Hidden') in document)
+            methods.pauseInvisible.visProp = prefixes[i] + 'Hidden';
+          }
+          if (methods.pauseInvisible.visProp) {
+            var evtname = methods.pauseInvisible.visProp.replace(/[H|h]idden/,'') + 'visibilitychange';
+            document.addEventListener(evtname, function() {
+              if (methods.pauseInvisible.isHidden()) {
+                if(slider.startTimeout) clearTimeout(slider.startTimeout); //If clock is ticking, stop timer and prevent from starting while invisible
+                else slider.pause(); //Or just pause
+              }
+              else {
+                if(slider.started) slider.play(); //Initiated before, just play
+                else (slider.vars.initDelay > 0) ? setTimeout(slider.play, slider.vars.initDelay) : slider.play(); //Didn't init before: simply init or wait for it
+              }
+            });
+          }
+        },
+        isHidden: function() {
+          return document[methods.pauseInvisible.visProp] || false;
+        }
+      },
       setToClearWatchedEvent: function() {
         clearTimeout(watchedEventClearTimer);
         watchedEventClearTimer = setTimeout(function() {
@@ -589,7 +633,7 @@
 
     // public methods
     slider.flexAnimate = function(target, pause, override, withSync, fromNav) {
-      if (target !== slider.currentSlide) {
+      if (!slider.vars.animationLoop && target !== slider.currentSlide) {
         slider.direction = (target > slider.currentSlide) ? "next" : "prev";
       }
 
@@ -603,7 +647,7 @@
           slider.direction = (slider.currentItem < target) ? "next" : "prev";
           master.direction = slider.direction;
 
-          if (Math.ceil((target + 1) / slider.visible) - 1 !== slider.currentSlide) {
+          if (Math.ceil((target + 1)/slider.visible) - 1 !== slider.currentSlide) {
             slider.currentItem = target;
             slider.slides.removeClass(namespace + "active-slide").eq(target).addClass(namespace + "active-slide");
             target = Math.floor(target/slider.visible);
@@ -616,11 +660,12 @@
 
         slider.animating = true;
         slider.animatingTo = target;
-        // API: before() animation Callback
-        slider.vars.before(slider);
 
         // SLIDESHOW:
         if (pause) slider.pause();
+
+        // API: before() animation Callback
+        slider.vars.before(slider);
 
         // SYNC:
         if (slider.syncExists && !fromNav) methods.sync("animate");
@@ -728,8 +773,9 @@
     }
     // SLIDESHOW:
     slider.play = function() {
+      if (slider.playing) clearInterval(slider.animatedSlides);
       slider.animatedSlides = slider.animatedSlides || setInterval(slider.animateSlides, slider.vars.slideshowSpeed);
-      slider.playing = true;
+      slider.started = slider.playing = true;
       // PAUSEPLAY:
       if (slider.vars.pausePlay) methods.pausePlay.update("pause");
       // SYNC:
@@ -745,7 +791,7 @@
       var last = (asNav) ? slider.pagingCount - 1 : slider.last;
       return (fromNav) ? true :
              (asNav && slider.currentItem === slider.count - 1 && target === 0 && slider.direction === "prev") ? true :
-             (asNav && slider.currentItem === 0 && target === slider.pagingCount - 1 && slider.direction !== "next") ? false :
+             (asNav && slider.currentItem === 0 && target === slider.count - 1 && slider.direction !== "next") ? false :
              (target === slider.currentSlide && !asNav) ? false :
              (slider.vars.animationLoop) ? true :
              (slider.atEnd && slider.currentSlide === 0 && target === last && slider.direction !== "next") ? false :
@@ -867,7 +913,7 @@
           minItems = slider.vars.minItems,
           maxItems = slider.vars.maxItems;
 
-      slider.w = slider.width();
+      slider.w = (slider.viewport===undefined) ? slider.width() : slider.viewport.width();
       slider.h = slide.height();
       slider.boxPadding = slide.outerWidth() - slide.width();
 
@@ -946,7 +992,7 @@
       // re-setup the slider to accomdate new slide
       slider.setup();
 
-      //FlexSlider: added() Callback
+      //soliloquy: added() Callback
       slider.vars.added(slider);
     }
     slider.removeSlide = function(obj) {
@@ -972,11 +1018,11 @@
       // re-setup the slider to accomdate new slide
       slider.setup();
 
-      // FlexSlider: removed() Callback
+      // soliloquy: removed() Callback
       slider.vars.removed(slider);
     }
 
-    //FlexSlider: Initialize
+    //soliloquy: Initialize
     methods.init();
   }
 
@@ -987,7 +1033,7 @@
     focused = true;
   });
 
-  //FlexSlider: Default Settings
+  //soliloquy: Default Settings
   $.soliloquy.defaults = {
     namespace: "flex-",             //{NEW} String: Prefix string attached to the class of every element generated by the plugin
     selector: ".slides > li",       //{NEW} Selector: Must match a simple pattern. '{container} > {slide}' -- Ignore pattern at your own peril
@@ -1008,6 +1054,7 @@
     // Usability features
     pauseOnAction: true,            //Boolean: Pause the slideshow when interacting with control elements, highly recommended.
     pauseOnHover: false,            //Boolean: Pause the slideshow when hovering over slider, then resume when no longer hovering
+    pauseInvisible: true,   		//{NEW} Boolean: Pause the slideshow when tab is invisible, resume when visible. Provides better UX, lower CPU usage.
     useCSS: true,                   //{NEW} Boolean: Slider will use CSS3 transitions if available
     touch: true,                    //{NEW} Boolean: Allow touch swipe navigation of the slider on touch-enabled devices
     video: false,                   //{NEW} Boolean: If using video in the slider, will prevent CSS3 3D Transforms to avoid graphical glitches
@@ -1027,7 +1074,7 @@
     playText: "Play",               //String: Set the text for the "play" pausePlay item
 
     // Special properties
-    controlsContainer: "",          //{UPDATED} jQuery Object/Selector: Declare which container the navigation elements should be appended too. Default container is the FlexSlider element. Example use would be $(".soliloquy-container"). Property is ignored if given element is not found.
+    controlsContainer: "",          //{UPDATED} jQuery Object/Selector: Declare which container the navigation elements should be appended too. Default container is the soliloquy element. Example use would be $(".soliloquy-container"). Property is ignored if given element is not found.
     manualControls: "",             //{UPDATED} jQuery Object/Selector: Declare custom control navigation. Examples would be $(".flex-control-nav li") or "#tabs-nav li img", etc. The number of elements in your controlNav should match the number of slides/tabs.
     sync: "",                       //{NEW} Selector: Mirror the actions performed on this slider with another slider. Use with care.
     asNavFor: "",                   //{NEW} Selector: Internal property exposed for turning the slider into a thumbnail navigation for another slider
@@ -1038,6 +1085,7 @@
     minItems: 1,                    //{NEW} Integer: Minimum number of carousel items that should be visible. Items will resize fluidly when below this.
     maxItems: 0,                    //{NEW} Integer: Maxmimum number of carousel items that should be visible. Items will resize fluidly when above this limit.
     move: 0,                        //{NEW} Integer: Number of carousel items that should move on animation. If 0, slider will move all visible items.
+    allowOneSlide: true,           //{NEW} Boolean: Whether or not to allow a slider comprised of a single slide
 
     // Callback API
     start: function(){},            //Callback: function(slider) - Fires when the slider loads the first slide
@@ -1049,7 +1097,7 @@
   }
 
 
-  //FlexSlider: Plugin Function
+  //soliloquy: Plugin Function
   $.fn.soliloquy = function(options) {
     if (options === undefined) options = {};
 
@@ -1059,7 +1107,7 @@
             selector = (options.selector) ? options.selector : ".slides > li",
             $slides = $this.find(selector);
 
-        if ($slides.length === 1) {
+      if ( ( $slides.length === 1 && options.allowOneSlide === true ) || $slides.length === 0 ) {
           $slides.fadeIn(400);
           if (options.start) options.start($this);
         } else if ($this.data('soliloquy') === undefined) {

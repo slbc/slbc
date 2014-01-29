@@ -21,7 +21,8 @@
  *		set_action('action') - Used to set the action currently being performed. ('submit', 'save', 'edit_sub').
  *
  * Submitted Values Methods:
- *		get_all_fields() - Returns an array of all the user submitted fields in the form of array('field_ID' => 'user value').
+ *		get_all_fields() - Returns an array of all the fields within a form. The return is array('field_ID' => 'user value').
+ *		get_submitted_fields() - Returns an array of just the fields that the user has submitted. The return is array('field_ID' => 'user_value').
  *		get_field_value('field_ID') - Used to access the submitted data by field_ID.
  *		update_field_value('field_ID', 'new_value') - Used to change the value submitted by the user. If the field does not exist, it will be created.
  *		remove_field_value('field_ID') - Used to delete values submitted by the user.
@@ -118,7 +119,7 @@ class Ninja_Forms_Processing {
 
 		//Get our plugin settings
 		$plugin_settings = get_option("ninja_forms_settings");
-		$req_field_error = $plugin_settings['req_field_error'];
+		$req_field_error = __( $plugin_settings['req_field_error'], 'ninja-forms' );
 
 		if ( empty ( $this->data ) )
 			return '';
@@ -129,33 +130,29 @@ class Ninja_Forms_Processing {
 
 		// If we have fields in our $_POST object, then loop through the $_POST'd field values and add them to our global variable.
 		if ( isset ( $_POST['_ninja_forms_display_submit'] ) OR isset ( $_POST['_ninja_forms_edit_sub'] ) ) {
+			$field_results = ninja_forms_get_fields_by_form_id($form_ID);
+			//$field_results = apply_filters('ninja_forms_display_fields_array', $field_results, $form_ID);
+
+			foreach( $field_results as $field ) {
+				$data = $field['data'];
+				$field_id = $field['id'];
+				$field_type = $field['type'];
+
+				if ( isset ( $_POST['ninja_forms_field_' . $field_id ] ) ) {
+					$val = ninja_forms_stripslashes_deep( $_POST['ninja_forms_field_' . $field_id ] );
+					$this->data['submitted_fields'][] = $field_id;
+				} else {
+					$val = false;
+				}
+
+				$this->data['fields'][$field_id] = $val;
+				$field_row = ninja_forms_get_field_by_id( $field_id );
+				$field_row['data']['field_class'] = 'ninja-forms-field';
+				$this->data['field_data'][$field_id] = $field_row;
+			}
+
 			foreach($_POST as $key => $val){
-				if(substr($key, 0, 1) != '_'){
-					$process_field = strpos($key, 'ninja_forms_field_');
-					if($process_field !== false){
-						$field_ID = str_replace('ninja_forms_field_', '', $key); // Get the id # of each field.
-						$field_row = ninja_forms_get_field_by_id($field_ID);
-						if(is_array($field_row) AND !empty($field_row)){
-							if(isset($field_row['type'])){
-								$field_type = $field_row['type'];
-							}else{
-								$field_type = '';
-							}
-							if(isset($field_row['data']['req'])){
-								$req = $field_row['data']['req'];
-							}else{
-								$req = '';
-							}
-
-							$val = ninja_forms_stripslashes_deep( $val );
-							//$val = ninja_forms_esc_html_deep( $val );
-
-							$this->data['fields'][$field_ID] = $val;
-							$field_row = ninja_forms_get_field_by_id( $field_ID );
-							$this->data['field_data'][$field_ID] = $field_row;
-						}
-					}
-				}else{
+				if(substr($key, 0, 1) == '_'){
 					$this->data['extra'][$key] = $val;
 				}
 			}
@@ -165,7 +162,7 @@ class Ninja_Forms_Processing {
 			$form_data = $form_row['data'];
 
 			if(isset($_REQUEST['_sub_id']) AND !empty($_REQUEST['_sub_id'])){
-				$form_data['sub_id'] = $_REQUEST['_sub_id'];
+				$form_data['sub_id'] = absint ( $_REQUEST['_sub_id'] );
 			}else{
 				$form_data['sub_id'] = '';
 			}
@@ -212,6 +209,8 @@ class Ninja_Forms_Processing {
 						} else {
 							$field_row = ninja_forms_get_field_by_id( $field_id );
 						}
+
+						$field_row['data']['field_class'] = 'ninja-forms-field';
 						
 						$this->data['field_data'][$field_id] = $field_row;
 					}
@@ -291,7 +290,7 @@ class Ninja_Forms_Processing {
 	}
 
 	/**
-	 * Retrieve all the user submitted form data.
+	 * Retrieve all the fields attached to a form.
 	 *
 	 */
 	function get_all_fields() {
@@ -299,6 +298,25 @@ class Ninja_Forms_Processing {
 			return false;
 		}else{
 			return $this->data['fields'];
+		}
+	}
+
+	/**
+	 * Retrieve all the user submitted form data.
+	 *
+	 */
+	function get_all_submitted_fields() {
+		if ( empty( $this->data['submitted_fields'] ) ) {
+			return false;
+		} else {
+			$fields = array();
+			$submitted_fields = $this->data['submitted_fields'];
+			foreach ( $submitted_fields as $field_id ) {
+				if ( isset ( $this->data['fields'][$field_id] ) ) {
+					$fields[$field_id] = $this->data['fields'][$field_id];
+				}
+			}
+			return $fields;
 		}
 	}
 
@@ -360,7 +378,7 @@ class Ninja_Forms_Processing {
 	 * @return $value or bool(false)
 	 */
 	function get_field_setting( $field_id = '', $setting_id = '' ) {
-		if ( empty ( $this->data ) OR $field_id == '' OR $setting_id = '' )
+		if ( empty ( $this->data ) OR $field_id == '' OR $setting_id == '' )
 			return false;
 		if ( isset ( $this->data['field_data'][$field_id][$setting_id] ) ) {
 			return $this->data['field_data'][$field_id][$setting_id];
@@ -394,7 +412,7 @@ class Ninja_Forms_Processing {
 	function update_field_setting( $field_id = '', $setting_id = '', $value = '' ) {
 		if( empty( $this->data ) OR $field_id == '' OR $setting_id == '' OR $value == '' )
 			return false;
-
+		
 		if ( isset ( $this->data['field_data'][$field_id][$setting_id] ) ) {
 			$this->data['field_data'][$field_id][$setting_id] = $value;
 		} else {
@@ -957,6 +975,15 @@ class Ninja_Forms_Processing {
 		}
 		// Get our sub-total if it exists.
 		$sub_total = $this->get_calc_sub_total( false );
+		$locale_info = localeconv();
+		$decimal_point = $locale_info['decimal_point'];
+		if ( $decimal_point == '.' ) {
+			$sub_total = str_replace(',', '', $sub_total );
+		} else {
+			$sub_total = str_replace('.', '', $sub_total );
+		}
+
+		$sub_total = intval( $sub_total );
 
 		// Get our total if it exists.
 		$total = $this->get_calc_total( false, false );
@@ -1144,18 +1171,8 @@ class Ninja_Forms_Processing {
 	* @return $url string
 	*/
 	function get_current_url() {
-		$protocol = "http";
-		if($_SERVER["SERVER_PORT"]==443 || (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=="on")) {
-			$protocol .= "s";
-			$protocol_port = $_SERVER["SERVER_PORT"];
-		} else {
-			$protocol_port = 80;
-		}
-		$host = $_SERVER["HTTP_HOST"];
-		$port = $_SERVER["SERVER_PORT"];
-		$request_path = $_SERVER["PHP_SELF"];
-		$querystr = $_SERVER["QUERY_STRING"];
-		$url = $protocol."://".$host.(($port!=$protocol_port && strpos($host,":")==-1)?":".$port:"").$request_path.(empty($querystr)?"":"?".$querystr);
+		$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+		$url = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		return $url;
 	}
 

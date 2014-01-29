@@ -11,11 +11,10 @@ class MetaNivoSlider extends MetaSlider {
     /**
      * Constructor
      */
-    public function __construct($id) {
-        parent::__construct($id);
+    public function __construct($id, $shortcode_settings) {
+        parent::__construct($id, $shortcode_settings);
 
         add_filter('metaslider_nivo_slider_parameters', array($this, 'set_autoplay_parameter'), 10, 3);
-
     }
 
     /**
@@ -72,15 +71,13 @@ class MetaNivoSlider extends MetaSlider {
     /**
      * 
      */
-    public function get_slider_css($css, $settings, $slider_id) {
-        $css = parent::get_slider_css($css, $settings, $slider_id);
+    public function enqueue_scripts() {
+        parent::enqueue_scripts();
 
         if ($this->get_setting('printCss') == 'true') {
             $theme = $this->get_theme();
-            $css .= "\n        @import url('" . METASLIDER_ASSETS_URL  . "sliders/nivoslider/themes/{$theme}/{$theme}.css');";
+        	wp_enqueue_style('metaslider-' . $this->get_setting('type') . '-slider-'.$theme, METASLIDER_ASSETS_URL . "sliders/nivoslider/themes/{$theme}/{$theme}.css", false, METASLIDER_VERSION);
         }
-
-        return $css;
     }
 
     /**
@@ -102,17 +99,17 @@ class MetaNivoSlider extends MetaSlider {
      * @return string slider markup.
      */
     protected function get_html() {
-        $retVal  = "<div class='slider-wrapper theme-{$this->get_theme()}'>";
-        $retVal .= "\n            <div class='ribbon'></div>";
-        $retVal .= "\n            <div id='" . $this->get_identifier() . "' class='nivoSlider'>";
+        $return_value  = "<div class='slider-wrapper theme-{$this->get_theme()}'>";
+        $return_value .= "\n            <div class='ribbon'></div>";
+        $return_value .= "\n            <div id='" . $this->get_identifier() . "' class='nivoSlider'>";
         
         foreach ($this->slides as $slide) {
-            $retVal .= "\n                " . $slide;
+            $return_value .= "\n                " . $slide;
         }
         
-        $retVal .= "\n            </div>\n        </div>";
+        $return_value .= "\n            </div>\n        </div>";
         
-        return $retVal;
+        return apply_filters('metaslider_nivo_slider_get_html', $return_value, $this->id, $this->settings);;
     }
 }
 ?>

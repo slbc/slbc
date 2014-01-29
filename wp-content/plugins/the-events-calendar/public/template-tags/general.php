@@ -39,13 +39,13 @@ if ( class_exists( 'TribeEvents' ) ) {
 		if ( ! $view ) {
 			$template_file = tribe_get_current_template();
 		} else {
-			$template_file = TribeEventsTemplates::getTemplateHierarchy( $view, array('disable_view_check' => true)  );
+			$template_file = TribeEventsTemplates::getTemplateHierarchy( $view, array( 'disable_view_check' => true )  );
 		}
 
 		if (file_exists($template_file)) {
-			do_action('tribe_events_before_view', $template_file);
+			do_action( 'tribe_events_before_view', $template_file );
 			include( $template_file );
-			do_action('tribe_events_after_view', $template_file);
+			do_action( 'tribe_events_after_view', $template_file );
 		}
 	}
 
@@ -157,6 +157,7 @@ if ( class_exists( 'TribeEvents' ) ) {
 	 * Queries the events using WordPress get_posts() by setting the post type and sorting by event date.
 	 *
 	 * @param array $args query vars with added defaults including post_type of events, sorted (orderby) by event date (order) ascending
+	 * @param bool $full (optional) if the full query object is required or just an array of event posts
 	 * @return array List of posts.
 	 * @link http://codex.wordpress.org/Template_Tags/get_posts
 	 * @link http://codex.wordpress.org/Function_Reference/get_post
@@ -164,8 +165,8 @@ if ( class_exists( 'TribeEvents' ) ) {
 	 * @see get_posts()
 	 * @since 2.0
 	 */
-	function tribe_get_events( $args = array() ) {
-		return apply_filters( 'tribe_get_events', TribeEventsQuery::getEvents( $args ), $args );
+	function tribe_get_events( $args = array(), $full = false ) {
+		return apply_filters( 'tribe_get_events', TribeEventsQuery::getEvents( $args, $full ), $args, $full );
 	}
 
 	/**
@@ -194,11 +195,11 @@ if ( class_exists( 'TribeEvents' ) ) {
 	 */
 	function tribe_event_is_multiday( $postId = null ) {
 		$postId = TribeEvents::postIdHelper( $postId );
-		$start = (array)tribe_get_event_meta( $postId, '_EventStartDate', false );
+		$start = (array) tribe_get_event_meta( $postId, '_EventStartDate', false );
 		sort( $start );
-		$start = strtotime( $start[0] );
+		$start = $start[0];
 		$end = strtotime( tribe_get_event_meta( $postId, '_EventEndDate', true ) );
-		$output = date( 'd-m-Y', $start ) != date( 'd-m-Y', $end );
+		$output = ( $end > strtotime( tribe_event_end_of_day( $start ) ) );
 		return apply_filters( 'tribe_event_is_multiday', $output, $postId, $start, $end );
 	}
 
@@ -405,8 +406,7 @@ if ( class_exists( 'TribeEvents' ) ) {
 		$before = convert_chars( $before );
 		$before = wpautop( $before );
 		$before = '<div class="tribe-events-before-html">'. stripslashes( shortcode_unautop( $before  ) ) .'</div>';
-		$before = $before.'<span class="tribe-events-ajax-loading"><img class="tribe-events-spinner-medium" src="'.tribe_events_resource_url('images/tribe-loading.gif').'" alt="'.__('Loading Events', 'tribe-events').'" /></span>';
-		$before = apply_filters( 'tribe_events_before_html', $before );
+		$before = $before.'<span class="tribe-events-ajax-loading"><img class="tribe-events-spinner-medium" src="'.tribe_events_resource_url('images/tribe-loading.gif').'" alt="'.__('Loading Events', 'tribe-events-calendar').'" /></span>';
 
 		echo apply_filters( 'tribe_events_before_html', $before );
 	}
@@ -435,10 +435,36 @@ if ( class_exists( 'TribeEvents' ) ) {
 	 * @since 3.0
 	 **/
 	function tribe_events_event_classes() {
-		$classes = apply_filters('tribe_events_event_classes', array());
-		echo implode(' ', $classes);
-	}
+	    global $post, $wp_query;
 
+		// May be called when the global $post object does not exist - ie during ajax loads of various views
+		// ... creating a dummy object allows the method to proceed semi-gracefully (interim measure only)
+		if ( ! is_object( $post ) ) $post = (object) array( 'ID' => 0 );
+
+	    $classes = array( 'hentry', 'vevent', 'type-tribe_events', 'post-' . $post->ID, 'tribe-clearfix' );
+	    $tribe_cat_slugs = tribe_get_event_cat_slugs( $post->ID );
+
+	    foreach( $tribe_cat_slugs as $tribe_cat_slug ) {
+	        $classes[] = 'tribe-events-category-'. $tribe_cat_slug;
+	    }
+	    if ( $venue_id = tribe_get_venue_id( $post->ID ) ) {
+	        $classes[] = 'tribe-events-venue-'. $venue_id;
+	    }
+	    if ( $organizer_id = tribe_get_organizer_id( $post->ID ) ) {
+	        $classes[] = 'tribe-events-organizer-'. $organizer_id;
+	    }
+	    // added first class for css
+	    if ( ( $wp_query->current_post == 0 ) && !tribe_is_day() ) {
+	        $classes[] = 'tribe-events-first';
+	    }
+	    // added last class for css
+	    if ( $wp_query->current_post == $wp_query->post_count-1 ) {
+	        $classes[] = 'tribe-events-last';
+	        }
+
+	    $classes = apply_filters('tribe_events_event_classes', $classes);
+	    echo implode(' ', $classes);
+	}
 	/**
 	 * Prints out data attributes used in the template header tags
 	 *
@@ -529,7 +555,6 @@ if ( class_exists( 'TribeEvents' ) ) {
 	/**
 	 * Get an event's cost
 	 *
-	 *
 	 * @param null|int $postId (optional)
 	 * @param bool $withCurrencySymbol Include the currency symbol
 	 * @return string Cost of the event.
@@ -550,15 +575,29 @@ if ( class_exists( 'TribeEvents' ) ) {
 
 		if ( $withCurrencySymbol && is_numeric( $cost ) ) {
 			$currency = tribe_get_event_meta( $postId, '_EventCurrencySymbol', true );
+			if ( ! $currency ) $currency = tribe_get_option( 'defaultCurrencySymbol', '$' );
 
-			if ( !$currency ) {
-				$currency = tribe_get_option( 'defaultCurrencySymbol', '$' );
-			}
+			$reverse_position = tribe_get_event_meta( $postId, '_EventCurrencyPosition', true );
+			if ( ! $reverse_position ) $reverse_position = tribe_get_option( 'reverseCurrencyPosition', false );
+			else $reverse_position = ( 'suffix' === $reverse_position );
 
-			$cost = $currency . $cost;
+			$cost = $reverse_position ? $cost . $currency : $currency . $cost;
 		}
 
 		return apply_filters( 'tribe_get_cost', $cost, $postId, $withCurrencySymbol );
+	}
+
+	/**
+	 * Returns the event cost complete with currency symbol.
+	 *
+	 * Essentially an alias of tribe_get_cost(), as if called with the $withCurrencySymbol
+	 * argument set to true. Useful for callbacks.
+	 *
+	 * @param null $postId
+	 * @return mixed|void
+	 */
+	function tribe_get_formatted_cost( $postId = null ) {
+		return apply_filters( 'tribe_get_formatted_cost', tribe_get_cost( $postId, true ) );
 	}
 
 	/**
@@ -733,8 +772,38 @@ if ( class_exists( 'TribeEvents' ) ) {
 		return apply_filters( 'tribe_events_event_recurring_info_tooltip', $tooltip );
 	}
 
-/**
-	 * Return the details of the start/end date/time
+	/**
+	 * Return the details of the start/end date/time.
+	 *
+	 * The highest level means of customizing this function's output is simply to adjust the WordPress date and time
+	 * formats (via the General Settings admin screen). Beyond that however there are two filters which can be used to
+	 * exercise further control here.
+	 *
+	 * The first is 'tribe_events_event_schedule_details_formatting' which allows an array of format settings to be
+	 * altered - it's basic make-up is as a simple set of key:value pairs as follows.
+	 *
+	 * "datetime_separator": this is inserted between the date and the time and defaults to an ampersat @ character.
+	 *     Note that if you modify this you should ordinarily be careful to include leading and trailing spaces (an
+	 *     example might be ' at ').
+	 *
+	 * "same_year_format": if an event starts and ends in the same year it's assumed that including the year in the
+	 *     output is superfluous. That being the case the function changes the date format, by default, to 'F j'. This
+	 *     may not be ideal in all locales so an alternative can be provided here. Do note that this substitution is
+	 *     only ever made if A) the event starts and ends in the same year and B) the date format does not include any
+	 *     time formatting characters.
+	 *
+	 *     This can also effectively be used to turn off the assumption that the year should be omitted, simply by
+	 *     setting it to the value of the 'date_format' option, for example.
+	 *
+	 * "show_end_time": for single day events only (not including all day events) it may not always be desirable to
+	 *     include the end time. In that situation, this setting can be set to false and the end time will not be
+	 *     displayed.
+	 *
+	 * "time": if it is undesirable to show times and only dates should be displayed then this setting can be set to
+	 *     false. If it is false it will by extension cause 'show_end_time' to be false.
+	 *
+	 * The resulting string can also be caught and manipulated, or completely overridden, using the
+	 * 'tribe_events_event_schedule_details' filter, should none of the above settings be sufficient.
 	 *
 	 * @since 3.0
 	 * @param int|null $event
@@ -745,23 +814,34 @@ if ( class_exists( 'TribeEvents' ) ) {
 			global $post;
 			$event = $post;
 		}
+
 		if ( is_numeric( $event ) )
 			$event = get_post( $event );
 
+		$schedule = '';
 		$format = '';
-		$timeFormat = get_option( 'time_format' );
+		$date_format = get_option( 'date_format' );
+		$time_format = get_option( 'time_format' );
 		$microformatStartFormat = tribe_get_start_date( $event, false, 'Y-m-dTh:i' );
 		$microformatEndFormat = tribe_get_end_date( $event, false, 'Y-m-dTh:i' );
 
-		// If the WordPress date setting matches DATEONLYFORMAT, make the string more readable
-		if ( get_option( 'date_format' ) == TribeDateUtils::DATEONLYFORMAT ) {
-			/* If the event happens this year, no need to show the year, unless it ends on another year (multi-day) */
-			if ( tribe_get_start_date( $event, false, 'Y' ) === date( 'Y' ) && tribe_get_end_date( $event, false, 'Y' ) === date( 'Y' ) ) {
-				$format = 'F j';
-			}
-		}
+		$settings = array(
+			'datetime_separator' => ' @ ',
+			'same_year_format' => 'F j',
+			'show_end_time' => true,
+			'time' => true,
+		);
 
-		$schedule = '';
+		$settings = wp_parse_args( apply_filters('tribe_events_event_schedule_details_formatting', $settings), $settings );
+		if ( ! $settings['time'] ) $settings['show_end_time'] = false;
+		extract($settings);
+
+		// If the date format will result in the year being shown but does *not* include any time formatting...
+		if ( TribeDateUtils::formatContainsYear( $date_format ) && ! TribeDateUtils::formatContainsTime( $date_format ) ) {
+			// ... and it starts and ends in the current year then there is no need to display the year
+			if ( tribe_get_start_date( $event, false, 'Y' ) === date( 'Y' ) && tribe_get_end_date( $event, false, 'Y' ) === date( 'Y' ) )
+				$format = $same_year_format;
+		}
 
 		if ( tribe_event_is_multiday( $event ) ) { // multi-date event
 
@@ -798,11 +878,11 @@ if ( class_exists( 'TribeEvents' ) ) {
 				}
 			} else {
 				$schedule .= '<span class="date-start dtstart">';
-				$schedule .= tribe_get_start_date( $event, false, $format ) . ' @ ' . tribe_get_start_date( $event, false, $timeFormat );
+				$schedule .= tribe_get_start_date( $event, false, $format ) . ( $time ? $datetime_separator . tribe_get_start_date( $event, false, $time_format ) : '' );
 				$schedule .= '<span class="value-title" title="'. $microformatStartFormat .'"></span>';
 				$schedule .= '</span> - ';
 				$schedule .= '<span class="date-end dtend">';
-				$schedule .= tribe_get_end_date( $event, false, $format2ndday ) . ' @ ' . tribe_get_end_date( $event, false, $timeFormat );
+				$schedule .= tribe_get_end_date( $event, false, $format2ndday ) . ( $time ? $datetime_separator . tribe_get_end_date( $event, false, $time_format ) : '' );
 				$schedule .= '<span class="value-title" title="'. $microformatEndFormat .'"></span>';
 				$schedule .= '</span>';
 			}
@@ -816,16 +896,16 @@ if ( class_exists( 'TribeEvents' ) ) {
 		} else { // single day event
 			if ( tribe_get_start_date( $event, false, 'g:i A' ) === tribe_get_end_date( $event, false, 'g:i A' ) ) { // Same start/end time
 				$schedule .= '<span class="date-start dtstart">';
-				$schedule .= tribe_get_start_date( $event, false, $format ) . ' @ ' . tribe_get_start_date( $event, false, $timeFormat );
+				$schedule .= tribe_get_start_date( $event, false, $format ) . ( $time ? $datetime_separator . tribe_get_start_date( $event, false, $time_format ) : '' );
 				$schedule .= '<span class="value-title" title="'. $microformatStartFormat .'"></span>';
 				$schedule .= '</span>';
 			} else { // defined start/end time
 				$schedule .= '<span class="date-start dtstart">';
-				$schedule .= tribe_get_start_date( $event, false, $format ) . ' @ ' . tribe_get_start_date( $event, false, $timeFormat );
+				$schedule .= tribe_get_start_date( $event, false, $format ) . ( $time ? $datetime_separator . tribe_get_start_date( $event, false, $time_format ) : '' );
 				$schedule .= '<span class="value-title" title="'. $microformatStartFormat .'"></span>';
-				$schedule .= '</span> - ';
+				$schedule .= '</span>' . ( $show_end_time ? ' - ' : '' );
 				$schedule .= '<span class="end-time dtend">';
-				$schedule .= tribe_get_end_date( $event, false, $timeFormat ) . '<span class="value-title" title="'. $microformatEndFormat .'"></span>';
+				$schedule .= ( $show_end_time ? tribe_get_end_date( $event, false, $time_format ) : '' ) . '<span class="value-title" title="'. $microformatEndFormat .'"></span>';
 				$schedule .= '</span>';
 			}
 		}
@@ -1084,4 +1164,21 @@ if ( class_exists( 'TribeEvents' ) ) {
 		return apply_filters( 'tribe_events_is_view_enabled', $enabled, $view, $enabled_views );
 	}
 
+	/**
+	 * Effectively aliases WP's get_the_excerpt() function, except that it additionally strips shortcodes
+	 * during ajax requests.
+	 *
+	 * The reason for this is that shortcodes added by other plugins/themes may not have been registered
+	 * by the time our ajax responses are generated. To avoid leaving unparsed shortcodes in our excerpts
+	 * then we strip out anything that looks like one.
+	 *
+	 * If this is undesirable the use of this function can simply be replaced within template overrides by
+	 * WP's own get_the_excerpt() function.
+	 *
+	 * @return string
+	 */
+	function tribe_events_get_the_excerpt() {
+		if ( ! defined('DOING_AJAX' ) || ! DOING_AJAX ) return get_the_excerpt();
+		return preg_replace( '#\[.+\]#U', '', get_the_excerpt() );
+	}
 }

@@ -7,7 +7,16 @@ function ninja_forms_register_save_sub(){
 function ninja_forms_save_sub(){
 	global $ninja_forms_processing, $ninja_forms_fields;
 
-	if($ninja_forms_processing->get_form_setting('save_subs') == 1){
+	// save forms by default
+	$save = true;
+
+	// check if there's some legacy save settings saved in the database
+	if ( 0 === $ninja_forms_processing->get_form_setting('save_subs') ) {
+		$save = false;
+	}
+	$save = apply_filters ( 'ninja_forms_save_submission', $save, $ninja_forms_processing->get_form_ID() );
+
+	if( $save ){
 
 		$action = $ninja_forms_processing->get_action();
 		$user_id = $ninja_forms_processing->get_user_ID();
@@ -21,7 +30,7 @@ function ninja_forms_save_sub(){
 
 		if(is_array($field_data) AND !empty($field_data)){
 			foreach($field_data as $field_id => $user_value){
-				$field_row = ninja_forms_get_field_by_id($field_id);
+				$field_row = $ninja_forms_processing->get_field_settings($field_id);
 				$field_type = $field_row['type'];
 				$save_sub = $ninja_forms_fields[$field_type]['save_sub'];
 

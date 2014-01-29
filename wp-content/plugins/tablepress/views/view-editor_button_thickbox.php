@@ -36,7 +36,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var object
+	 * @var TablePress_Editor_Button_Thickbox_List_Table
 	 */
 	protected $wp_list_table;
 
@@ -48,7 +48,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 * @param string $action Action for this view
 	 * @param array $data Data for this view
 	 */
-	public function setup( $action, $data ) {
+	public function setup( $action, array $data ) {
 		$this->action = $action;
 		$this->data = $data;
 
@@ -63,6 +63,7 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 	 * @since 1.0.0
 	 */
 	public function render() {
+ 		register_admin_color_schemes(); // To fix SCRIPT_DEBUG issues that result in wrong colors.css file being loaded
 		_wp_admin_html_begin();
 
 		wp_print_styles( 'colors' );
@@ -70,26 +71,50 @@ class TablePress_Editor_Button_Thickbox_View extends TablePress_View {
 ?>
 <title><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></title>
 <style type="text/css">
+/* Account for .wp-toolbar */
+html {
+	padding-top: 0 !important;
+}
 body {
-	margin: -26px 0px 15px 15px; /* top has -28px offset to account for html.wp-toolbar */
+	margin: 0 0 15px 15px;
 }
 
-#icon-tablepress {
-	background: transparent url(<?php echo plugins_url( 'admin/img/tablepress-icon.png', TABLEPRESS__FILE__ ); ?>) no-repeat;
+/* Fix search field positioning */
+#tablepress-page .search-box {
+	position: relative;
+	height: auto;
+	width: auto;
+	float: right;
+	clear: none;
+	margin: 0;
 }
-/* HiDPI images */
-@media print,
- (-o-min-device-pixel-ratio: 5/4),
- (-webkit-min-device-pixel-ratio: 1.25),
- (min-resolution: 120dpi) {
-	/* Screen icon */
-	#icon-tablepress {
-		background-image: url(<?php echo plugins_url( 'admin/img/tablepress-icon-2x.png', TABLEPRESS__FILE__ ); ?>);
-		background-size: 36px 36px;
-	}
+#tablepress-page .subtitle {
+	float: left;
+	padding: 10px 0 0;
+}
+#tablepress-page .search-box input[name="s"] {
+	float: left;
+	width: auto;
 }
 
-/* width and font weight for the columns */
+/* Fix pagination layout */
+#tablepress-page .tablenav-pages {
+	text-align: left;
+}
+#tablepress-page .tablenav .tablenav-pages a {
+	padding: 5px 12px;
+	font-size: 16px;
+}
+#tablepress-page .tablenav-pages .pagination-links .paging-input {
+	font-size: 16px;
+}
+
+#tablepress-page .tablenav-pages .pagination-links .current-page {
+	padding: 4px;
+	font-size: 16px;
+}
+
+/* Width and font weight for the columns */
 .tablepress-editor-button-list thead .column-table_id {
 	width: 50px;
 }
@@ -101,34 +126,52 @@ body {
 	width: 150px;
 }
 .tablepress-editor-button-list tbody .column-table_action {
-	padding: 4px 7px;
+	padding: 4px 7px 1px;
 }
 
+/* Shortcode input field */
 #tablepress-page .table-shortcode-inline {
 	background: transparent;
 	border: none;
 	color: #333333;
-	width: 90px;
+	width: 110px;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
+	font-size: 14px;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+	text-align: center;
+	vertical-align: top;
 }
 #tablepress-page .table-shortcode {
 	cursor: text;
 }
-
-/* Search results for WP_List_Table */
-#tablepress-page .subtitle {
-	float: left;
-	padding-left: 0px;
+<?php if ( is_rtl() ) : ?>
+/* RTL CSS */
+body.rtl {
+	margin: 0 15px 15px 0;
 }
+.rtl #tablepress-page .search-box {
+	float: left;
+}
+.rtl #tablepress-page .subtitle {
+	float: right;
+}
+.rtl #tablepress-page .search-box input[name="s"] {
+	float: right;
+}
+.rtl #tablepress-page .table-shortcode-inline {
+	width: 125px;
+	direction: ltr;
+	font-size: 13px;
+	vertical-align: baseline;
+}
+<?php endif; ?>
 </style>
 </head>
-<body class="wp-admin wp-core-ui js iframe">
+<body class="wp-admin wp-core-ui js iframe<?php echo is_rtl() ? ' rtl' : ''; ?>">
 <div id="tablepress-page" class="wrap">
-<?php screen_icon( 'tablepress' ); ?>
 <h2><?php printf( __( '%1$s &lsaquo; %2$s', 'tablepress' ), __( 'List of Tables', 'tablepress' ), 'TablePress' ); ?></h2>
 <div id="poststuff">
 <p>
@@ -137,8 +180,9 @@ body {
 <?php printf( __( 'Click the &#8220;%1$s&#8221; button for the desired table to automatically insert the<br />corresponding Shortcode (%2$s) into the editor.', 'tablepress' ), __( 'Insert Shortcode', 'tablepress' ), '<input type="text" class="table-shortcode table-shortcode-inline" value="' . esc_attr( '[' . TablePress::$shortcode . " id=<ID> /]" ) . '" readonly="readonly" />' ); ?>
 </p>
 <?php
-	if ( ! empty( $_GET['s'] ) )
-		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( stripslashes( $_GET['s'] ) ) );
+	if ( ! empty( $_GET['s'] ) ) {
+		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', 'tablepress' ) . '</span>', esc_html( wp_unslash( $_GET['s'] ) ) );
+	}
 ?>
 <form method="get" action="">
 	<input type="hidden" name="action" value="tablepress_<?php echo $this->action; ?>" />
@@ -149,12 +193,12 @@ body {
 </div>
 </div>
 <script type="text/javascript">
-	jQuery(document).ready( function($) {
-		$( '.tablepress-editor-button-list' ).on( 'click', '.insert-shortcode', function() {
-			var win = window.dialogArguments || opener || parent || top;
-			win.send_to_editor( $(this).attr( 'title' ) );
-		} );
+jQuery( document ).ready( function( $ ) {
+	$( '.tablepress-editor-button-list' ).on( 'click', '.insert-shortcode', function() {
+		var win = window.dialogArguments || opener || parent || top;
+		win.send_to_editor( $(this).attr( 'title' ) );
 	} );
+} );
 </script>
 </body>
 </html>
@@ -205,7 +249,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 *
 	 * @param array $items Tables to be displayed in the List Table
 	 */
-	public function set_items( $items ) {
+	public function set_items( array $items ) {
 		$this->items = $items;
 		$this->items_count = count( $items );
 	}
@@ -242,7 +286,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 
 	/**
 	 * Get a list of columns that are sortable
-	 * Format: 'internal-name' => array( $field for $item[$field], true for already sorted )
+	 * Format: 'internal-name' => array( $field for $item[ $field ], true for already sorted )
 	 *
 	 * @since 1.0.0
 	 *
@@ -250,8 +294,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		// no sorting on the Empty List placeholder
-		if ( ! $this->has_items() )
+		if ( ! $this->has_items() ) {
 			return array();
+		}
 
 		$sortable_columns = array(
 			'table_id' => array( 'id', true ), //true means its already sorted
@@ -269,7 +314,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_id( $item ) {
+	protected function column_table_id( array $item ) {
 		return esc_html( $item['id'] );
 	}
 
@@ -281,9 +326,10 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_name( $item ) {
-		if ( '' == trim( $item['name'] ) )
+	protected function column_table_name( array $item ) {
+		if ( '' == trim( $item['name'] ) ) {
 			$item['name'] = __( '(no name)', 'tablepress' );
+		}
 		return esc_html( $item['name'] );
 	}
 
@@ -295,10 +341,11 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_description( $item ) {
-		if ( '' == trim( $item['description'] ) )
+	protected function column_table_description( array $item ) {
+		if ( '' == trim( $item['description'] ) ) {
 			$item['description'] = __( '(no description)', 'tablepress' );
-		return esc_html( $item[ 'description' ] );
+		}
+		return esc_html( $item['description'] );
 	}
 
 	/**
@@ -309,7 +356,7 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Data item for the current row
 	 * @return string HTML content of the cell
 	 */
-	protected function column_table_action( $item ) {
+	protected function column_table_action( array $item ) {
 		return '<input type="button" class="insert-shortcode button" title="' . esc_attr( '[' . TablePress::$shortcode . " id={$item['id']} /]" ) . '" value="' . esc_attr__( 'Insert Shortcode', 'tablepress' ) . '" />';
 	}
 
@@ -320,8 +367,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 */
 	public function no_items() {
 		_e( 'No tables found.', 'tablepress' );
-		if ( 0 === $this->items_count )
+		if ( 0 === $this->items_count ) {
 			echo ' ' . __( 'You should add or import a table on the TablePress screens to get started!', 'tablepress' );
+		}
 	}
 
 	/**
@@ -333,8 +381,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param string $which Location ("top" or "bottom")
 	 */
 	public function display_tablenav( $which ) {
-		if ( ! $this->has_items() )
+		if ( ! $this->has_items() ) {
 			return;
+		}
 		?>
 		<div class="tablenav <?php echo esc_attr( $which ); ?>">
 			<div class="alignleft actions">
@@ -357,12 +406,13 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item Item that shall be searched
 	 * @return bool Whether the search term was found or not
 	 */
-	protected function _search_callback( $item ) {
+	protected function _search_callback( array $item ) {
 		static $term;
-		if ( is_null( $term ) )
-			$term = stripslashes( $_GET['s'] );
+		if ( is_null( $term ) ) {
+			$term = wp_unslash( $_GET['s'] );
+		}
 
-		$item = TablePress::$controller->model_table->load( $item['id'] ); // load table again, with data
+		$item = TablePress::$model_table->load( $item['id'] ); // load table again, with data
 
 		// search from easy to hard, so that "expensive" code maybe doesn't have to run
 		if ( false !== stripos( $item['id'], $term )
@@ -370,8 +420,9 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		|| false !== stripos( $item['description'], $term )
 		|| false !== stripos( TablePress::get_user_display_name( $item['author'] ), $term )
 		|| false !== stripos( TablePress::format_datetime( $item['last_modified'], 'mysql', ' ' ), $term )
-		|| false !== stripos( json_encode( $item['data'] ), $term ) )
+		|| false !== stripos( json_encode( $item['data'] ), $term ) ) {
 			return true;
+		}
 
 		return false;
 	}
@@ -385,14 +436,15 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 	 * @param array $item_b the second item
 	 * @return int (-1, 0, 1) depending on which item sorts "higher"
 	 */
-	protected function _order_callback( $item_a, $item_b ) {
+	protected function _order_callback( array $item_a, array $item_b ) {
 		global $orderby, $order;
 
-		if ( $item_a[$orderby] == $item_b[$orderby] )
+		if ( $item_a[ $orderby ] == $item_b[ $orderby ] ) {
 			return 0;
+		}
 
 		// fields in this list table are all strings
-		$result = strnatcasecmp( $item_a[$orderby], $item_b[$orderby] );
+		$result = strnatcasecmp( $item_a[ $orderby ], $item_b[ $orderby ] );
 
 		return ( 'asc' == $order ) ? $result : - $result;
 	}
@@ -407,13 +459,15 @@ class TablePress_Editor_Button_Thickbox_List_Table extends WP_List_Table {
 		wp_reset_vars( array( 'orderby', 'order', 's' ) );
 
 		// Maybe search in the items
-		if ( $s )
+		if ( $s ) {
 			$this->items = array_filter( $this->items, array( $this, '_search_callback' ) );
+		}
 
 		// Maybe sort the items
 		$_sortable_columns = $this->get_sortable_columns();
-		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) )
+		if ( $orderby && ! empty( $this->items ) && isset( $_sortable_columns["table_{$orderby}"] ) ) {
 			usort( $this->items, array( $this, '_order_callback' ) );
+		}
 
 		// number of records to show per page
 		$per_page = 15; // hard-coded, as there's no possibility to change this in the Thickbox

@@ -1,9 +1,9 @@
 === Ninja Forms ===
-Contributors: kstover, jameslaws, daveshine
+Contributors: kstover, jameslaws, daveshine, mordauk, bftrick, helgatheviking
 Tags: form, forms, contact form, custom form, form builder, form creator, form manager, form creation, contact forms, custom forms, forms builder, forms creator, forms manager, forms creation, form administration,
-Requires at least: 3.4
-Tested up to: 3.6
-Stable tag: 2.2.50
+Requires at least: 3.6
+Tested up to: 3.8.1
+Stable tag: 2.4.2
 License: GPLv2 or later
 
 Forms created with a simple drag and drop interface. Contact forms, Email collection forms, or any other form you want on your WordPress site.
@@ -76,23 +76,248 @@ For help and video tutorials, please visit our website: [Ninja Forms Documentati
 
 == Upgrade Notice ==
 
-= 2.2.50 =
+= 2.4.2 =
 
 *Bugs:*
 
-* Fixed a major bug that could prevent calculation fields from working properly when more than one calculation referenced the same field.
-* Fixed a bug that caused calculation fields to work incorrectly with the Conditional Logic extension.
+* Fixed a bug that caused memory issues when a form has a large number of submissions.
+* Fixed a bug with the label inside position that generated a “call to member function…” error.
+* Fixed a bug that prevented tax totals from working properly with numbers with thousands separators.
+* Fixed a bug that prevented list importing from working with newly created list fields.
+* Fixed a bug with list fields that prevented list options from being re-ordered immediately after being added to the form.
 
 *Changes:*
 
-* Added the "visible" HTML5 data attribute to fields.
-* Removed functions from core that were specific to the Conditional Logic extension.
+* Required fields that use the “inside” label position will now show the required symbol inside the field with the label.
+* Changed the default value filter to respect fields that shouldn’t be processed.
+* Removed code from the field class function that was specific to Conditional Logic. This code should be housed in the extension rather than the core plugin.
 
 == Requested Features ==
 
 If you have any feature requests, please feel free to visit [ninjaforms.com](http://ninjaforms.com) and let us know about it.
 
 == Changelog ==
+
+= 2.4.2 =
+
+*Bugs:*
+
+* Fixed a bug that caused memory issues when a form has a large number of submissions.
+* Fixed a bug with the label inside position that generated a “call to member function…” error.
+* Fixed a bug that prevented tax totals from working properly with numbers with thousands separators.
+* Fixed a bug that prevented list importing from working with newly created list fields.
+* Fixed a bug with list fields that prevented list options from being re-ordered immediately after being added to the form.
+
+*Changes:*
+
+* Required fields that use the “inside” label position will now show the required symbol inside the field with the label.
+* Changed the default value filter to respect fields that shouldn’t be processed.
+* Removed code from the field class function that was specific to Conditional Logic. This code should be housed in the extension rather than the core plugin.
+
+= 2.4.1 =
+
+*Bugs:*
+
+* Fixed a bug that prevented the Inside label position from working properly on form load.
+* Fixed an issue that could cause the conditional logic extension to function improperly on load.
+
+= 2.4 =
+
+*Features:*
+
+* A new method for loading Ninja Forms for display has been created to decrease loading times. Users with extremely large forms (100+ fields) should see a marked improvement in loading speeds. If you use any Ninja Forms extensions, make sure that they are updated to the newest versions to take advantage of this new loading system. Developers can look for the $ninja_forms_loading class for more information about using this powerful new feature.
+* Added a new Number field that requires users to enter a number. (Work is currently being done to make this requirement work with non-HTML5 compliant browers.)
+
+*Bugs:*
+
+* Fixed a bug that prevented Custom default values from working with hidden fields.
+* Encoded HTML entities in the help hover so that double quotes don’t break anything.
+
+*Changes:*
+
+* Default label position is now above the element.
+* Added filter 'ninja_forms_export_sub_pre_value' when exporting subs to access user_value before it is processed (stripslashes and if array implode_r).
+
+= 2.3.8 =
+
+*Bugs:*
+
+* Fixed a bug that caused the Ninja Forms option on post/page edit to not save properly.
+
+*Changes:*
+
+* Simplified some CSS for the star rating field.
+* Fixed some 3.8 styling on modal boxes.
+* Fixed a few typos.
+* Added a default success message to newly created forms.
+* Address fields should now how a specific class that can be targeted in JS.
+
+= 2.3.7 =
+
+*Bugs:*
+
+* Input masks should now work without causing Javascript errors.
+* "Back to submissions" should now work in IE.
+
+= 2.3.6 =
+
+*Bugs:*
+
+* Fixed a bug in calc filters that could cause infinite loops.
+* "Back to submissions" should now work in IE.
+
+*Changes:*
+
+* Add some CSS for 3.8 compatability.
+* Removed the "Save Subs" option. Now all submissions are saved by default. This can be changed by using a WordPress filter.
+* Moved the "Forms" admin menu up to the same section as posts and custom post types.
+* Changed some CSS selector weights ot make overriding a little easier.
+* Changed the mask definition to be stored in a data-attribute rather than the field title.
+* Changed the currency mask to use the WordPress defined thousands separator and decimal point.
+
+= 2.3.5 =
+
+*Bugs:*
+
+* Fixed a bug that prevented calculations from working properly in Mulit-Part Forms.
+* Fixed a bug that could prevent success messages from showing properly in modal forms.
+
+= 2.3.4 =
+
+*Bugs:*
+
+* Fixed up the extend page. Added some extensions and cleaned up CSS.
+* Added url encoding to the form settings saved message so it was no longer without spaces.
+* Fixed the get_subs function so that it works properly with dates in formats different than m/d/Y.
+* Fixed a bug that caused response message fields to be output if multiple forms were on the same page.
+* Fixed a bug that caused hidden fields to not show up on the submission edit screen.
+
+*Changes:*
+
+* Adding styling to admin metabox textareas so that they have a minimum size.
+* Saving a post/page should no longer create an empty Ninja Forms custom post meta.
+* Changed the call to sys_get_temp_dir() to the WordPress get_temp_dir() when trying to create a CSV attachment.
+* Added a new filter ninja_forms_email_all_fields_array to give users a way to remove unwanted data from being sent in emails.
+* Users can now add Calc values to their List Options import CSV.
+
+= 2.3.3 =
+
+*Bugs:*
+
+* Fixed a bug that prevented sidebars from saving properly on the Field Settings tab and producing a PHP warning.
+* Forms should now update their “Date Updated” status when a change is made.
+
+*Changes:*
+
+* Added a default, basic contact form that will be automatically created upon plugin activation.
+* Optimized images to make load times faster.
+* Changed from underscores to dashes for proper class name of the required fields wrapper.
+* Added a new default value for textboxes: Today's Date.
+* Increased the number of submissions viewable at once to 300 and 500.
+* Minor CSS adjustments for WP 3.8 compatibility.
+
+= 2.3.2 =
+
+*Bugs:*
+
+* Fixed a bug that prevented forms from populated correctly after they had been submitted. i.e. after missing required fields.
+
+*Changes:*
+
+* Changed the way that Ninja Forms figures out what URL a form lives on.
+* The "From Address" used in admin emails can now be filtered using ninja_forms_admin_email_from.
+* The delimiter, new line marker, and byte order mark can now all be filtered. See includes/admin/export-subs.php for more information. (Thanks to Jörn Lund!)
+* Changed button colors on the submission editing page to be inline with WordPress standards.
+
+= 2.3.1 =
+
+*Bugs:*
+
+* Fixed a bug that prevented "From Email" and "From Name" from saving properly on the Form Settings page.
+* Star Ratings fields can now be set to required. The user will be forced to enter at least one star.
+* Removed some PHP notices that could appear when using the widget.
+
+*Changes:*
+
+* The datepicker used in the Ninja Forms admin section should now respect the date settings on the Plugin Settings page.
+
+= 2.3 =
+
+*Bugs:*
+
+* Fixed several minor bugs related to saving form fields.
+
+*Changes:*
+
+* Added a new submit feature called "Timed Submit." This new submit button will force users to wait a certain number of seconds before they can submit your form. Thanks helgatheviking!
+* Improved the Form Settings UI by adding a much-requested "Email From Name" field setting. You can use this to more easily define the name that emails appear to be from.
+* Added an easier way for developers to troubleshoot JS errors.
+* The "Use this as the From Email for Administrators..." setting has been removed in favour of one labelled "Set this as the reply-to email" for the form. We think that this presents a clearer interface and is easier to understand.
+
+= 2.2.56 =
+
+*Bugs:*
+
+* Fixed a bug that prevented bulk actions from working on submissions.
+* Duplicating a form should now properly change ninja_forms_field references in the admin and user email subjects.
+
+*Changes:*
+
+* Added a honeypot field for catching spam bots. Thanks helgatheviking!
+* The date input mask should now reflect the settings for date format.
+* Added a "button" option type to the admin metabox output.
+* Changed the way that Ninja Forms attempts to get a form's URL to the wp_guess_url() function.
+* Added the option to give a field type a default label and default value when registering a field type.
+
+= 2.2.55 =
+
+*Bugs:*
+
+* Fixed a security-related bug that prevented pluagin and form settings from saving properly.
+
+*Changes:*
+
+* Add smtp option output to System Status to assist in approved email issue troubleshooting.
+
+= 2.2.54 =
+
+*Bugs:*
+
+* Fixed a security-related bug that prevented new forms from being created.
+
+*Changes:*
+
+* Added better input escaping to improve form security.
+
+= 2.2.53 =
+
+*Bugs:*
+
+* Fixed some minor bugs related to default values for hidden and textbox fields.
+
+*Changes:*
+
+* Added a new resource that will allow users to quickly and easily add their pertinent system information when requesting support for Ninja Forms. The new option can be found underneath the Forms menu: System Status.
+
+= 2.2.52 =
+
+*Changes:*
+
+* Added new options to the default value setting: Post ID, Post Title, and Post URL.
+* Changed the date format in ninja_forms_get_subs() to allow 24 hour date selection.
+* Improved performance with the MP6 plugin.
+
+= 2.2.51 =
+
+*Bugs:*
+
+* Fixed a bug that prevented advanced calculations from working properly.
+* Fixed some bugs with the field descripition.
+
+*Changes:*
+
+* Added a message to the license tab if no extensions are installed.
+* Improved the structure of metaboxes.
 
 = 2.2.50 =
 

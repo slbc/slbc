@@ -135,7 +135,7 @@ $generalTab = array(
 		),
 		'multiDayCutoffHelper' => array(
 			'type' => 'html',
-			'html' => '<p class="tribe-field-indent tribe-field-description description">' . sprintf( __( 'Have events that run past midnight? Control when your day official ends to avoid awkwardly adding your event to the next day.', 'tribe-events-calendar' ) ) . '</p>',
+			'html' => '<p class="tribe-field-indent tribe-field-description description">' . sprintf( __( "Have an event that runs past midnight? Select a time after that event's end to avoid showing the event on the next day's calendar.", 'tribe-events-calendar' ) ) . '</p>',
 			'conditional' => ( '' != get_option( 'permalink_structure' ) ),
 		),
 		'defaultCurrencySymbol' => array(
@@ -145,6 +145,13 @@ $generalTab = array(
 			'validation_type' => 'textarea',
 			'size' => 'small',
 			'default' => '$',
+		),
+		'reverseCurrencyPosition' => array(
+			'type' => 'checkbox_bool',
+			'label' => __( 'Currency symbol follows value', 'tribe-events-calendar' ),
+			'tooltip' => __( 'The currency symbol normally precedes the value. Enabling this option positions the symbol after the value.', 'tribe-events-calendar' ),
+			'default' => false,
+			'validation_type' => 'boolean',
 		),
 		'tribeEventsDisplayTitle' => array(
 			'type' => 'html',

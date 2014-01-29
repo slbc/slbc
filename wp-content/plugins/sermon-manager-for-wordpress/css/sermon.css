@@ -59,10 +59,6 @@
 	clear: right;
 }
 
-a.sermon-attachments {
-	display: block;
-}
-
 /* controls padding around video embeds */
 .wpfc_sermon-video {
 	margin: 10px 0 10px;
@@ -188,6 +184,10 @@ padding:20px 0px 20px 10px;
 .bibly_popup_footer {display:none;}
 
 /* Styles for additional files */
+#wpfc-attachments a {
+	display: block;
+}
+
 #wpfc-attachments a[href$='.ppt'], #wpfc-attachments a[href$='.pptx'] {
 	background:url(icons/ppt.png) no-repeat center left;
 	padding-left:20px;

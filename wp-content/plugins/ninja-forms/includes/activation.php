@@ -173,11 +173,14 @@ function ninja_forms_activation(){
 			'currency_symbol' => '$',
 			'clear_complete' => 1,
 			'hide_complete' => 1,
-			'req_div_label' => __('Fields marked with a * are required', 'ninja-forms'),
+			'req_div_label' => __('Fields marked with a * are required.', 'ninja-forms'),
 			'req_field_symbol' => '*',
 			'req_error_label' => __( 'Please ensure all required fields are completed.', 'ninja-forms' ),
-			'req_field_error' => __('This is a required field', 'ninja-forms'),
-			'spam_error' => __('Please answer the anti-spam question correctly.', 'ninja-forms'),
+			'req_field_error' => __( 'This is a required field', 'ninja-forms' ),
+			'spam_error' => __( 'Please answer the anti-spam question correctly.', 'ninja-forms' ),
+			'honeypot_error' => __('If you are a human, please leave this field blank.', 'ninja-forms' ),
+			'timed_submit_error' => __('If you are a human, please slow down.', 'ninja-forms' ),
+			'javascript_error' => __( 'You need JavaScript to submit this form. Please enable it and try again.', 'ninja-forms' ),
 			'invalid_email' => __( 'Please enter a valid email address.', 'ninja-forms' ),
 			'process_label' => __('Processing', 'ninja-forms'),
 			'login_link' => __('Login', 'ninja-forms'),
@@ -284,6 +287,16 @@ function ninja_forms_activation(){
 			}
  		}
  	}
+
+ 	// check for an existing form
+ 	$starter_form_exists = ninja_forms_starter_form_exists();
+
+ 	if ( ! $starter_form_exists ) {
+ 		// if a starter form doesn't exist them create it
+ 		ninja_forms_add_starter_form();
+ 	}
+
+ 	
 }
 
 function ninja_forms_activation_old_forms_check(){
@@ -313,12 +326,6 @@ function ninja_forms_activation_old_forms_check(){
 					$forms[$x]['data']['admin_mailto'] = $admin_mailto;
 					$forms[$x]['data']['user_subject'] = $form['subject'];
 					$forms[$x]['data']['success_msg'] = $form['success_msg'];
-					if( $form['save_subs'] == 'checked' ){
-						$save_subs = 1;
-					}else{
-						$save_subs = 0;
-					}
-					$forms[$x]['data']['save_subs'] = $save_subs;
 					if( $form['send_email'] == 'checked' ){
 						$send_email = 1;
 					}else{
@@ -596,3 +603,35 @@ function ninja_forms_activation_old_forms_check(){
 	//}
 	return $forms;
 }
+
+
+/*
+ * Check to see if a form exists.
+ *
+ * @since 2.3.3
+ * @return bool
+ */
+function ninja_forms_starter_form_exists() {
+	$forms = ninja_forms_get_all_forms();
+	if( empty( $forms ) ) {
+		return false;
+	}
+	return true;
+}
+
+
+/*
+ * Add a starter form. Return the ID.
+ *
+ * @since 2.3.3
+ * @returns int
+ */
+function ninja_forms_add_starter_form() {
+	// load starter form
+	$file = file_get_contents( NINJA_FORMS_DIR . "/includes/forms/starter-form.nff" );
+	$file = apply_filters( 'ninja_forms_starter_form_contents', $file );
+
+	// create new form
+	ninja_forms_import_form( $file );
+}
+
