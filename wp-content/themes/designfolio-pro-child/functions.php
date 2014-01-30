@@ -15,6 +15,11 @@ function override_parent_theme_main_features() {
 
 	/* e.g. Remove Google font support. */
 	//remove_theme_support( 'google-fonts' );
+
+	add_filter('excerpt_length', 'pro_child_filter_excerpt');
+	function pro_child_filter_excerpt($length) {
+		return 25;
+	}
 }
 
 /* Alter lower level features in the framework itself. */
